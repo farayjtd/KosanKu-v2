@@ -4,93 +4,43 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lupa Password - KosanKu</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f8f4f1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .card {
-      background: #fff;
-      padding: 30px 36px;
-      border-radius: 10px;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
-      max-width: 400px;
-      width: 100%;
-    }
-
-    h2 {
-      margin-top: 0;
-      color: #5c3c2d;
-      text-align: center;
-    }
-
-    label {
-      display: block;
-      margin: 16px 0 6px;
-      color: #333;
-      font-weight: 600;
-    }
-
-    input[type="email"] {
-      width: 100%;
-      padding: 10px;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      background-color: #fdfaf8;
-    }
-
-    button {
-      margin-top: 20px;
-      padding: 10px;
-      width: 100%;
-      background-color: #8b5e3c;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 15px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #6b4f3b;
-    }
-
-    .status {
-      background-color: #d1fae5;
-      color: #065f46;
-      padding: 10px;
-      border-radius: 6px;
-      font-size: 14px;
-      text-align: center;
-      margin-top: 16px;
-    }
-  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/font.css">
+  @vite('resources/css/app.css')
 </head>
-<body>
+<body class="min-h-screen bg-cover bg-no-repeat bg-center flex items-center justify-center px-4 md:px-0" style="background-image: url('/assets/auth.png')">
 
-  <div class="card">
-    <h2>Reset Password</h2>
+  <div class="bg-[#F7F9F4] px-8 py-10 rounded-3xl shadow-gray-100 shadow-xs w-full max-w-md">
+    <h2 class="use-poppins text-2xl font-semibold text-[#31c594] text-left mb-2">Reset Password</h2>
+    <h2 class="use-poppins text-xs font-semibold text-gray-500 text-left mb-6">Masukkan email valid, dan tunggu hingga <br> kami mengirimkan email ke anda</h2>
 
     @if (session('status'))
-      <div class="status">
+      <div class="bg-green-100 text-green-700 text-sm px-4 py-3 rounded-md text-center mb-4">
         {{ session('status') }}
       </div>
     @endif
 
     <form method="POST" action="{{ route('password.email') }}">
       @csrf
-      <label for="email">Email Anda</label>
-      <input type="email" id="email" name="email" required>
 
-      <button type="submit">Kirim Link Reset</button>
+      <label for="email" class="block text-sm font-semibold text-gray-700 mt-2">Email Anda</label>
+      <input 
+        type="email" 
+        id="email" 
+        name="email" 
+        required 
+        class="w-full mt-1 px-4 py-2 pr-10 rounded-xl text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0"
+      >
+
+      <button 
+        type="submit" 
+        class="w-2/3 mt-6 py-2 bg-[#31c594] text-white font-semibold rounded-xl mx-auto block hover:bg-[#2ab88d] duration-300 cursor-pointer"
+      >
+        Kirim Link Reset
+      </button>
     </form>
   </div>
 
