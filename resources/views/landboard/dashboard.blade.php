@@ -17,13 +17,13 @@
 
   @include('components.sidebar-landboard')
 
-  <div class="flex-1 p-6 md:p-10">
+  <div class="ml-[240px] w-[calc(100%-240px)] p-6 md:pt-4">
     <p class="text-xl p-4 rounded-xl text-left text-white bg-[#31c594]">Selamat datang kembali, <strong class="use-poppins">{{ Auth::user()->landboard->name }}</strong></p>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
       <div class="bg-[#F7F9F4] p-6 rounded-xl shadow">
         <div class="flex items-center justify-between">
           <div>
-            <h3 class="text-lg font-semibold text-black mb-2">Total Tenant</h3>
+            <h3 class="text-lg font-semibold text-black mb-2">Total Penghuni</h3>
             <p class="text-3xl font-bold text-gray-800">{{ $totalTenants }}</p>
           </div>
           <div class="text-4xl text-black">
@@ -137,7 +137,7 @@
             <i class="bi bi-person-plus text-2xl text-blue-600"></i>
           </div>
           @if($newTenants->count() > 0)
-            <p class="text-sm text-gray-600 mb-3">Ada {{ $newTenants->count() }} tenant baru bergabung</p>
+            <p class="text-sm text-gray-600 mb-3">Ada {{ $newTenants->count() }} penghuni baru bergabung</p>
             <div class="space-y-2">
               @foreach($newTenants->take(3) as $tenant)
                 <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
@@ -154,7 +154,7 @@
               @endforeach
             </div>
           @else
-            <p class="text-sm text-gray-500">Belum ada tenant baru</p>
+            <p class="text-sm text-gray-500">Belum ada penghuni baru</p>
           @endif
         </div>
 
