@@ -133,28 +133,4 @@
         </ul>
     </div>
   </nav>
-<!-- 
-  {{-- Tombol Profil --}}
-  <div class="pt-6 w-full">
-    <form action="{{ route('landboard.profile.update-form') }}" method="GET" class="m-0">
-      @csrf
-      <button type="submit"
-              class="profile-btn w-full flex items-center justify-center gap-2 px-4 py-2 bg-[#31c594] text-white font-semibold rounded-lg transition hover:bg-emerald-700 hover:scale-105">
-        <i class="bi bi-person-gear text-lg"></i> 
-        <span class="btn-text">Profil</span>
-      </button>
-    </form>
-  </div>
-
-  {{-- Logout --}}
-  <div class="pt-6 w-full">
-    <form action="{{ route('logout') }}" method="POST" class="m-0">
-      @csrf
-      <button type="submit"
-              class="logout-btn w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-500 text-white font-semibold rounded-lg transition hover:bg-red-600 hover:scale-105">
-        <i class="bi bi-box-arrow-right text-lg"></i> 
-        <span class="btn-text">Logout</span>
-      </button>
-    </form>
-  </div> -->
 </div>

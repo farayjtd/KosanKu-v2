@@ -55,6 +55,7 @@
             display: none;
         }
         
+        /* Main content styles - PERBAIKAN DISINI */
         .main-content {
             margin-left: 240px;
             width: calc(100% - 240px);
@@ -71,8 +72,10 @@
   <div id="wrapper" class="flex min-h-screen">
     @include('components.sidebar-landboard')
 
-    <div class="ml-[240px] w-[calc(100%-240px)] p-6 md:pt-4">
+    <!-- PERUBAHAN UTAMA: Tambahkan id="main-content" dan class="main-content" -->
+    <div id="main-content" class="main-content p-6 md:pt-4">
       <p class="text-xl p-4 rounded-xl text-left text-white bg-[#31c594]">Selamat datang kembali, <strong class="use-poppins">{{ Auth::user()->landboard->name }}</strong></p>
+      
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
         <div class="bg-[#F7F9F4] p-6 rounded-xl shadow">
           <div class="flex items-center justify-between">
@@ -248,8 +251,9 @@
 
     if (toggleBtn && sidebar) {
       toggleBtn.addEventListener('click', function() {
-        console.log('Toggle clicked!'); // Debug untuk memastikan event berjalan
+        console.log('Toggle clicked!');
         sidebar.classList.toggle('collapsed');
+        // PERBAIKAN: Pastikan main-content juga ikut toggle
         if (mainContent) {
           mainContent.classList.toggle('collapsed');
         }
