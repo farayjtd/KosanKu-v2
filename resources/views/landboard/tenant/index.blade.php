@@ -1,174 +1,339 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Daftar Tenant</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #f5f3f0;
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  @vite('resources/css/app.css')
+  <style>[x-cloak]{display:none}
+    .sidebar.collapsed {
+      width: 80px;
+    }
+
+    .sidebar.collapsed .menu-text,
+    .sidebar.collapsed .menu-title,
+    .sidebar.collapsed .group-title,
+    .sidebar.collapsed .logo-text,
+    .sidebar.collapsed .profile-btn .btn-text,
+    .sidebar.collapsed .logout-btn .btn-text {
+      display: none;
+    }
+
+    .sidebar.collapsed .menu-item,
+    .sidebar.collapsed .profile-btn,
+    .sidebar.collapsed .logout-btn {
+      justify-content: center;
+      padding: 0.45rem;
+      min-height: 48px;
+    }
+    .sidebar.collapsed .menu-item {
+        min-height: unset;
+    }
+
+    .sidebar-content {
+      flex: 1;
       display: flex;
+      flex-direction: column;
+      padding: 1rem;
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .main-content {
-      flex: 1;
-      padding: 30px;
+      margin-left: 240px;
+      width: calc(100% - 240px);
+      transition: all 0.3s ease;
+      min-height: 100vh;
     }
 
-    h2 {
-      color: #5a4430;
-      margin-bottom: 20px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #fffaf6;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
-    }
-
-    th, td {
-      border: 1px solid #e3dcd6;
-      padding: 12px;
-      text-align: left;
-      font-size: 14px;
-      color: #4a3b30;
-    }
-
-    th {
-      background-color: #e9e2da;
-    }
-
-    .action-buttons a,
-    .action-buttons form button {
-      background: #8d735b;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      font-size: 13px;
-      border-radius: 6px;
-      text-decoration: none;
-      cursor: pointer;
-      margin-right: 5px;
-      transition: background 0.2s ease;
-    }
-
-    .action-buttons a:hover,
-    .action-buttons form button:hover {
-      background: #6e5947;
-    }
-
-    .action-buttons form {
-      display: inline;
+    .main-content.collapsed {
+      margin-left: 80px;
+      width: calc(100% - 80px);
     }
 
     @media (max-width: 768px) {
+      .sidebar {
+        width: 80px;
+      }
+      .sidebar .menu-text,
+      .sidebar .menu-title,
+      .sidebar .group-title,
+      .sidebar .logo-text,
+      .sidebar .profile-btn .btn-text,
+      .sidebar .logout-btn .btn-text {
+        display: none;
+      }
+      .sidebar .menu-item {
+        justify-content: center;
+        padding: 0.75rem;
+      }
+      .sidebar .profile-btn,
+      .sidebar .logout-btn {
+        padding: 0.75rem;
+        justify-content: center;
+        min-height: 48px;
+      }
       .main-content {
-        padding: 20px;
+        margin-left: 80px;
+        width: calc(100% - 80px);
       }
-
-      table, thead, tbody, th, td, tr {
-        display: block;
-      }
-
-      td {
-        padding: 10px;
-      }
-
-      .action-buttons {
-        margin-top: 10px;
+      .main-content.collapsed {
+        margin-left: 80px;
+        width: calc(100% - 80px);
       }
     }
 
-    .filter-form {
-      margin-bottom: 20px;
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .filter-form input,
-    .filter-form select {
-      padding: 6px 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-
-    .success-message {
-      color: green;
-      font-weight: bold;
-      margin-bottom: 10px;
+    @media (max-width: 640px) {
+      .sidebar {
+        width: 60px;
+      }
+      .sidebar .menu-item {
+        padding: 0.5rem;
+      }
+      .sidebar .profile-btn,
+      .sidebar .logout-btn {
+        padding: 0.5rem;
+        min-height: 40px;
+      }
+      .main-content {
+        margin-left: 60px;
+        width: calc(100% - 60px);
+      }
+      .main-content.collapsed {
+        margin-left: 60px;
+        width: calc(100% - 60px);
+      }
+      @media (max-width: 768px) {
+        .sidebar.mobile-expanded {
+          width: 100vw !important;
+          z-index: 60;
+        }
+        .sidebar.mobile-expanded .menu-text,
+        .sidebar.mobile-expanded .menu-title,
+        .sidebar.mobile-expanded .group-title,
+        .sidebar.mobile-expanded .logo-text,
+        .sidebar.mobile-expanded .btn-text {
+          display: block !important;
+        }
+        .sidebar.mobile-expanded .menu-item {
+          justify-content: flex-start !important;
+          padding: 0.5rem 1rem !important;
+        }
+        .sidebar.mobile-expanded .profile-btn,
+        .sidebar.mobile-expanded .logout-btn {
+          justify-content: center !important;
+          padding: 0.5rem 1rem !important;
+        }
+        .mobile-overlay {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background: rgba(0, 0, 0, 0.5);
+          z-index: 50;
+        }
+        .mobile-overlay.active {
+          display: block;
+        }
+      }
     }
   </style>
 </head>
-<body>
+<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
+  <div id="wrapper" class="flex min-h-screen w-full">
+    {{-- Sidebar --}}
+    @include('components.sidebar-landboard')
 
-  @include('components.sidebar-landboard')
+    <div id="main-content" class="main-content p-6 md:pt-4 w-full">
+      @if(session('success'))
+        <div class="mb-4 px-4 py-2 rounded-lg bg-emerald-100 text-emerald-700 border border-emerald-300">
+          <i class="bi bi-check-circle-fill mr-2"></i> {{ session('success') }}
+        </div>
+      @endif
 
-  <div class="main-content">
-    <h2>Daftar Tenant</h2>
+      <div class="search-input-wrapper mb-6 bg-white rounded-xl shadow-md px-3 py-1 flex items-center">
+        <i class="bi bi-search search-icon text-gray-500 mr-2"></i>
+        <form id="room-search-form" method="GET" class="flex-grow flex items-center relative">
+          <input type="search" name="search" placeholder="Cari nama atau username"
+                 value="{{ request('search') }}"
+                 class="w-full border-none outline-none bg-transparent">
+          <button type="button" class="filter-sort-toggle-btn text-black text-2xl cursor-pointer p-1 rounded-full transition duration-200 ease-in-out hover:bg-gray-100" onclick="toggleFilterSortDropdown(this)">
+            <i class="bi bi-sliders"></i>
+          </button>
+          <div class="filter-sort-dropdown hidden absolute right-0 top-full z-10 bg-white rounded-lg shadow-lg mt-2 p-4 w-64">
+            <div class="mb-4">
+              <label for="status-filter" class="block text-gray-700 font-medium text-sm mb-1">Status:</label>
+              <select id="status-filter" name="status" onchange="document.getElementById('room-search-form').submit()"
+                      class="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-400">
+                <option value="">Semua</option>
+                <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                <option value="nonaktif" {{ request('status') == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
+              </select>
+            </div>
+            <div>
+              <label for="sort-filter" class="block text-gray-700 font-medium text-sm mb-1">Urutkan:</label>
+              <select id="sort-filter" name="sort" onchange="document.getElementById('room-search-form').submit()"
+                      class="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-400">
+                <option value="">-- Pilih --</option>
+                <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>Nama A-Z</option>
+                <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Nama Z-A</option>
+                <option value="username_asc" {{ request('sort') == 'username_asc' ? 'selected' : '' }}>Username A-Z</option>
+                <option value="username_desc" {{ request('sort') == 'username_desc' ? 'selected' : '' }}>Username Z-A</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
 
-    @if(session('success'))
-      <div class="success-message">{{ session('success') }}</div>
-    @endif
-
-    <form method="GET" class="filter-form">
-      <input type="text" name="search" placeholder="Cari nama / username"
-             value="{{ request('search') }}">
-
-      <select name="sort" onchange="this.form.submit()">
-        <option value="name_asc" {{ request('sort') == 'name_asc' ? 'selected' : '' }}>Nama A-Z</option>
-        <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Nama Z-A</option>
-        <option value="username_asc" {{ request('sort') == 'username_asc' ? 'selected' : '' }}>Username A-Z</option>
-        <option value="username_desc" {{ request('sort') == 'username_desc' ? 'selected' : '' }}>Username Z-A</option>
-      </select>
-
-      <select name="status" onchange="this.form.submit()">
-        <option value="">Semua Status</option>
-        <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
-        <option value="nonaktif" {{ request('status') == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
-      </select>
-    </form>
-
-    <table>
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>Username</th>
-          <th>Nama Lengkap</th>
-          <th>No Kamar</th>
-          <th>Status</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach($tenants as $index => $tenant)
-          <tr>
-            <td>{{ $index + 1 }}</td>
-            <td>{{ $tenant->account->username }}</td>
-            <td>{{ $tenant->name ?? 'Belum diisi' }}</td>
-            <td>{{ $tenant->room->room_number ?? '-' }}</td>
-            <td>{{ ucfirst($tenant->status ?? 'aktif') }}</td>
-            <td class="action-buttons">
-              <a href="{{ route('landboard.tenants.show', $tenant->id) }}">Detail</a>
-
-              @if($tenant->status === 'nonaktif')
-                <a href="{{ route('landboard.tenants.reactivate.form', $tenant->id) }}">Aktifkan</a>
-              @else
-                <a href="{{ route('landboard.tenants.edit', $tenant->id) }}">Edit</a>
-                <form action="{{ route('landboard.tenants.destroy', $tenant->id) }}" method="POST" onsubmit="return confirm('Yakin nonaktifkan tenant ini?')">
-                  @csrf
-                  @method('DELETE')
-                  <button type="submit">Nonaktifkan</button>
-                </form>
-              @endif
-            </td>
-          </tr>
+      <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      @foreach($tenants as $index => $tenant)
+          <div class="bg-white shadow-md rounded-xl p-4 border border-[#e3dcd6] relative">
+            <div class="flex items-start gap-4">
+              <img src="{{asset('storage/'. $tenant->selfie_photo) ?? '/assets/default-avatar.png' }}" alt="Foto Tenant" class="w-24 h-24 rounded-full object-cover border border-gray-300">
+              <div>
+                <h3 class="text-lg font-semibold mb-1">{{ $tenant->name ?? 'Belum diisi' }}</h3>
+                <p class="text-sm text-gray-600 mb-1"><strong>Username:</strong> {{ $tenant->account->username }}</p>
+                <p class="text-sm text-gray-600 mb-1"><strong>No Kamar:</strong> {{ $tenant->room->room_number ?? '-' }}</p>
+                <p class="text-sm text-gray-600"><strong>Status:</strong> {{ ucfirst($tenant->status ?? 'aktif') }}</p>
+              </div>
+              <div class="ml-auto relative">
+                <button onclick="toggleDropdown(this)" class="text-gray-600 hover:text-black focus:outline-none">
+                  <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <div class="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg z-10 hidden">
+                  <a href="{{ route('landboard.tenants.show', $tenant->id) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Detail</a>
+                  @if($tenant->status === 'nonaktif')
+                    <a href="{{ route('landboard.tenants.reactivate.form', $tenant->id) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Aktifkan</a>
+                  @else
+                    <a href="{{ route('landboard.tenants.edit', $tenant->id) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
+                    <form action="{{ route('landboard.tenants.destroy', $tenant->id) }}" method="POST" onsubmit="return confirm('Yakin nonaktifkan tenant ini?')">
+                      @csrf
+                      @method('DELETE')
+                      <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Nonaktifkan</button>
+                    </form>
+                  @endif
+                </div>
+              </div>
+            </div>
+          </div>
         @endforeach
-      </tbody>
-    </table>
+      </div>
+    </div>
   </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('main-content');
+    const toggleBtn = document.getElementById('toggleSidebar');
+
+    const overlay = document.createElement('div');
+    overlay.className = 'mobile-overlay';
+    overlay.id = 'mobile-overlay';
+    document.body.appendChild(overlay);
+
+    function initializeSidebar() {
+      if (window.innerWidth <= 768) {
+        if (sidebar) {
+          sidebar.classList.add('collapsed');
+          sidebar.classList.remove('mobile-expanded');
+        }
+        if (mainContent) {
+          mainContent.classList.add('collapsed');
+        }
+        overlay.classList.remove('active');
+      } else {
+        if (sidebar) {
+          sidebar.classList.remove('mobile-expanded');
+        }
+        overlay.classList.remove('active');
+      }
+    }
+
+    initializeSidebar();
+
+    if (toggleBtn && sidebar) {
+      toggleBtn.addEventListener('click', function() {
+        if (window.innerWidth <= 768) {
+          if (sidebar.classList.contains('mobile-expanded')) {
+            sidebar.classList.remove('mobile-expanded');
+            sidebar.classList.add('collapsed');
+            overlay.classList.remove('active');
+          } else {
+            sidebar.classList.remove('collapsed');
+            sidebar.classList.add('mobile-expanded');
+            overlay.classList.add('active');
+          }
+        } else {
+          sidebar.classList.toggle('collapsed');
+          if (mainContent) {
+            mainContent.classList.toggle('collapsed');
+          }
+        }
+      });
+    }
+
+    overlay.addEventListener('click', function() {
+      if (window.innerWidth <= 768) {
+        sidebar.classList.remove('mobile-expanded');
+        sidebar.classList.add('collapsed');
+        overlay.classList.remove('active');
+      }
+    });
+
+    window.addEventListener('resize', function() {
+      initializeSidebar();
+    });
+
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.search-input-wrapper')) {
+            const filterSortDropdown = document.querySelector('.filter-sort-dropdown');
+            if (filterSortDropdown && !filterSortDropdown.classList.contains('hidden')) {
+                filterSortDropdown.classList.add('hidden');
+            }
+        }
+    });
+  });
+  function toggleFilterSortDropdown(button) {
+        const dropdown = button.nextElementSibling;
+        document.querySelectorAll('.filter-sort-dropdown').forEach(d => {
+            if (d !== dropdown) {
+                d.classList.add('hidden');
+            }
+        });
+        dropdown.classList.toggle('hidden');
+        event.stopPropagation();
+    }
+    function toggleFilterSortDropdown(btn) {
+      const dropdown = btn.nextElementSibling;
+      dropdown.classList.toggle('hidden');
+    }
+
+    document.addEventListener('click', function(event) {
+      const dropdown = document.querySelector('.filter-sort-dropdown');
+      const toggleBtn = document.querySelector('.filter-sort-toggle-btn');
+      if (dropdown && !dropdown.contains(event.target) && !toggleBtn.contains(event.target)) {
+        dropdown.classList.add('hidden');
+      }
+
+      document.querySelectorAll('[onclick^="toggleDropdown"]').forEach(btn => {
+        const menu = btn.nextElementSibling;
+        if (!btn.contains(event.target) && !menu.contains(event.target)) {
+          menu.classList.add('hidden');
+        }
+      });
+    });
+
+    function toggleDropdown(button) {
+      const menu = button.nextElementSibling;
+      menu.classList.toggle('hidden');
+    }
+  </script>
 </body>
 </html>
