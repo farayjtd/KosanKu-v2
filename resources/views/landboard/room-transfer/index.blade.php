@@ -146,7 +146,7 @@
     }
   </style>
 </head>
-<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')"">
+<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen w-full">
     {{-- Sidebar --}}
     @include('components.sidebar-landboard')

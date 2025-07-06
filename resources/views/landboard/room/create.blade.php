@@ -356,7 +356,7 @@
             </div>
 
             <button type="submit" 
-                    class="w-full bg-gradient-to-r from-[#31c594] to-[#2ba882] text-white px-8 py-4 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30">
+                    class="w-full bg-[#31c594] text-white px-8 py-4 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30">
               <i class="bi bi-save mr-2"></i>Simpan Kamar
             </button>
           </form>
