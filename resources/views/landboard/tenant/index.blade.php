@@ -201,7 +201,7 @@
                 <h3 class="text-lg font-semibold mb-1">{{ $tenant->name ?? 'Belum diisi' }}</h3>
                 <p class="text-sm text-gray-600 mb-1"><strong>Username:</strong> {{ $tenant->account->username }}</p>
                 <p class="text-sm text-gray-600 mb-1"><strong>No Kamar:</strong> {{ $tenant->room->room_number ?? '-' }}</p>
-                <p class="text-sm text-gray-600"><strong>Status:</strong> {{ ucfirst($tenant->status ?? 'aktif') }}</p>
+                <p class="text-xs sm:text-sm {{ $tenant->status === 'aktif' ? 'text-green-600' : 'text-red-600' }}"><strong class="text-gray-600">Status:</strong> {{ ucfirst($tenant->status ?? 'aktif') }}</p>
               </div>
               <div class="ml-auto relative">
                 <button onclick="toggleDropdown(this)" class="text-gray-600 hover:text-black focus:outline-none">
