@@ -174,7 +174,6 @@
                 padding: 0.5rem 1rem !important;
               }
               
-              /* Overlay untuk mobile */
               .mobile-overlay {
                 display: none;
                 position: fixed;
