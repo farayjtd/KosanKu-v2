@@ -1,62 +1,136 @@
-<div style="background: #ede0d4; padding: 24px; height: 100vh; width: 240px; box-shadow: 2px 0 8px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center;">
-    @php
-        $user = auth()->user();
-        $navStyle = 'display: block; padding: 10px 16px; border-radius: 8px; color: #5e503f; text-decoration: none; font-size: 14px; transition: background 0.2s ease;';
-        $hoverScript = 'onmouseover="this.style.background=\'#ddb892\'" onmouseout="this.style.background=\'transparent\'"';
-    @endphp
+<div id="sidebar" class="sidebar bg-white w-[240px] h-screen fixed flex flex-col overflow-y-hidden top-0 left-0 z-50 shadow-xl px-4 py-6 transition-all duration-300">
+  @php
+    use Illuminate\Support\Str;
+    $user = auth()->user();
+    $currentRoute = Route::currentRouteName();
+    $linkClasses = 'menu-item flex items-center gap-3 px-4 py-1 rounded-lg text-sm font-medium transition hover:bg-emerald-100 hover:text-emerald-600';
+  @endphp
+  
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="logo-text text-xl font-bold text-emerald-600">KosanKu</h1>
+    <button id="toggleSidebar" class="text-xl text-slate-600 hover:text-emerald-600">
+      <i class="bi bi-list"></i>
+    </button>
+  </div>
 
-    {{-- Foto Profil --}}
-    <div style="text-align: center; margin-bottom: 24px;">
-        <img src="{{ $user && $user->avatar ? asset('storage/' . $user->avatar) : asset('default-avatar.png') }}" alt="Avatar" style="width: 80px; height: 80px; object-fit: cover; border-radius: 50%; border: 2px solid #b08968;">
-        <p style="margin-top: 10px; font-weight: 600; color: #5e503f;">{{ $user->username ?? 'User' }}</p>
-    </div>
-
-    {{-- Navigasi --}}
-    <nav style="width: 100%;">
-        <ul style="list-style: none; padding: 0; margin: 0;">
-            <li style="margin-bottom: 8px;">
-                <a href="{{ route('landboard.dashboard.index') }}" style="{{ $navStyle }}" {!! $hoverScript !!}>🏠 Dashboard</a>
-            </li>
-            <li style="margin-bottom: 8px;">
-                <a href="{{ route('landboard.profile.update-form') }}" style="{{ $navStyle }}" {!! $hoverScript !!}>⚙️ Profil</a>
-            </li>
-            <li style="margin-bottom: 8px;">
-                <a href="{{ route('landboard.rooms.create-form') }}" style="{{ $navStyle }}" {!! $hoverScript !!}>➕ Buat Kamar</a>
-            </li>
-            <li style="margin-bottom: 8px;">
-                <a href="{{ route('landboard.rooms.index') }}" style="{{ $navStyle }}" {!! $hoverScript !!}>📋 Data Kamar</a>
-            </li>
-            <li style="margin-bottom: 8px;">
-                <a href="{{ route('landboard.tenants.create-form') }}" style="{{ $navStyle }}" {!! $hoverScript !!}>➕ Buat Tenant</a>
-            </li>
-            <li style="margin-bottom: 8px;">
-                <a href="{{ route('landboard.tenants.index') }}" style="{{ $navStyle }}" {!! $hoverScript !!}>📋 Data Tenant</a>
-            </li>
-            <li style="margin-bottom: 8px;">
-                <a href="{{ route('landboard.penalty.settings') }}" style="{{ $navStyle }}" {!! $hoverScript !!}>💸 Pengaturan Penalti</a>
-            </li>
-            <li style="margin-bottom: 8px;">
-                <a href="{{ route('landboard.finance.index') }}" style="{{ $navStyle }}" {!! $hoverScript !!}>📈 Riwayat Keuangan</a>
-            </li>
-            <li style="margin-bottom: 8px;">
-                <a href="{{ route('landboard.rental.history.landboard') }}" style="{{ $navStyle }}" {!! $hoverScript !!}>📖 Riwayat Sewa</a>
-            </li>
-            <li style="margin-bottom: 8px;">
-                <a href="{{ route('landboard.payments.index') }}" style="{{ $navStyle }}" {!! $hoverScript !!}>💵 Cash Payments</a>
-            </li>
-            <li style="margin-bottom: 8px;">
-                <a href="{{ route('landboard.room-transfer.index') }}" style="{{ $navStyle }}" {!! $hoverScript !!}>🔄 Pindah Kamar</a>
-            </li>
-
-            {{-- Logout --}}
-            <li style="margin-top: 24px;">
-                <form action="{{ route('logout') }}" method="POST" style="margin: 0;">
-                    @csrf
-                    <button type="submit" style="width: 100%; padding: 10px 16px; background: #b08968; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: background 0.2s ease;" onmouseover="this.style.background='#7f5539'" onmouseout="this.style.background='#b08968'">
-                        🚪 Logout
-                    </button>
-                </form>
+  <nav class="flex-1 w-full space-y-6">
+    <div>
+        <ul class="space-y-2">
+            <li>
+                <a href="{{ route('landboard.dashboard.index') }}"
+                class="{{ $linkClasses }} {{ $currentRoute === 'landboard.dashboard.index' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
+                <i class="bi bi-house-door-fill text-lg"></i> 
+                <span class="menu-text">Dashboard</span>
+                </a>
             </li>
         </ul>
-    </nav>
+    </div>
+    
+    {{-- Management --}}
+    <div>
+        <h2 class="group-title text-xs text-slate-500 font-semibold uppercase tracking-wide px-2 mb-2">Management</h2>
+        <ul class="space-y-2">
+        <li>
+            <a href="{{ route('landboard.rooms.create-form') }}"
+            class="{{ $linkClasses }} {{ $currentRoute === 'landboard.rooms.create-form' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
+            <i class="bi bi-plus-square text-lg"></i> 
+            <span class="menu-text">Buat Kamar</span>
+            </a>
+        </li>
+        
+        <li>
+            <a href="{{ route('landboard.rooms.index') }}"
+            class="{{ $linkClasses }} {{ Str::startsWith($currentRoute, 'landboard.rooms.') && $currentRoute !== 'landboard.rooms.create-form' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
+            <i class="bi bi-door-open text-lg"></i> 
+            <span class="menu-text">Data Kamar</span>
+            </a>
+        </li>
+        
+        <li>
+            <a href="{{ route('landboard.room-transfer.index') }}"
+            class="{{ $linkClasses }} {{ $currentRoute === 'landboard.room-transfer.index' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
+            <i class="bi bi-arrow-left-right text-lg"></i> 
+            <span class="menu-text">Pindah Kamar</span>
+            </a>
+        </li>
+        
+        <li>
+            <a href="{{ route('landboard.tenants.create-form') }}"
+            class="{{ $linkClasses }} {{ $currentRoute === 'landboard.tenants.create-form' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
+            <i class="bi bi-person-plus-fill text-lg"></i> 
+            <span class="menu-text">Tambah Penghuni</span>
+            </a>
+        </li>
+        
+        <li>
+            <a href="{{ route('landboard.tenants.index') }}"
+            class="{{ $linkClasses }} {{ Str::startsWith($currentRoute, 'landboard.tenants.') && $currentRoute !== 'landboard.tenants.create-form' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
+            <i class="bi bi-people-fill text-lg"></i> 
+            <span class="menu-text">Data Penghuni</span>
+            </a>
+        </li>
+        </ul>
+    </div>
+
+    {{-- Keuangan --}}
+    <div>
+        <h2 class="group-title text-xs text-slate-500 font-semibold uppercase tracking-wide px-2 mb-2">Keuangan</h2>
+        <ul class="space-y-2">
+        <li>
+            <a href="{{ route('landboard.penalty.settings') }}"
+            class="{{ $linkClasses }} {{ $currentRoute === 'landboard.penalty.settings' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
+            <i class="bi bi-cash-coin text-lg"></i> 
+            <span class="menu-text">Pengaturan Penalti</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ route('landboard.finance.index') }}"
+            class="{{ $linkClasses }} {{ $currentRoute === 'landboard.finance.index' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
+            <i class="bi bi-bar-chart-line-fill text-lg"></i> 
+            <span class="menu-text">Riwayat Keuangan</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ route('landboard.rental.history.landboard') }}"
+            class="{{ $linkClasses }} {{ $currentRoute === 'landboard.rental.history.landboard' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
+            <i class="bi bi-journal-text text-lg"></i> 
+            <span class="menu-text">Riwayat Sewa</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ route('landboard.payments.index') }}"
+            class="{{ $linkClasses }} {{ $currentRoute === 'landboard.payments.index' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
+            <i class="bi bi-cash-stack text-lg"></i> 
+            <span class="menu-text">Pembayaran</span>
+            </a>
+        </li>
+        </ul>
+    </div>
+
+    {{-- Pengaturan --}}
+    <div>
+        <h2 class="group-title text-xs text-slate-500 font-semibold uppercase tracking-wide px-2 mb-2">Pengaturan</h2>
+        <ul class="space-y-2">
+        <li>
+            <a href="{{ route('landboard.profile.update-form') }}"
+            class="{{ $linkClasses }} {{ $currentRoute === 'landboard.profile.update-form' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
+            <i class="bi bi-person-gear text-lg"></i> 
+            <span class="menu-text">Pengaturan Profil</span>
+            </a>
+        </li>
+
+        <form action="{{ route('logout') }}" method="POST" class="mt-2">
+            @csrf
+            <button type="submit"
+                    class="logout-btn w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-500 text-white font-semibold rounded-lg transition hover:bg-red-600 hover:scale-105">
+                <i class="bi bi-box-arrow-right text-lg"></i> 
+                <span class="btn-text">Logout</span>
+            </button>
+        </form>
+        </ul>
+    </div>
+  </nav>
 </div>
