@@ -1,9 +1,9 @@
-<div id="sidebar" class="sidebar bg-white w-[240px] h-screen fixed top-0 left-0 z-50 shadow-xl px-4 py-6 transition-all duration-300">
+<div id="sidebar" class="sidebar bg-white w-[240px] h-screen fixed flex flex-col overflow-y-hidden top-0 left-0 z-50 shadow-xl px-4 py-6 transition-all duration-300">
   @php
     use Illuminate\Support\Str;
     $user = auth()->user();
     $currentRoute = Route::currentRouteName();
-    $linkClasses = 'menu-item flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium transition hover:bg-emerald-100 hover:text-emerald-600';
+    $linkClasses = 'menu-item flex items-center gap-3 px-4 py-1 rounded-lg text-sm font-medium transition hover:bg-emerald-100 hover:text-emerald-600';
   @endphp
   
   <div class="flex items-center justify-between mb-6">
@@ -15,7 +15,7 @@
 
   <nav class="flex-1 w-full space-y-6">
     <div>
-        <ul class="space-y-0.5">
+        <ul class="space-y-2">
             <li>
                 <a href="{{ route('landboard.dashboard.index') }}"
                 class="{{ $linkClasses }} {{ $currentRoute === 'landboard.dashboard.index' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
@@ -28,8 +28,8 @@
     
     {{-- Management --}}
     <div>
-        <h2 class="group-title text-xs text-slate-500 font-semibold uppercase tracking-wide px-2 mb-1">Management</h2>
-        <ul class="space-y-0.5">
+        <h2 class="group-title text-xs text-slate-500 font-semibold uppercase tracking-wide px-2 mb-2">Management</h2>
+        <ul class="space-y-2">
         <li>
             <a href="{{ route('landboard.rooms.create-form') }}"
             class="{{ $linkClasses }} {{ $currentRoute === 'landboard.rooms.create-form' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
@@ -74,8 +74,8 @@
 
     {{-- Keuangan --}}
     <div>
-        <h2 class="group-title text-xs text-slate-500 font-semibold uppercase tracking-wide px-2 mb-1">Keuangan</h2>
-        <ul class="space-y-0.5">
+        <h2 class="group-title text-xs text-slate-500 font-semibold uppercase tracking-wide px-2 mb-2">Keuangan</h2>
+        <ul class="space-y-2">
         <li>
             <a href="{{ route('landboard.penalty.settings') }}"
             class="{{ $linkClasses }} {{ $currentRoute === 'landboard.penalty.settings' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
@@ -112,11 +112,11 @@
 
     {{-- Pengaturan --}}
     <div>
-        <h2 class="group-title text-xs text-slate-500 font-semibold uppercase tracking-wide px-2 mb-1">Pengaturan</h2>
-        <ul class="space-y-0.5">
+        <h2 class="group-title text-xs text-slate-500 font-semibold uppercase tracking-wide px-2 mb-2">Pengaturan</h2>
+        <ul class="space-y-2">
         <li>
             <a href="{{ route('landboard.profile.update-form') }}"
-            class="{{ $linkClasses }} {{ $currentRoute === 'landboard.penalty.settings' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
+            class="{{ $linkClasses }} {{ $currentRoute === 'landboard.profile.update-form' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
             <i class="bi bi-person-gear text-lg"></i> 
             <span class="menu-text">Pengaturan Profil</span>
             </a>

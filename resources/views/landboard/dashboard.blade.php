@@ -14,11 +14,6 @@
   <script src="{{ asset('js/sidebar.js') }}" defer></script>
   @vite('resources/css/app.css')
   <style>
-        /* Sidebar styles */
-        .sidebar {
-            transition: width 0.3s ease;
-        }
-        
         .sidebar.collapsed {
             width: 80px;
         }
@@ -41,13 +36,14 @@
         
         .sidebar.collapsed .menu-item {
             justify-content: center;
-            padding: 0.5rem;
+            padding: 0.45rem;
         }
         
         .sidebar.collapsed .profile-btn,
         .sidebar.collapsed .logout-btn {
-            padding: 0.5rem;
+            padding: 0.45rem;
             justify-content: center;
+            min-height: 48px;
         }
         
         .sidebar.collapsed .profile-btn .btn-text,
@@ -55,29 +51,156 @@
             display: none;
         }
         
-        /* Main content styles - PERBAIKAN DISINI */
+        .sidebar-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+        }
+        
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
         .main-content {
             margin-left: 240px;
             width: calc(100% - 240px);
             transition: all 0.3s ease;
+            min-height: 100vh;
         }
         
         .main-content.collapsed {
             margin-left: 80px;
             width: calc(100% - 80px);
         }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .sidebar .menu-text {
+                display: none;
+            }
+            
+            .sidebar .menu-title {
+                display: none;
+            }
+            
+            .sidebar .group-title {
+                display: none;
+            }
+            
+            .sidebar .logo-text {
+                display: none;
+            }
+            
+            .sidebar .menu-item {
+                justify-content: center;
+                padding: 0.75rem;
+            }
+            
+            .sidebar .profile-btn,
+            .sidebar .logout-btn {
+                padding: 0.75rem;
+                justify-content: center;
+                min-height: 48px;
+            }
+            
+            .sidebar .profile-btn .btn-text,
+            .sidebar .logout-btn .btn-text {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 80px;
+                width: calc(100% - 80px);
+            }
+            
+            .main-content.collapsed {
+                margin-left: 80px;
+                width: calc(100% - 80px);
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .sidebar {
+                width: 60px;
+            }
+            
+            .sidebar .menu-item {
+                padding: 0.5rem;
+            }
+            
+            .sidebar .profile-btn,
+            .sidebar .logout-btn {
+                padding: 0.5rem;
+                min-height: 40px;
+            }
+            
+            .main-content {
+                margin-left: 60px;
+                width: calc(100% - 60px);
+            }
+            
+            .main-content.collapsed {
+                margin-left: 60px;
+                width: calc(100% - 60px);
+            }
+            @media (max-width: 768px) {
+              .sidebar.mobile-expanded {
+                width: 100vw !important;
+                z-index: 60;
+              }
+              
+              .sidebar.mobile-expanded .menu-text,
+              .sidebar.mobile-expanded .menu-title,
+              .sidebar.mobile-expanded .group-title,
+              .sidebar.mobile-expanded .logo-text,
+              .sidebar.mobile-expanded .btn-text {
+                display: block !important;
+              }
+              
+              .sidebar.mobile-expanded .menu-item {
+                justify-content: flex-start !important;
+                padding: 0.5rem 1rem !important;
+              }
+              
+              .sidebar.mobile-expanded .profile-btn,
+              .sidebar.mobile-expanded .logout-btn {
+                justify-content: center !important;
+                padding: 0.5rem 1rem !important;
+              }
+              
+              /* Overlay untuk mobile */
+              .mobile-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 50;
+              }
+              
+              .mobile-overlay.active {
+                display: block;
+              }
+            }
+        }
     </style>
 </head>
 <body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
     @include('components.sidebar-landboard')
-
-    <!-- PERUBAHAN UTAMA: Tambahkan id="main-content" dan class="main-content" -->
     <div id="main-content" class="main-content p-6 md:pt-4">
       <p class="text-xl p-4 rounded-xl text-left text-white bg-[#31c594]">Selamat datang kembali, <strong class="use-poppins">{{ Auth::user()->landboard->name }}</strong></p>
       
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
-        <div class="bg-[#F7F9F4] p-6 rounded-xl shadow">
+        <div class="bg-white p-6 rounded-xl shadow">
           <div class="flex items-center justify-between">
             <div>
               <h3 class="text-lg font-semibold text-black mb-2">Total Penghuni</h3>
@@ -89,7 +212,7 @@
           </div>
         </div>
 
-        <div class="bg-[#F7F9F4] p-6 rounded-xl shadow">
+        <div class="bg-white p-6 rounded-xl shadow">
           <div class="flex items-center justify-between">
             <div>
               <h3 class="text-lg font-semibold text-black mb-2">Data Kamar</h3>
@@ -114,7 +237,7 @@
           </div>
         </div>
 
-        <div class="bg-[#fffaf6] p-6 rounded-xl shadow">
+        <div class="bg-white p-6 rounded-xl shadow">
           <div class="flex items-center justify-between">
             <div>
               <h3 class="text-lg font-semibold text-black mb-2">Data Pemasukan</h3>
@@ -243,29 +366,70 @@
     </div>
   </div>
 
-<script>
+  <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('main-content');
-    const toggleBtn = document.getElementById('toggleSidebar');
+  const sidebar = document.getElementById('sidebar');
+  const mainContent = document.getElementById('main-content');
+  const toggleBtn = document.getElementById('toggleSidebar');
+  
+  const overlay = document.createElement('div');
+  overlay.className = 'mobile-overlay';
+  overlay.id = 'mobile-overlay';
+  document.body.appendChild(overlay);
 
-    if (toggleBtn && sidebar) {
-      toggleBtn.addEventListener('click', function() {
-        console.log('Toggle clicked!');
+  function initializeSidebar() {
+    if (window.innerWidth <= 768) {
+      if (sidebar) {
+        sidebar.classList.add('collapsed');
+        sidebar.classList.remove('mobile-expanded');
+      }
+      if (mainContent) {
+        mainContent.classList.add('collapsed');
+      }
+      overlay.classList.remove('active');
+    } else {
+      if (sidebar) {
+        sidebar.classList.remove('mobile-expanded');
+      }
+      overlay.classList.remove('active');
+    }
+  }
+
+  initializeSidebar();
+
+  if (toggleBtn && sidebar) {
+    toggleBtn.addEventListener('click', function() {
+      if (window.innerWidth <= 768) {
+        if (sidebar.classList.contains('mobile-expanded')) {
+          sidebar.classList.remove('mobile-expanded');
+          sidebar.classList.add('collapsed');
+          overlay.classList.remove('active');
+        } else {
+          sidebar.classList.remove('collapsed');
+          sidebar.classList.add('mobile-expanded');
+          overlay.classList.add('active');
+        }
+      } else {
         sidebar.classList.toggle('collapsed');
-        // PERBAIKAN: Pastikan main-content juga ikut toggle
         if (mainContent) {
           mainContent.classList.toggle('collapsed');
         }
-      });
-    } else {
-      console.error('Element not found:', {
-        toggleBtn: !!toggleBtn,
-        sidebar: !!sidebar,
-        mainContent: !!mainContent
-      });
+      }
+    });
+  }
+  
+  overlay.addEventListener('click', function() {
+    if (window.innerWidth <= 768) {
+      sidebar.classList.remove('mobile-expanded');
+      sidebar.classList.add('collapsed');
+      overlay.classList.remove('active');
     }
   });
+
+  window.addEventListener('resize', function() {
+    initializeSidebar();
+  });
+});
 </script>
 
 <script>
