@@ -181,50 +181,50 @@
             @csrf
 
             {{-- Aktifkan penalti --}}
-            <label class="flex items-center gap-3 font-semibold text-gray-700">
-              <input type="checkbox" name="is_penalty_enabled" {{ $landboard->is_penalty_enabled ? 'checked' : '' }} class="h-5 w-5 rounded accent-[#8d735b]">
+            <label class="flex items-center gap-3 font-semibold text-[#6b4e3d]">
+              <input type="checkbox" id="penaltyEnabled" name="is_penalty_enabled" {{ $landboard->is_penalty_enabled ? 'checked' : '' }} class="h-5 w-5 rounded accent-[#8d735b]">
               Aktifkan Penalti
             </label>
 
             {{-- Denda telat --}}
             <div>
-              <label class="mb-1 block text-sm font-semibold text-gray-700">Jumlah Denda Telat Bayar (Rp)</label>
-              <input type="number" name="late_fee_amount" value="{{ old('late_fee_amount', $landboard->late_fee_amount) }}" class="w-full rounded-lg border border-gray-300 bg-[#fdfdfb] px-3 py-2 text-sm focus:border-[#31c594] focus:outline-none focus:ring-2 focus:ring-[#31c594]/20">
+              <label class="mb-1 block text-sm font-semibold text-[#6b4e3d]">Jumlah Denda Telat Bayar (Rp)</label>
+              <input type="number" name="late_fee_amount" value="{{ old('late_fee_amount', $landboard->late_fee_amount) }}" class="penalty-field w-full rounded-lg border border-[#cfc4b5] bg-[#fdfdfb] px-3 py-2 text-sm focus:border-[#31c594] focus:outline-none focus:ring-2 focus:ring-[#31c594]/20">
             </div>
 
             <div>
-              <label class="mb-1 block text-sm font-semibold text-gray-700">Jumlah Hari Setelah Jatuh Tempo Sebelum Denda (hari)</label>
-              <input type="number" name="late_fee_days" value="{{ old('late_fee_days', $landboard->late_fee_days) }}" class="w-full rounded-lg border border-gray-300 bg-[#fdfdfb] px-3 py-2 text-sm focus:border-[#31c594] focus:outline-none focus:ring-2 focus:ring-[#31c594]/20">
+              <label class="mb-1 block text-sm font-semibold text-[#6b4e3d]">Jumlah Hari Setelah Jatuh Tempo Sebelum Denda (hari)</label>
+              <input type="number" name="late_fee_days" value="{{ old('late_fee_days', $landboard->late_fee_days) }}" class="penalty-field w-full rounded-lg border border-[#cfc4b5] bg-[#fdfdfb] px-3 py-2 text-sm focus:border-[#31c594] focus:outline-none focus:ring-2 focus:ring-[#31c594]/20">
             </div>
 
             {{-- Penalti keluar --}}
-            <label class="flex items-center gap-3 font-semibold text-gray-700">
-              <input type="checkbox" name="is_penalty_on_moveout" {{ $landboard->is_penalty_on_moveout ? 'checked' : '' }} class="h-5 w-5 rounded accent-[#8d735b]">
+            <label class="flex items-center gap-3 font-semibold text-[#6b4e3d]">
+              <input type="checkbox" id="moveoutEnabled" name="is_penalty_on_moveout" {{ $landboard->is_penalty_on_moveout ? 'checked' : '' }} class="h-5 w-5 rounded accent-[#8d735b]">
               Penalti Jika Keluar Sebelum Masa Sewa Habis
             </label>
 
             <div>
-              <label class="mb-1 block text-sm font-semibold text-gray-700">Nominal Penalti Keluar Sebelum Waktu (Rp)</label>
-              <input type="number" name="moveout_penalty_amount" value="{{ old('moveout_penalty_amount', $landboard->moveout_penalty_amount) }}" class="w-full rounded-lg border border-gray-300 bg-[#fdfdfb] px-3 py-2 text-sm focus:border-[#31c594] focus:outline-none focus:ring-2 focus:ring-[#31c594]/20">
+              <label class="mb-1 block text-sm font-semibold text-[#6b4e3d]">Nominal Penalti Keluar Sebelum Waktu (Rp)</label>
+              <input type="number" name="moveout_penalty_amount" value="{{ old('moveout_penalty_amount', $landboard->moveout_penalty_amount) }}" class="moveout-field w-full rounded-lg border border-[#cfc4b5] bg-[#fdfdfb] px-3 py-2 text-sm focus:border-[#31c594] focus:outline-none focus:ring-2 focus:ring-[#31c594]/20">
             </div>
 
             {{-- Penalti pindah kamar --}}
-            <label class="flex items-center gap-3 font-semibold text-gray-700">
-              <input type="checkbox" name="is_penalty_on_room_change" {{ $landboard->is_penalty_on_room_change ? 'checked' : '' }} class="h-5 w-5 rounded accent-[#8d735b]">
+            <label class="flex items-center gap-3 font-semibold text-[#6b4e3d]">
+              <input type="checkbox" id="roomChangeEnabled" name="is_penalty_on_room_change" {{ $landboard->is_penalty_on_room_change ? 'checked' : '' }} class="h-5 w-5 rounded accent-[#8d735b]">
               Penalti Jika Pindah Kamar
             </label>
 
             <div>
-              <label class="mb-1 block text-sm font-semibold text-gray-700">Nominal Penalti Pindah Kamar (Rp)</label>
-              <input type="number" name="room_change_penalty_amount" value="{{ old('room_change_penalty_amount', $landboard->room_change_penalty_amount) }}" class="w-full rounded-lg border border-gray-300 bg-[#fdfdfb] px-3 py-2 text-sm focus:border-[#31c594] focus:outline-none focus:ring-2 focus:ring-[#31c594]/20">
+              <label class="mb-1 block text-sm font-semibold text-[#6b4e3d]">Nominal Penalti Pindah Kamar (Rp)</label>
+              <input type="number" name="room_change_penalty_amount" value="{{ old('room_change_penalty_amount', $landboard->room_change_penalty_amount) }}" class="roomchange-field w-full rounded-lg border border-[#cfc4b5] bg-[#fdfdfb] px-3 py-2 text-sm focus:border-[#31c594] focus:outline-none focus:ring-2 focus:ring-[#31c594]/20">
             </div>
 
             {{-- Perpanjangan Sewa --}}
             <div>
-              <label for="decision_days_before_end" class="mb-1 block text-sm font-semibold text-[#6b4e3d]">
+            <label for="decision_days_before_end" class="mb-1 block text-sm font-semibold text-[#6b4e3d]">
                 Tampilkan Tombol Perpanjangan Sewa <span id="days-preview">{{ old('decision_days_before_end', $landboard->decision_days_before_end) }}</span> Hari Sebelum Habis
               </label>
-              <input type="number" name="decision_days_before_end" id="decision_days_before_end" value="{{ old('decision_days_before_end', $landboard->decision_days_before_end) }}" class="w-full rounded-lg border border-[#cfc4b5] bg-[#fdfdfb] px-3 py-2 text-sm focus:border-[#31c594] focus:outline-none focus:ring-2 focus:ring-[#31c594]/20" oninput="document.getElementById('days-preview').innerText = this.value">
+              <input type="number" name="decision_days_before_end" id="decision_days_before_end" value="{{ old('decision_days_before_end', $landboard->decision_days_before_end) }}" class="penalty-field w-full rounded-lg border border-[#cfc4b5] bg-[#fdfdfb] px-3 py-2 text-sm focus:border-[#31c594] focus:outline-none focus:ring-2 focus:ring-[#31c594]/20" oninput="document.getElementById('days-preview').innerText = this.value">
             </div>
 
             <button type="submit" class="w-full rounded-lg bg-[#31c594] px-8 py-3 text-base font-semibold text-white transition duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30">
@@ -308,6 +308,47 @@
         }
     });
   });
+  document.addEventListener('DOMContentLoaded', () => {
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('main-content');
+      const toggleBtn = document.getElementById('toggleSidebar');
+      const overlay = document.createElement('div');
+      overlay.className = 'mobile-overlay';
+      document.body.appendChild(overlay);
+
+      function initSidebar() {
+        if (window.innerWidth <= 768) {
+          sidebar?.classList.add('collapsed');
+          mainContent?.classList.add('collapsed');
+        }
+      }
+      initSidebar();
+      toggleBtn?.addEventListener('click', () => {
+        sidebar?.classList.toggle('collapsed');
+        mainContent?.classList.toggle('collapsed');
+      });
+
+      // === enable / disable inputs ===
+      const bindToggle = (checkboxId, fieldSelector) => {
+        const cb = document.getElementById(checkboxId);
+        const fields = document.querySelectorAll(fieldSelector);
+        const setState = () => {
+          fields.forEach(f => {
+            f.disabled = !cb.checked;
+            f.classList.toggle('opacity-50', !cb.checked);
+            f.classList.toggle('cursor-not-allowed', !cb.checked);
+          });
+        };
+        cb.addEventListener('change', setState);
+        setState(); // initial
+      };
+
+      // Master toggle controls all .penalty-field
+      bindToggle('penaltyEnabled', '.penalty-field');
+      // Individual toggles
+      bindToggle('moveoutEnabled', '.moveout-field');
+      bindToggle('roomChangeEnabled', '.roomchange-field');
+    });
   </script>
 </body>
 </html>
