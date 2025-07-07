@@ -241,7 +241,7 @@
             @if ($incomePayments->isNotEmpty())
               <div class="overflow-x-auto">
                 <table class="financial-table">
-                  <thead class="md:table-header-group">
+                  <thead class="md:table-header-group uppercase">
                     <tr>
                       <th>Tanggal</th>
                       <th>Nama</th>
@@ -285,7 +285,7 @@
             @if ($expensePayments->isNotEmpty())
               <div class="overflow-x-auto mb-4">
                 <table class="financial-table">
-                  <thead class="md:table-header-group">
+                  <thead class="md:table-header-group uppercase">
                     <tr>
                       <th>Tanggal</th>
                       <th>Tenant</th>

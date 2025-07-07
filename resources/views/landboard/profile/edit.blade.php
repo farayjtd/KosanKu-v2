@@ -4,211 +4,474 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit Profil Landboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/font.css">
+  <script src="{{ asset('js/sidebar.js') }}" defer></script>
+  @vite('resources/css/app.css')
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      background: #f5f3f0;
+    .sidebar.collapsed {
+      width: 80px;
     }
-
-    .main-content {
+    
+    .sidebar.collapsed .menu-text {
+      display: none;
+    }
+    
+    .sidebar.collapsed .menu-title {
+      display: none;
+    }
+    
+    .sidebar.collapsed .group-title {
+      display: none;
+    }
+    
+    .sidebar.collapsed .logo-text {
+      display: none;
+    }
+    
+    .sidebar.collapsed .menu-item {
+      justify-content: center;
+      padding: 0.45rem;
+    }
+    
+    .sidebar.collapsed .profile-btn,
+    .sidebar.collapsed .logout-btn {
+      padding: 0.45rem;
+      justify-content: center;
+      min-height: 48px;
+    }
+    
+    .sidebar.collapsed .profile-btn .btn-text,
+    .sidebar.collapsed .logout-btn .btn-text {
+      display: none;
+    }
+    
+    .sidebar-content {
       flex: 1;
-      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      padding: 1rem;
     }
-
-    .card {
-      background: #fffaf6;
-      padding: 25px;
-      border-radius: 12px;
-      max-width: 800px;
-      margin: auto;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
-
-    h2 {
-      margin-bottom: 20px;
-      color: #5a4430;
-      text-align: center;
+    
+    .main-content {
+      margin-left: 240px;
+      width: calc(100% - 240px);
+      transition: all 0.3s ease;
+      min-height: 100vh;
     }
-
-    h4 {
-      margin-top: 30px;
-      margin-bottom: 10px;
-      color: #6b4e3d;
-      font-size: 18px;
-      border-bottom: 1px solid #ddd0c1;
-      padding-bottom: 5px;
+    
+    .main-content.collapsed {
+      margin-left: 80px;
+      width: calc(100% - 80px);
     }
-
-    label {
-      display: block;
-      margin-top: 14px;
-      font-weight: 600;
-      color: #6b4e3d;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 10px;
-      margin-top: 4px;
-      border-radius: 8px;
-      border: 1px solid #cfc4b5;
-      font-size: 14px;
-      background: #fdfdfb;
-      color: #3f3f3f;
-    }
-
-    .text-danger {
-      color: #b91c1c;
-      font-size: 13px;
-      margin-top: 4px;
-      display: block;
-    }
-
-    button {
-      margin-top: 30px;
-      padding: 12px 20px;
-      background: #8d735b;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 15px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #6e5947;
-    }
-
-    .success {
-      color: #15803d;
-      background: #dcfce7;
-      padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 15px;
-    }
-
-    .error {
-      color: #b91c1c;
-      background: #fee2e2;
-      padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 15px;
-    }
-
-    img {
-      margin-top: 10px;
-      border-radius: 8px;
-      max-width: 100px;
-      border: 2px solid #d6ccc2;
-    }
-
+    
     @media (max-width: 768px) {
-      .card {
-        padding: 20px;
-        margin: 20px;
+      .sidebar {
+        width: 80px;
       }
-
+      
+      .sidebar .menu-text {
+        display: none;
+      }
+      
+      .sidebar .menu-title {
+        display: none;
+      }
+      
+      .sidebar .group-title {
+        display: none;
+      }
+      
+      .sidebar .logo-text {
+        display: none;
+      }
+      
+      .sidebar .menu-item {
+        justify-content: center;
+        padding: 0.75rem;
+      }
+      
+      .sidebar .profile-btn,
+      .sidebar .logout-btn {
+        padding: 0.75rem;
+        justify-content: center;
+        min-height: 48px;
+      }
+      
+      .sidebar .profile-btn .btn-text,
+      .sidebar .logout-btn .btn-text {
+        display: none;
+      }
+      
       .main-content {
-        padding: 20px;
+        margin-left: 80px;
+        width: calc(100% - 80px);
+      }
+      
+      .main-content.collapsed {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+      }
+    }
+    
+    @media (max-width: 640px) {
+      .sidebar {
+        width: 60px;
+      }
+      
+      .sidebar .menu-item {
+        padding: 0.5rem;
+      }
+      
+      .sidebar .profile-btn,
+      .sidebar .logout-btn {
+        padding: 0.5rem;
+        min-height: 40px;
+      }
+      
+      .main-content {
+        margin-left: 60px;
+        width: calc(100% - 60px);
+      }
+      
+      .main-content.collapsed {
+        margin-left: 60px;
+        width: calc(100% - 60px);
+      }
+      
+      @media (max-width: 768px) {
+        .sidebar.mobile-expanded {
+          width: 100vw !important;
+          z-index: 60;
+        }
+        
+        .sidebar.mobile-expanded .menu-text,
+        .sidebar.mobile-expanded .menu-title,
+        .sidebar.mobile-expanded .group-title,
+        .sidebar.mobile-expanded .logo-text,
+        .sidebar.mobile-expanded .btn-text {
+          display: block !important;
+        }
+        
+        .sidebar.mobile-expanded .menu-item {
+          justify-content: flex-start !important;
+          padding: 0.5rem 1rem !important;
+        }
+        
+        .sidebar.mobile-expanded .profile-btn,
+        .sidebar.mobile-expanded .logout-btn {
+          justify-content: center !important;
+          padding: 0.5rem 1rem !important;
+        }
+        
+        .mobile-overlay {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background: rgba(0, 0, 0, 0.5);
+          z-index: 50;
+        }
+        
+        .mobile-overlay.active {
+          display: block;
+        }
       }
     }
   </style>
 </head>
-<body>
+<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
+  <div id="wrapper" class="flex min-h-screen">
+    {{-- Include the same sidebar as dashboard --}}
+    @include('components.sidebar-landboard')
+    
+    <div id="main-content" class="main-content p-6 md:pt-4">
 
-  {{-- Sidebar Landboard --}}
-  @include('components.sidebar-landboard')
-
-  <div class="main-content">
-    <div class="card">
-      <h2>Edit Profil Landboard</h2>
-
-      {{-- Notifikasi Sukses --}}
-      @if(session('success'))
-        <div class="success">{{ session('success') }}</div>
-      @endif
-
-      {{-- Notifikasi Error --}}
-      @if(session('error'))
-        <div class="error">{{ session('error') }}</div>
-      @endif
-
-      <form action="{{ route('landboard.profile.update') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-
-        {{-- Bagian Akun --}}
-        <h4>Akun</h4>
-
-        <label>Username</label>
-        <input type="text" name="username" value="{{ old('username', $account->username) }}">
-        @error('username') <span class="text-danger">{{ $message }}</span> @enderror
-
-        <label>Email</label>
-        <input type="email" name="email" value="{{ old('email', $account->email) }}">
-        @error('email') <span class="text-danger">{{ $message }}</span> @enderror
-
-        <label>Password Baru (kosongkan jika tidak diganti)</label>
-        <input type="password" name="password">
-        @error('password') <span class="text-danger">{{ $message }}</span> @enderror
-
-        <label>Konfirmasi Password Baru</label>
-        <input type="password" name="password_confirmation">
-
-        <label>Nama Pemilik Kost</label>
-        <input type="text" name="name" value="{{ old('name', $landboard->name) }}">
-        @error('name') <span class="text-danger">{{ $message }}</span> @enderror
-
-        <label>No HP</label>
-        <input type="text" name="phone" value="{{ old('phone', $landboard->phone) }}">
-        @error('phone') <span class="text-danger">{{ $message }}</span> @enderror
-
-        <label>Foto Profil</label>
-        <input type="file" name="avatar" accept="image/*">
-        @if($account->avatar)
-          <img src="{{ asset('storage/' . $account->avatar) }}" alt="Avatar">
+      {{-- Main Card --}}
+      <div class="bg-white rounded-xl shadow-lg p-6 max-w-4xl mx-auto">
+        {{-- Notifications --}}
+        @if(session('success'))
+          <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6">
+            <div class="flex items-center">
+              <i class="bi bi-check-circle-fill mr-2"></i>
+              {{ session('success') }}
+            </div>
+          </div>
         @endif
-        @error('avatar') <span class="text-danger">{{ $message }}</span> @enderror
 
-        {{-- Bagian Data Kost --}}
-        <h4>Data Kost</h4>
+        @if(session('error'))
+          <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+            <div class="flex items-center">
+              <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+              {{ session('error') }}
+            </div>
+          </div>
+        @endif
 
-        <label>Nama Kost</label>
-        <input type="text" name="kost_name" value="{{ old('kost_name', $landboard->kost_name) }}">
-        @error('kost_name') <span class="text-danger">{{ $message }}</span> @enderror
+        <form action="{{ route('landboard.profile.update') }}" method="POST" enctype="multipart/form-data">
+          @csrf
 
-        <label>Provinsi</label>
-        <input type="text" name="province" value="{{ old('province', $landboard->province) }}">
-        @error('province') <span class="text-danger">{{ $message }}</span> @enderror
+          {{-- Account Section --}}
+          <div class="mb-8">
+            <div class="flex items-center mb-4">
+              <i class="bi bi-person-circle gray-800text-xl mr-2"></i>
+              <h3 class="text-lg font-semibold text-gray-800">Informasi Akun</h3>
+            </div>
+            <div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                  <input type="text" name="username" value="{{ old('username', $account->username) }}" 
+                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#31c594] focus:border-transparent">
+                  @error('username') 
+                    <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> 
+                  @enderror
+                </div>
 
-        <label>Kota</label>
-        <input type="text" name="city" value="{{ old('city', $landboard->city) }}">
-        @error('city') <span class="text-danger">{{ $message }}</span> @enderror
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <input type="email" name="email" value="{{ old('email', $account->email) }}" 
+                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#31c594] focus:border-transparent">
+                  @error('email') 
+                    <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> 
+                  @enderror
+                </div>
 
-        <label>Kode Pos</label>
-        <input type="text" name="postal_code" value="{{ old('postal_code', $landboard->postal_code) }}">
-        @error('postal_code') <span class="text-danger">{{ $message }}</span> @enderror
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Password Baru</label>
+                  <input type="password" name="password" placeholder="Kosongkan jika tidak diganti" 
+                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#31c594] focus:border-transparent">
+                  @error('password') 
+                    <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> 
+                  @enderror
+                </div>
 
-        <label>Alamat Lengkap</label>
-        <input type="text" name="full_address" value="{{ old('full_address', $landboard->full_address) }}">
-        @error('full_address') <span class="text-danger">{{ $message }}</span> @enderror
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi Password</label>
+                  <input type="password" name="password_confirmation" 
+                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#31c594] focus:border-transparent">
+                </div>
+              </div>
+            </div>
+          </div>
 
-        {{-- Bagian Informasi Bank --}}
-        <h4>Informasi Bank</h4>
+          {{-- Personal Information Section --}}
+          <div class="mb-8">
+            <div class="flex items-center mb-4">
+              <i class="bi bi-person-badge text-gray-800 text-xl mr-2"></i>
+              <h3 class="text-lg font-semibold text-gray-800">Informasi Pribadi</h3>
+            </div>
+            <div >
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Nama Pemilik Kost</label>
+                  <input type="text" name="name" value="{{ old('name', $landboard->name) }}" 
+                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#31c594] focus:border-transparent">
+                  @error('name') 
+                    <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> 
+                  @enderror
+                </div>
 
-        <label>Nama Bank</label>
-        <input type="text" name="bank_name" value="{{ old('bank_name', $account->bank_name) }}">
-        @error('bank_name') <span class="text-danger">{{ $message }}</span> @enderror
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">No HP</label>
+                  <input type="text" name="phone" value="{{ old('phone', $landboard->phone) }}" 
+                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#31c594] focus:border-transparent">
+                  @error('phone') 
+                    <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> 
+                  @enderror
+                </div>
 
-        <label>Nomor Rekening</label>
-        <input type="text" name="bank_account" value="{{ old('bank_account', $account->bank_account) }}">
-        @error('bank_account') <span class="text-danger">{{ $message }}</span> @enderror
+                <div class="md:col-span-2">
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Foto Profil</label>
+                  <input type="file" name="avatar" accept="image/*" 
+                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#31c594] focus:border-transparent">
+                  @if($account->avatar)
+                    <div class="mt-2">
+                      <img src="{{ asset('storage/' . $account->avatar) }}" alt="Avatar" 
+                           class="w-20 h-20 rounded-full object-cover border-2 border-gray-200">
+                    </div>
+                  @endif
+                  @error('avatar') 
+                    <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> 
+                  @enderror
+                </div>
+              </div>
+            </div>
+          </div>
 
-        <button type="submit">Simpan Perubahan</button>
-      </form>
+          {{-- Kost Information Section --}}
+          <div class="mb-8">
+            <div class="flex items-center mb-4">
+              <i class="bi bi-building text-gray-800 text-xl mr-2"></i>
+              <h3 class="text-lg font-semibold text-gray-800">Data Kost</h3>
+            </div>
+            <div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="md:col-span-2">
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Nama Kost</label>
+                  <input type="text" name="kost_name" value="{{ old('kost_name', $landboard->kost_name) }}" 
+                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#31c594] focus:border-transparent">
+                  @error('kost_name') 
+                    <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> 
+                  @enderror
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Provinsi</label>
+                  <input type="text" name="province" value="{{ old('province', $landboard->province) }}" 
+                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#31c594] focus:border-transparent">
+                  @error('province') 
+                    <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> 
+                  @enderror
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Kota</label>
+                  <input type="text" name="city" value="{{ old('city', $landboard->city) }}" 
+                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#31c594] focus:border-transparent">
+                  @error('city') 
+                    <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> 
+                  @enderror
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Kode Pos</label>
+                  <input type="text" name="postal_code" value="{{ old('postal_code', $landboard->postal_code) }}" 
+                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#31c594] focus:border-transparent">
+                  @error('postal_code') 
+                    <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> 
+                  @enderror
+                </div>
+
+                <div class="md:col-span-2">
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Alamat Lengkap</label>
+                  <input type="text" name="full_address" value="{{ old('full_address', $landboard->full_address) }}" 
+                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#31c594] focus:border-transparent">
+                  @error('full_address') 
+                    <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> 
+                  @enderror
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {{-- Bank Information Section --}}
+          <div class="mb-8">
+            <div class="flex items-center mb-4">
+              <i class="bi bi-bank text-gray-800 text-xl mr-2"></i>
+              <h3 class="text-lg font-semibold text-gray-800">Informasi Bank</h3>
+            </div>
+            <div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Nama Bank</label>
+                  <input type="text" name="bank_name" value="{{ old('bank_name', $account->bank_name) }}" 
+                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#31c594] focus:border-transparent">
+                  @error('bank_name') 
+                    <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> 
+                  @enderror
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Rekening</label>
+                  <input type="text" name="bank_account" value="{{ old('bank_account', $account->bank_account) }}" 
+                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#31c594] focus:border-transparent">
+                  @error('bank_account') 
+                    <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> 
+                  @enderror
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {{-- Action Buttons --}}
+          <div class="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+            <button type="submit" 
+                    class="px-6 py-2 bg-[#31c594] text-white rounded-lg hover:bg-[#2aa082] transition-colors flex items-center">
+              <i class="bi bi-check-lg mr-2"></i>
+              Simpan Perubahan
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('main-content');
+      const toggleBtn = document.getElementById('toggleSidebar');
+      
+      const overlay = document.createElement('div');
+      overlay.className = 'mobile-overlay';
+      overlay.id = 'mobile-overlay';
+      document.body.appendChild(overlay);
+
+      function initializeSidebar() {
+        if (window.innerWidth <= 768) {
+          if (sidebar) {
+            sidebar.classList.add('collapsed');
+            sidebar.classList.remove('mobile-expanded');
+          }
+          if (mainContent) {
+            mainContent.classList.add('collapsed');
+          }
+          overlay.classList.remove('active');
+        } else {
+          if (sidebar) {
+            sidebar.classList.remove('mobile-expanded');
+          }
+          overlay.classList.remove('active');
+        }
+      }
+
+      initializeSidebar();
+
+      if (toggleBtn && sidebar) {
+        toggleBtn.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            if (sidebar.classList.contains('mobile-expanded')) {
+              sidebar.classList.remove('mobile-expanded');
+              sidebar.classList.add('collapsed');
+              overlay.classList.remove('active');
+            } else {
+              sidebar.classList.remove('collapsed');
+              sidebar.classList.add('mobile-expanded');
+              overlay.classList.add('active');
+            }
+          } else {
+            sidebar.classList.toggle('collapsed');
+            if (mainContent) {
+              mainContent.classList.toggle('collapsed');
+            }
+          }
+        });
+      }
+      
+      overlay.addEventListener('click', function() {
+        if (window.innerWidth <= 768) {
+          sidebar.classList.remove('mobile-expanded');
+          sidebar.classList.add('collapsed');
+          overlay.classList.remove('active');
+        }
+      });
+
+      window.addEventListener('resize', function() {
+        initializeSidebar();
+      });
+    });
+  </script>
 </body>
 </html>
