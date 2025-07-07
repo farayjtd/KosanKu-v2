@@ -168,6 +168,12 @@
       overflow: hidden; /* Ensure rounded corners on image */
       position: relative;
     }
+    .carousel-img {
+      display: none;
+    }
+    .carousel-img.active {
+      display: block;
+    }
 
     .room-card .photo-section {
       position: relative;
@@ -475,18 +481,18 @@
       <div class="flex flex-col sm:flex-row bg-white rounded-xl shadow-md overflow-hidden">
         <!-- Photo section -->
         <div class="relative sm:w-1/3 h-48 sm:h-auto">
-          <div class="h-full" data-room-id="{{ $room->id }}">
+          <div class="h-full photo-carousel" data-room-id="{{ $room->id }}">
             @forelse ($room->photos as $index => $photo)
-            <img src="{{ asset('storage/'.$photo->path) }}"
-                class="absolute inset-0 w-full h-full object-cover {{ $index === 0 ? 'block' : 'hidden' }}">
+              <img src="{{ asset('storage/'.$photo->path) }}"
+                  class="carousel-img {{ $index === 0 ? 'active' : '' }}">
             @empty
-            <img src="https://via.placeholder.com/400x250?text=No+Image"
-                class="absolute inset-0 w-full h-full object-cover">
+              <img src="https://via.placeholder.com/400x250?text=No+Image"
+                  class="carousel-img active">
             @endforelse
 
             @if ($room->photos->count() > 1)
-            <button class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded p-1" onclick="prevPhoto({{ $room->id }})">&#10094;</button>
-            <button class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded p-1" onclick="nextPhoto({{ $room->id }})">&#10095;</button>
+              <button class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded p-1" onclick="prevPhoto('{{ $room->id }}')">&#10094;</button>
+              <button class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded p-1" onclick="nextPhoto('{{ $room->id }}')">&#10095;</button>
             @endif
           </div>
         </div>
@@ -509,7 +515,6 @@
             </p>
           </div>
 
-
           <div class="flex flex-col text-xs md:text-sm">
             <span class="mt-2"><i class="bi bi-gender-ambiguous mr-2"></i>Gender : {{ ucfirst($room->gender_type) }}</span>
             <span class="mt-1 mb-2"><i class="bi bi-bar-chart-line mr-2"></i>Status :
@@ -518,7 +523,7 @@
           </div>
 
           <div class="mt-auto grid grid-cols-4 gap-2 text-center text-xs">
-            <a href="{{ route('landboard.rooms.show', $room->id) }}" class="flex items-center justify-center gap-1 py-2 bg-emerald-500 text-white rounded-md hover:bg-emerald-600 transition"><i class="bi bi-info-circle-fill text-base"></i><span class="hidden md:inline">Detail</span></a>
+            <a href="{{ route('landboard.rooms.show', $room->id) }}" class="flex items-center justify-center gap-1 py-2 bg-emerald-500 text-white rounded-md hover:bg-emerald-600 transition"><i class="bi bi-info-circle text-base"></i><span class="hidden md:inline">Detail</span></a>
             <a href="{{ route('landboard.rooms.duplicate-form', $room->id) }}" class="flex items-center justify-center gap-1 py-2 bg-emerald-500 text-white rounded-md hover:bg-emerald-600 transition"><i class="bi bi-files text-base"></i><span class="hidden md:inline">Duplikat</span></a>
             <a href="{{ route('landboard.rooms.edit-form', $room->id) }}" class="flex items-center justify-center gap-1 py-2 bg-emerald-500 text-white rounded-md hover:bg-emerald-600 transition"><i class="bi bi-pencil-square text-base"></i><span class="hidden md:inline">Edit</span></a>
             <form action="{{ route('landboard.rooms.destroy', $room->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus kamar ini?')" class="contents">
@@ -610,23 +615,24 @@
   </script>
   {{-- Carousel Script --}}
   <script>
-    function nextPhoto(roomId) {
-      const container = document.querySelector(`.photo-carousel[data-room-id="${roomId}"]`);
-      const images = container.querySelectorAll('.carousel-img');
-      let activeIndex = [...images].findIndex(img => img.classList.contains('active'));
-      images[activeIndex].classList.remove('active');
-      const nextIndex = (activeIndex + 1) % images.length;
-      images[nextIndex].classList.add('active');
-    }
+  function nextPhoto(roomId) {
+    const container = document.querySelector(`.photo-carousel[data-room-id="${roomId}"]`);
+    const images = container.querySelectorAll('.carousel-img');
+    let activeIndex = [...images].findIndex(img => img.classList.contains('active'));
+    images[activeIndex].classList.remove('active');
+    const nextIndex = (activeIndex + 1) % images.length;
+    images[nextIndex].classList.add('active');
+  }
 
-    function prevPhoto(roomId) {
-      const container = document.querySelector(`.photo-carousel[data-room-id="${roomId}"]`);
-      const images = container.querySelectorAll('.carousel-img');
-      let activeIndex = [...images].findIndex(img => img.classList.contains('active'));
-      images[activeIndex].classList.remove('active');
-      const prevIndex = (activeIndex - 1 + images.length) % images.length;
-      images[prevIndex].classList.add('active');
-    }
+  function prevPhoto(roomId) {
+    const container = document.querySelector(`.photo-carousel[data-room-id="${roomId}"]`);
+    const images = container.querySelectorAll('.carousel-img');
+    let activeIndex = [...images].findIndex(img => img.classList.contains('active'));
+    images[activeIndex].classList.remove('active');
+    const prevIndex = (activeIndex - 1 + images.length) % images.length;
+    images[prevIndex].classList.add('active');
+  }
+
 
     function toggleFilterSortDropdown(button) {
         const dropdown = button.nextElementSibling;
