@@ -33,7 +33,7 @@
         <li>
             <a href="{{ route('landboard.rooms.create-form') }}"
             class="{{ $linkClasses }} {{ $currentRoute === 'landboard.rooms.create-form' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
-            <i class="bi bi-plus-square text-lg"></i> 
+            <i class="bi bi-plus-square-fill text-lg"></i> 
             <span class="menu-text">Buat Kamar</span>
             </a>
         </li>
@@ -41,7 +41,7 @@
         <li>
             <a href="{{ route('landboard.rooms.index') }}"
             class="{{ $linkClasses }} {{ Str::startsWith($currentRoute, 'landboard.rooms.') && $currentRoute !== 'landboard.rooms.create-form' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
-            <i class="bi bi-door-open text-lg"></i> 
+            <i class="bi bi-door-open-fill text-lg"></i> 
             <span class="menu-text">Data Kamar</span>
             </a>
         </li>
@@ -79,7 +79,7 @@
         <li>
             <a href="{{ route('landboard.penalty.settings') }}"
             class="{{ $linkClasses }} {{ $currentRoute === 'landboard.penalty.settings' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
-            <i class="bi bi-cash-coin text-lg"></i> 
+            <i class="bi bi-sliders text-lg"></i> 
             <span class="menu-text">Pengaturan Penalti</span>
             </a>
         </li>
