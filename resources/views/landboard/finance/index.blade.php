@@ -172,92 +172,43 @@
 
         /* Responsive table styles */
         .financial-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .financial-table th,
-        .financial-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .financial-table th {
-            background-color: #f9fafb;
-            font-weight: 600;
-            color: #374151;
-            font-size: 14px;
-        }
-
-        .financial-table td {
-            font-size: 14px;
-            color: #6b7280;
-        }
-
-        .financial-table tr:hover {
-            background-color: #f9fafb;
-        }
-
-        /* Mobile responsive */
-        @media (max-width: 768px) {
-            .financial-table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
-
-            .financial-table thead,
-            .financial-table tbody,
-            .financial-table th,
-            .financial-table td,
-            .financial-table tr {
-                display: block;
-            }
-
-            .financial-table thead tr {
-                position: absolute;
-                top: -9999px;
-                left: -9999px;
-            }
-
-            .financial-table tr {
-                border: 1px solid #e5e7eb;
-                margin-bottom: 10px;
-                padding: 10px;
-                border-radius: 8px;
-                background-color: white;
-            }
-
-            .financial-table td {
-                border: none;
-                position: relative;
-                padding: 6px 6px 6px 50%;
-                text-align: left;
-            }
-
-            .financial-table td:before {
-                content: attr(data-label);
-                position: absolute;
-                left: 6px;
-                width: 45%;
-                padding-right: 10px;
-                white-space: nowrap;
-                font-weight: 600;
-                color: #374151;
-            }
-        }
-        
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .financial-table th,
+    .financial-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .financial-table th {
+      background-color: #f9fafb;
+      font-weight: 600;
+      color: #374151;
+      font-size: 14px;
+    }
+    .financial-table td {
+      font-size: 14px;
+      color: #6b7280;
+    }
+    .financial-table tr:hover {
+      background-color: #f9fafb;
+    }
+    @media (max-width: 768px) {
+      .financial-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+    }
   </style>
 </head>
 <body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
-    {{-- Sidebar --}}
     @include('components.sidebar-landboard')
 
     <div id="main-content" class="main-content p-4 md:p-6 w-full">
-        <!-- Search Bar -->
-        <div class="search-input-wrapper mb-10 bg-white rounded-xl shadow-md p-3 flex items-center">
+    <div class="search-input-wrapper mb-10 bg-white rounded-xl shadow-md p-3 flex items-center">
           <i class="bi bi-search search-icon text-gray-500 mr-4"></i>
           <form id="room-search-form" method="GET" class="flex-grow flex items-center relative">
               <input type="search" name="search" placeholder="Cari username" value="{{ request('username') }}"
@@ -280,18 +231,17 @@
               </div>
           </form>
         </div>
-
-        {{-- Riwayat Pemasukan --}}
-        <div class="relative mb-8">
-          <div class="absolute -top-5 left-0 bg-[#31c594] text-white px-6 py-3 rounded-bl-4xl rounded-tr-4xl z-10">
-            <h2 class="use-poppins text-base md:text-lg font-semibold">Riwayat Pemasukan</h2>
-          </div>
-          <div class="w-full bg-white rounded-2xl shadow-md pt-8">
-            <div class="p-4">
-            @forelse ($incomePayments as $payment)
+      {{-- Riwayat Pemasukan --}}
+      <div class="relative mb-8">
+        <div class="absolute -top-5 left-0 bg-[#31c594] text-white px-6 py-3 rounded-bl-4xl rounded-tr-4xl z-10">
+          <h2 class="use-poppins text-base md:text-lg font-semibold">Riwayat Pemasukan</h2>
+        </div>
+        <div class="w-full bg-white rounded-2xl shadow-md pt-8">
+          <div class="p-4">
+            @if ($incomePayments->isNotEmpty())
               <div class="overflow-x-auto">
                 <table class="financial-table">
-                  <thead class="hidden md:table-header-group uppercase text-gray-700 text-xs tracking-wider">
+                  <thead class="md:table-header-group">
                     <tr>
                       <th>Tanggal</th>
                       <th>Nama</th>
@@ -302,69 +252,72 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td data-label="Tanggal">{{ Carbon::parse($payment->paid_at)->format('d/m/Y') }}</td>
-                      <td data-label="Nama">{{ $payment->rentalHistory->tenant->name ?? '[Nama Tidak Ada]' }}</td>
-                      <td data-label="Tenant">{{ $payment->rentalHistory->tenant?->account?->username ?? '[Username Tidak Ada]' }}</td>
-                      <td data-label="Kamar">{{ $payment->rentalHistory->room?->room_number ?? '[Kamar Terhapus]' }}</td>
-                      <td data-label="Jumlah" class="text-[#31c594] font-semibold">Rp {{ number_format($payment->amount, 0, ',', '.') }}</td>
-                      <td data-label="Metode">{{ ucfirst($payment->payment_method ?? '-') }}</td>
-                    </tr>
+                    @foreach ($incomePayments as $payment)
+                      <tr>
+                        <td data-label="Tanggal">{{ Carbon::parse($payment->paid_at)->format('d/m/Y') }}</td>
+                        <td data-label="Nama">{{ $payment->rentalHistory->tenant->name ?? '[Nama Tidak Ada]' }}</td>
+                        <td data-label="Username">{{ $payment->rentalHistory->tenant?->account?->username ?? '[Username Tidak Ada]' }}</td>
+                        <td data-label="Kamar">{{ $payment->rentalHistory->room?->room_number ?? '[Kamar Terhapus]' }}</td>
+                        <td data-label="Jumlah" class="text-[#31c594] font-semibold">Rp {{ number_format($payment->amount, 0, ',', '.') }}</td>
+                        <td data-label="Metode">{{ ucfirst($payment->payment_method ?? '-') }}</td>
+                      </tr>
+                    @endforeach
                   </tbody>
                 </table>
               </div>
-            @empty
+            @else
               <div class="text-center py-8 text-gray-500">
                 <i class="bi bi-inbox text-4xl mb-2"></i>
                 <p class="text-sm">Belum ada pemasukan.</p>
               </div>
-            @endforelse
+            @endif
           </div>
         </div>
+      </div>
 
-        {{-- Riwayat Pengeluaran --}}
-        <div class="relative mb-8 mt-10">
-          <div class="absolute -top-5 left-0 bg-[#31c594] text-white px-6 py-3 rounded-bl-4xl rounded-tr-4xl z-10">
-            <h2 class="use-poppins text-base md:text-lg font-semibold">Riwayat Pengeluaran</h2>
-          </div>
-          <div class="w-full bg-white rounded-xl shadow-md pt-8">
-            <div class="p-4">
-            @forelse ($expensePayments as $payment)
+      {{-- Riwayat Pengeluaran --}}
+      <div class="relative mb-8 mt-10">
+        <div class="absolute -top-5 left-0 bg-[#31c594] text-white px-6 py-3 rounded-bl-4xl rounded-tr-4xl z-10">
+          <h2 class="use-poppins text-base md:text-lg font-semibold">Riwayat Pengeluaran</h2>
+        </div>
+        <div class="w-full bg-white rounded-xl shadow-md pt-8">
+          <div class="p-4">
+            @if ($expensePayments->isNotEmpty())
               <div class="overflow-x-auto mb-4">
                 <table class="financial-table">
-                  <thead class="hidden md:table-header-group uppercase text-gray-700 text-xs tracking-wider">
+                  <thead class="md:table-header-group">
                     <tr>
                       <th>Tanggal</th>
-                      <th>Nama</th>
-                      <th>Username</th>
+                      <th>Tenant</th>
                       <th>Kamar</th>
                       <th>Jumlah</th>
                       <th>Metode</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td data-label="Tanggal">{{ Carbon::parse($payment->paid_at)->format('d/m/Y') }}</td>
-                      <td data-label="Nama">{{ $payment->rentalHistory->tenant->name ?? '[Nama Tidak Ada]' }}</td>
-                      <td data-label="Tenant">{{ $payment->rentalHistory->tenant?->account?->username ?? '[Username Tidak Ada]' }}</td>
-                      <td data-label="Kamar">{{ $payment->rentalHistory->room?->room_number ?? '[Kamar Terhapus]' }}</td>
-                      <td data-label="Jumlah" class="text-red-600 font-semibold">Rp {{ number_format($payment->amount, 0, ',', '.') }}</td>
-                      <td data-label="Metode">{{ ucfirst($payment->payment_method ?? '-') }}</td>
-                    </tr>
+                    @foreach ($expensePayments as $payment)
+                      <tr>
+                        <td data-label="Tanggal">{{ Carbon::parse($payment->paid_at)->format('d/m/Y') }}</td>
+                        <td data-label="Tenant">{{ $payment->rentalHistory->tenant?->account?->username ?? '[Username Tidak Ada]' }}</td>
+                        <td data-label="Kamar">{{ $payment->rentalHistory->room?->room_number ?? '[Kamar Terhapus]' }}</td>
+                        <td data-label="Jumlah" class="text-red-600 font-semibold">Rp {{ number_format($payment->amount, 0, ',', '.') }}</td>
+                        <td data-label="Metode">{{ ucfirst($payment->payment_method ?? '-') }}</td>
+                      </tr>
+                    @endforeach
                   </tbody>
                 </table>
               </div>
-            @empty
+            @else
               <div class="text-center py-8 text-gray-500">
                 <i class="bi bi-inbox text-4xl mb-2"></i>
                 <p class="text-sm">Belum ada pengeluaran.</p>
               </div>
-            @endforelse
+            @endif
           </div>
         </div>
       </div>
+    </div>
   </div>
-
   <script>
     document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.getElementById('sidebar');
