@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -5,6 +6,11 @@
   <title>Permintaan Pindah Kamar</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/font.css">
   @vite('resources/css/app.css')
   <style>[x-cloak]{display:none}
     .sidebar.collapsed {
@@ -144,6 +150,88 @@
         }
       }
     }
+
+    .use-poppins {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* Responsive table styles - same as financial table */
+    .financial-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .financial-table th,
+    .financial-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .financial-table th {
+      background-color: #f9fafb;
+      font-weight: 600;
+      color: #374151;
+      font-size: 14px;
+    }
+
+    .financial-table td {
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    .financial-table tr:hover {
+      background-color: #f9fafb;
+    }
+
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+      .financial-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+
+      .financial-table thead,
+      .financial-table tbody,
+      .financial-table th,
+      .financial-table td,
+      .financial-table tr {
+        display: block;
+      }
+
+      .financial-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+
+      .financial-table tr {
+        border: 1px solid #e5e7eb;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 8px;
+        background-color: white;
+      }
+
+      .financial-table td {
+        border: none;
+        position: relative;
+        padding: 6px 6px 6px 50%;
+        text-align: left;
+      }
+
+      .financial-table td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        font-weight: 600;
+        color: #374151;
+      }
+    }
   </style>
 </head>
 <body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
@@ -153,78 +241,82 @@
 
     {{-- Main Content --}}
     <div id="main-content" class="main-content transition-all duration-300 ease-in-out flex-1 md:ml-[240px] p-4 md:p-6">
-      <div class="bg-white rounded-xl shadow-md p-6">
-        <h2 class="text-2xl font-bold mb-6">Permintaan Pindah Kamar</h2>
+      <div class="bg-white rounded-xl shadow-md ">
+        <div class="relative mb-8 mt-5 p-8">
+            <div class="absolute -top-8 left-0 bg-[#31c594] text-white px-15 py-3 rounded-bl-4xl rounded-tr-4xl z-10">
+              <h2 class="use-poppins text-base md:text-lg font-semibold">Pindah Kamar</h2>
+            </div>
+          {{-- Flash Messages --}}
+          @if (session('success'))
+            <div class="mb-4 px-4 py-2 rounded-lg bg-emerald-100 text-emerald-700 border border-emerald-300">
+              {{ session('success') }}
+            </div>
+          @elseif (session('error'))
+            <div class="mb-4 px-4 py-2 rounded-lg bg-red-100 text-red-700 border border-red-300">
+              {{ session('error') }}
+            </div>
+          @endif
 
-        {{-- Flash Messages --}}
-        @if (session('success'))
-          <div class="mb-4 px-4 py-2 rounded-lg bg-emerald-100 text-emerald-700 border border-emerald-300">
-            {{ session('success') }}
-          </div>
-        @elseif (session('error'))
-          <div class="mb-4 px-4 py-2 rounded-lg bg-red-100 text-red-700 border border-red-300">
-            {{ session('error') }}
-          </div>
-        @endif
-
-        <div class="overflow-x-auto rounded-lg border border-gray-200">
-          <table class="w-full border-collapse text-sm">
-            <thead class="bg-gray-50 text-gray-700 uppercase text-xs tracking-wider">
-              <tr>
-                <th class="px-4 py-3 whitespace-nowrap">Username</th>
-                <th class="px-4 py-3">Tenant</th>
-                <th class="px-4 py-3">Dari</th>
-                <th class="px-4 py-3">Ke</th>
-                <th class="px-4 py-3">Refund</th>
-                <th class="px-4 py-3">Catatan</th>
-                <th class="px-4 py-3">Status</th>
-                <th class="px-4 py-3">Tindakan</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-              @forelse($requests as $request)
-                <tr class="hover:bg-gray-50">
-                  <td class="px-4 py-3 whitespace-nowrap">{{ $request->tenant->account->username }}</td>
-                  <td class="px-4 py-3">{{ $request->tenant->name ?: 'Belum diisi' }}</td>
-                  <td class="px-4 py-3">{{ $request->currentRoom->room_number }}</td>
-                  <td class="px-4 py-3">{{ $request->newRoom->room_number }}</td>
-                  <td class="px-4 py-3 whitespace-nowrap">Rp{{ number_format($request->manual_refund, 0, ',', '.') }}</td>
-                  <td class="px-4 py-3 max-w-xs truncate" title="{{ $request->note }}">{{ $request->note ?: '-' }}</td>
-                  <td class="px-4 py-3">
-                    @switch($request->status)
-                      @case('pending')
-                        <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium bg-yellow-100 text-yellow-600 rounded">Menunggu</span>
-                      @break
-                      @case('approved')
-                        <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium bg-emerald-100 text-emerald-600 rounded">Disetujui</span>
-                      @break
-                      @case('rejected')
-                        <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium bg-red-100 text-red-600 rounded">Ditolak</span>
-                      @break
-                    @endswitch
-                  </td>
-                  <td class="px-4 py-3">
-                    @if($request->status === 'pending')
-                      <form method="POST" action="{{ route('landboard.room-transfer.handle', $request->id) }}" class="space-y-2">
-                        @csrf
-                        <textarea name="note" rows="2" class="w-full border rounded-lg px-2 py-1 text-xs focus:ring-emerald-400" placeholder="Catatan" required></textarea>
-                        <div class="flex gap-2 text-xs">
-                          <button type="submit" name="action_type" value="approve" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-1 rounded">Setujui</button>
-                          <button type="submit" name="action_type" value="reject" class="flex-1 bg-red-500 hover:bg-red-600 text-white py-1 rounded">Tolak</button>
-                        </div>
-                      </form>
-                    @else
-                      <span class="text-gray-400">-</span>
-                    @endif
-                  </td>
-                </tr>
-              @empty
-                <tr>
-                  <td colspan="8" class="text-center text-gray-500 py-6">Tidak ada permintaan pindah kamar.</td>
-                </tr>
-              @endforelse
-            </tbody>
-          </table>
+            <div class="overflow-x-auto">
+              <table class="financial-table">
+                  <thead class="hidden md:table-header-group uppercase text-gray-700 text-xs tracking-wider">
+                    <tr>
+                      <th>Username</th>
+                      <th>Tenant</th>
+                      <th>Dari</th>
+                      <th>Ke</th>
+                      <th>Refund</th>
+                      <th>Catatan</th>
+                      <th>Status</th>
+                      <th>Tindakan</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  @forelse($requests as $request)
+                    <tr>
+                      <td data-label="Username">{{ $request->tenant->account->username }}</td>
+                      <td data-label="Tenant">{{ $request->tenant->name ?: 'Belum diisi' }}</td>
+                      <td data-label="Dari">{{ $request->currentRoom->room_number }}</td>
+                      <td data-label="Ke">{{ $request->newRoom->room_number }}</td>
+                      <td data-label="Refund" class="text-[#31c594] font-semibold">Rp{{ number_format($request->manual_refund, 0, ',', '.') }}</td>
+                      <td data-label="Catatan" title="{{ $request->note }}">{{ $request->note ?: '-' }}</td>
+                      <td data-label="Status">
+                        @switch($request->status)
+                          @case('pending')
+                            <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium bg-yellow-100 text-yellow-600 rounded">Menunggu</span>
+                            @break
+                          @case('approved')
+                            <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium bg-emerald-100 text-emerald-600 rounded">Disetujui</span>
+                            @break
+                          @case('rejected')
+                            <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium bg-red-100 text-red-600 rounded">Ditolak</span>
+                            @break
+                        @endswitch
+                      </td>
+                      <td data-label="Tindakan">
+                        @if($request->status === 'pending')
+                          <form method="POST" action="{{ route('landboard.room-transfer.handle', $request->id) }}" class="space-y-2">
+                            @csrf
+                            <textarea name="note" rows="2" class="w-full border rounded-lg px-2 py-1 text-xs focus:ring-emerald-400" placeholder="Catatan" required></textarea>
+                            <div class="flex gap-2 text-xs">
+                              <button type="submit" name="action_type" value="approve" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-1 rounded">Setujui</button>
+                              <button type="submit" name="action_type" value="reject" class="flex-1 bg-red-500 hover:bg-red-600 text-white py-1 rounded">Tolak</button>
+                            </div>
+                          </form>
+                        @else
+                          <span class="text-gray-400">-</span>
+                        @endif
+                      </td>
+                    </tr>
+                </tbody>
+              </table>
+            </div>
+            @empty
+            <div class="text-center py-8 text-gray-500 hidden">
+              <i class="bi bi-inbox text-4xl mb-2"></i>
+              <p class="text-sm">Tidak ada permintaan pindah kamar.</p>
+            </div>
+            @endforelse
         </div>
       </div>
     </div>

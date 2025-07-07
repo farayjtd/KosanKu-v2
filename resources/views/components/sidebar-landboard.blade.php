@@ -1,6 +1,6 @@
 <style>
     .sidebar.collapsed {
-            width: 60px;
+            width: 70px;
         }
         
         .sidebar.collapsed .menu-text {
@@ -21,12 +21,12 @@
         
         .sidebar.collapsed .menu-item {
             justify-content: center;
-            padding: 0.25rem;
+            padding: 0.45rem;
         }
         
         .sidebar.collapsed .profile-btn,
         .sidebar.collapsed .logout-btn {
-            padding: 0.25rem;
+            padding: 0.45rem;
             justify-content: center;
             min-height: 48px;
         }
@@ -177,7 +177,7 @@
         <form action="{{ route('logout') }}" method="POST" class="mt-2">
             @csrf
             <button type="submit"
-                    class="logout-btn w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-500 text-white font-semibold rounded-lg transition hover:bg-red-600 hover:scale-105">
+                    class="logout-btn w-full flex items-center justify-center gap-2 px-1 py-1.5 bg-red-500 text-white font-semibold rounded-lg transition hover:bg-red-600 hover:scale-105">
                 <i class="bi bi-box-arrow-right text-lg"></i> 
                 <span class="btn-text">Logout</span>
             </button>

@@ -7,43 +7,6 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
   @vite('resources/css/app.css')
   <style>
-    .sidebar.collapsed {
-      width: 80px;
-    }
-
-    .sidebar.collapsed .menu-text,
-    .sidebar.collapsed .menu-title,
-    .sidebar.collapsed .group-title,
-    .sidebar.collapsed .logo-text,
-    .sidebar.collapsed .profile-btn .btn-text,
-    .sidebar.collapsed .logout-btn .btn-text {
-      display: none;
-    }
-
-    .sidebar.collapsed .menu-item,
-    .sidebar.collapsed .profile-btn,
-    .sidebar.collapsed .logout-btn {
-      justify-content: center;
-      padding: 0.45rem;
-      min-height: 48px;
-    }
-    .sidebar.collapsed .menu-item {
-        min-height: unset;
-    }
-
-    .sidebar-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding: 1rem;
-    }
-
-    .sidebar-footer {
-      margin-top: auto;
-      padding: 1rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
     .main-content {
       margin-left: 240px;
       width: calc(100% - 240px);
@@ -147,7 +110,7 @@
   </style>
 </head>
 <body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
-  <div class="flex min-h-screen">
+  <div id="wrapper" class="flex min-h-screen">
     {{-- Sidebar --}}
     @include('components.sidebar-landboard')
 
@@ -236,97 +199,68 @@
     </main>
   </div>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('main-content');
-    const toggleBtn = document.getElementById('toggleSidebar');
+  document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.getElementById('sidebar');
+  const mainContent = document.getElementById('main-content');
+  const toggleBtn = document.getElementById('toggleSidebar');
+  
+  const overlay = document.createElement('div');
+  overlay.className = 'mobile-overlay';
+  overlay.id = 'mobile-overlay';
+  document.body.appendChild(overlay);
 
-    const overlay = document.createElement('div');
-    overlay.className = 'mobile-overlay';
-    overlay.id = 'mobile-overlay';
-    document.body.appendChild(overlay);
-
-    function initializeSidebar() {
-      if (window.innerWidth <= 768) {
-        if (sidebar) {
-          sidebar.classList.add('collapsed');
-          sidebar.classList.remove('mobile-expanded');
-        }
-        if (mainContent) {
-          mainContent.classList.add('collapsed');
-        }
-        overlay.classList.remove('active');
-      } else {
-        if (sidebar) {
-          sidebar.classList.remove('mobile-expanded');
-        }
-        overlay.classList.remove('active');
-      }
-    }
-
-    initializeSidebar();
-
-    if (toggleBtn && sidebar) {
-      toggleBtn.addEventListener('click', function() {
-        if (window.innerWidth <= 768) {
-          if (sidebar.classList.contains('mobile-expanded')) {
-            sidebar.classList.remove('mobile-expanded');
-            sidebar.classList.add('collapsed');
-            overlay.classList.remove('active');
-          } else {
-            sidebar.classList.remove('collapsed');
-            sidebar.classList.add('mobile-expanded');
-            overlay.classList.add('active');
-          }
-        } else {
-          sidebar.classList.toggle('collapsed');
-          if (mainContent) {
-            mainContent.classList.toggle('collapsed');
-          }
-        }
-      });
-    }
-
-    overlay.addEventListener('click', function() {
-      if (window.innerWidth <= 768) {
-        sidebar.classList.remove('mobile-expanded');
+  function initializeSidebar() {
+    if (window.innerWidth <= 768) {
+      if (sidebar) {
         sidebar.classList.add('collapsed');
-        overlay.classList.remove('active');
+        sidebar.classList.remove('mobile-expanded');
+      }
+      if (mainContent) {
+        mainContent.classList.add('collapsed');
+      }
+      overlay.classList.remove('active');
+    } else {
+      if (sidebar) {
+        sidebar.classList.remove('mobile-expanded');
+      }
+      overlay.classList.remove('active');
+    }
+  }
+
+  initializeSidebar();
+
+  if (toggleBtn && sidebar) {
+    toggleBtn.addEventListener('click', function() {
+      if (window.innerWidth <= 768) {
+        if (sidebar.classList.contains('mobile-expanded')) {
+          sidebar.classList.remove('mobile-expanded');
+          sidebar.classList.add('collapsed');
+          overlay.classList.remove('active');
+        } else {
+          sidebar.classList.remove('collapsed');
+          sidebar.classList.add('mobile-expanded');
+          overlay.classList.add('active');
+        }
+      } else {
+        sidebar.classList.toggle('collapsed');
+        if (mainContent) {
+          mainContent.classList.toggle('collapsed');
+        }
       }
     });
-
-    window.addEventListener('resize', function() {
-      initializeSidebar();
-    });
-
-    document.addEventListener('click', function(event) {
-        if (!event.target.closest('.search-input-wrapper')) {
-            const filterSortDropdown = document.querySelector('.filter-sort-dropdown');
-            if (filterSortDropdown && !filterSortDropdown.classList.contains('hidden')) {
-                filterSortDropdown.classList.add('hidden');
-            }
-        }
-    });
+  }
+  
+  overlay.addEventListener('click', function() {
+    if (window.innerWidth <= 768) {
+      sidebar.classList.remove('mobile-expanded');
+      sidebar.classList.add('collapsed');
+      overlay.classList.remove('active');
+    }
   });
-  document.addEventListener('DOMContentLoaded', () => {
-      const sidebar = document.getElementById('sidebar');
-      const mainContent = document.getElementById('main-content');
-      const toggleBtn = document.getElementById('toggleSidebar');
-      const overlay = document.createElement('div');
-      overlay.className = 'mobile-overlay';
-      document.body.appendChild(overlay);
 
-      function initSidebar() {
-        if (window.innerWidth <= 768) {
-          sidebar?.classList.add('collapsed');
-          mainContent?.classList.add('collapsed');
-        }
-      }
-      initSidebar();
-      toggleBtn?.addEventListener('click', () => {
-        sidebar?.classList.toggle('collapsed');
-        mainContent?.classList.toggle('collapsed');
-      });
+  window.addEventListener('resize', function() {
+    initializeSidebar();
+  });
 
       // === enable / disable inputs ===
       const bindToggle = (checkboxId, fieldSelector) => {

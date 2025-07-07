@@ -10,7 +10,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/font.css">
-  <script src="{{ asset('js/sidebar.js') }}" defer></script>
   @vite('resources/css/app.css')
   <style>
         .main-content {
@@ -170,6 +169,84 @@
         .use-poppins {
             font-family: 'Poppins', sans-serif;
         }
+
+        /* Responsive table styles */
+        .financial-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .financial-table th,
+        .financial-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .financial-table th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .financial-table td {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .financial-table tr:hover {
+            background-color: #f9fafb;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .financial-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .financial-table thead,
+            .financial-table tbody,
+            .financial-table th,
+            .financial-table td,
+            .financial-table tr {
+                display: block;
+            }
+
+            .financial-table thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            .financial-table tr {
+                border: 1px solid #e5e7eb;
+                margin-bottom: 10px;
+                padding: 10px;
+                border-radius: 8px;
+                background-color: white;
+            }
+
+            .financial-table td {
+                border: none;
+                position: relative;
+                padding: 6px 6px 6px 50%;
+                text-align: left;
+            }
+
+            .financial-table td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                font-weight: 600;
+                color: #374151;
+            }
+        }
         
   </style>
 </head>
@@ -209,37 +286,32 @@
           <div class="absolute -top-5 left-0 bg-[#31c594] text-white px-6 py-3 rounded-bl-4xl rounded-tr-4xl z-10">
             <h2 class="use-poppins text-base md:text-lg font-semibold">Riwayat Pemasukan</h2>
           </div>
-          <div class="w-full bg-white rounded-lg shadow-md pt-4">
+          <div class="w-full bg-white rounded-2xl shadow-md pt-8">
             <div class="p-4">
             @forelse ($incomePayments as $payment)
-            <h3 class="mt-4 text-[16px] font-semibold text-gray-800 text-sm">{{ $payment->rentalHistory->tenant?->name ?? 'Anonymous' }}</h3>
-            <div class="bg-white p-4 border-b-1 border-gray-300">
-                <div class="grid grid-cols-1 md:grid-cols-1 gap-2 text-xs">
-                  <div class="flex justify-between text-[14px]">
-                    <span class="text-gray-600">Tanggal:</span>
-                    <span class="text-gray-600 text-right">{{ Carbon::parse($payment->paid_at)->format('d/m/Y') }}</span>
-                  </div>
-                  
-                  <div class="flex justify-between text-[14px]">
-                    <span class="text-gray-600">Tenant:</span>
-                    <span class="text-right">{{ $payment->rentalHistory->tenant?->account?->username ?? '[Username Tidak Ada]' }}</span>
-                  </div>
-                  
-                  <div class="flex justify-between text-[14px]">
-                    <span class="text-gray-600">Kamar:</span>
-                    <span class="text-gray-600 text-right">{{ $payment->rentalHistory->room?->room_number ?? '[Kamar Terhapus]' }}</span>
-                  </div>
-                  
-                  <div class="flex justify-between text-[14px]">
-                    <span class="text-gray-600">Jumlah:</span>
-                    <span class="text-right text-[#31c594]">Rp {{ number_format($payment->amount, 0, ',', '.') }}</span>
-                  </div>
-                  
-                  <div class="flex justify-between text-[14px]">
-                    <span class="text-gray-600">Metode:</span>
-                    <span class="text-gray-600 text-right">{{ ucfirst($payment->payment_method ?? '-') }}</span>
-                  </div>
-                </div>
+              <div class="overflow-x-auto">
+                <table class="financial-table">
+                  <thead class="hidden md:table-header-group uppercase text-gray-700 text-xs tracking-wider">
+                    <tr>
+                      <th>Tanggal</th>
+                      <th>Nama</th>
+                      <th>Username</th>
+                      <th>Kamar</th>
+                      <th>Jumlah</th>
+                      <th>Metode</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td data-label="Tanggal">{{ Carbon::parse($payment->paid_at)->format('d/m/Y') }}</td>
+                      <td data-label="Nama">{{ $payment->rentalHistory->tenant->name ?? '[Nama Tidak Ada]' }}</td>
+                      <td data-label="Tenant">{{ $payment->rentalHistory->tenant?->account?->username ?? '[Username Tidak Ada]' }}</td>
+                      <td data-label="Kamar">{{ $payment->rentalHistory->room?->room_number ?? '[Kamar Terhapus]' }}</td>
+                      <td data-label="Jumlah" class="text-[#31c594] font-semibold">Rp {{ number_format($payment->amount, 0, ',', '.') }}</td>
+                      <td data-label="Metode">{{ ucfirst($payment->payment_method ?? '-') }}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             @empty
               <div class="text-center py-8 text-gray-500">
@@ -255,36 +327,32 @@
           <div class="absolute -top-5 left-0 bg-[#31c594] text-white px-6 py-3 rounded-bl-4xl rounded-tr-4xl z-10">
             <h2 class="use-poppins text-base md:text-lg font-semibold">Riwayat Pengeluaran</h2>
           </div>
-          <div class="w-full bg-white rounded-lg shadow-md pt-12">
-            <div class="p-4 space-y-3">
+          <div class="w-full bg-white rounded-xl shadow-md pt-8">
+            <div class="p-4">
             @forelse ($expensePayments as $payment)
-              <div class="bg-white border border-l-4 border-l-red-500 border-gray-200 rounded-lg p-4">
-                <div class="flex justify-between items-start mb-2">
-                  <h3 class="font-semibold text-gray-800 text-sm">{{ $payment->rentalHistory->tenant?->name ?? 'Belum isi nama' }}</h3>
-                  <span class="text-xs text-gray-500">{{ Carbon::parse($payment->paid_at)->format('d/m/Y') }}</span>
-                </div>
-                
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
-                  <div>
-                    <span class="text-gray-600">Tanggal:</span>
-                    <div class="font-medium">{{ Carbon::parse($payment->paid_at)->format('d/m/Y') }}</div>
-                  </div>
-                  
-                  <div>
-                    <span class="text-gray-600">Tenant:</span>
-                    <div class="font-medium">{{ $payment->rentalHistory->tenant?->account?->username ?? '[Username Tidak Ada]' }}</div>
-                  </div>
-                  
-                  <div>
-                    <span class="text-gray-600">Kamar:</span>
-                    <div class="font-medium">{{ $payment->rentalHistory->room?->room_number ?? '[Kamar Terhapus]' }}</div>
-                  </div>
-                  
-                  <div>
-                    <span class="text-gray-600">Jumlah:</span>
-                    <div class="font-medium text-red-600">Rp {{ number_format($payment->amount, 0, ',', '.') }}</div>
-                  </div>
-                </div>
+              <div class="overflow-x-auto mb-4">
+                <table class="financial-table">
+                  <thead class="hidden md:table-header-group uppercase text-gray-700 text-xs tracking-wider">
+                    <tr>
+                      <th>Tanggal</th>
+                      <th>Nama</th>
+                      <th>Username</th>
+                      <th>Kamar</th>
+                      <th>Jumlah</th>
+                      <th>Metode</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td data-label="Tanggal">{{ Carbon::parse($payment->paid_at)->format('d/m/Y') }}</td>
+                      <td data-label="Nama">{{ $payment->rentalHistory->tenant->name ?? '[Nama Tidak Ada]' }}</td>
+                      <td data-label="Tenant">{{ $payment->rentalHistory->tenant?->account?->username ?? '[Username Tidak Ada]' }}</td>
+                      <td data-label="Kamar">{{ $payment->rentalHistory->room?->room_number ?? '[Kamar Terhapus]' }}</td>
+                      <td data-label="Jumlah" class="text-red-600 font-semibold">Rp {{ number_format($payment->amount, 0, ',', '.') }}</td>
+                      <td data-label="Metode">{{ ucfirst($payment->payment_method ?? '-') }}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             @empty
               <div class="text-center py-8 text-gray-500">
