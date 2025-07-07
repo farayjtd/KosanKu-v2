@@ -61,7 +61,7 @@
   <div class="flex items-center justify-between mb-6">
     <h1 class="logo-text text-xl font-bold text-emerald-600">KosanKu</h1>
     <button id="toggleSidebar" class="text-xl text-slate-600 hover:text-emerald-600">
-      <i class="bi bi-list"></i>
+      <i class="bi bi-list ml-2"></i>
     </button>
   </div>
 
@@ -71,7 +71,7 @@
             <li>
                 <a href="{{ route('landboard.dashboard.index') }}"
                 class="{{ $linkClasses }} {{ $currentRoute === 'landboard.dashboard.index' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
-                <i class="bi bi-house-door-fill text-lg"></i> 
+                <i class="bi bi-house-door text-lg"></i> 
                 <span class="menu-text">Dashboard</span>
                 </a>
             </li>
@@ -85,7 +85,7 @@
         <li>
             <a href="{{ route('landboard.rooms.create-form') }}"
             class="{{ $linkClasses }} {{ $currentRoute === 'landboard.rooms.create-form' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
-            <i class="bi bi-plus-square-fill text-lg"></i> 
+            <i class="bi bi-plus-square text-lg"></i> 
             <span class="menu-text">Buat Kamar</span>
             </a>
         </li>
@@ -93,7 +93,7 @@
         <li>
             <a href="{{ route('landboard.rooms.index') }}"
             class="{{ $linkClasses }} {{ Str::startsWith($currentRoute, 'landboard.rooms.') && $currentRoute !== 'landboard.rooms.create-form' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
-            <i class="bi bi-door-open-fill text-lg"></i> 
+            <i class="bi bi-door-open text-lg"></i> 
             <span class="menu-text">Data Kamar</span>
             </a>
         </li>
@@ -109,7 +109,7 @@
         <li>
             <a href="{{ route('landboard.tenants.create-form') }}"
             class="{{ $linkClasses }} {{ $currentRoute === 'landboard.tenants.create-form' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
-            <i class="bi bi-person-plus-fill text-lg"></i> 
+            <i class="bi bi-person-plus text-lg"></i> 
             <span class="menu-text">Tambah Penghuni</span>
             </a>
         </li>
@@ -117,7 +117,7 @@
         <li>
             <a href="{{ route('landboard.tenants.index') }}"
             class="{{ $linkClasses }} {{ Str::startsWith($currentRoute, 'landboard.tenants.') && $currentRoute !== 'landboard.tenants.create-form' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
-            <i class="bi bi-people-fill text-lg"></i> 
+            <i class="bi bi-people text-lg"></i> 
             <span class="menu-text">Data Penghuni</span>
             </a>
         </li>
@@ -139,7 +139,7 @@
         <li>
             <a href="{{ route('landboard.finance.index') }}"
             class="{{ $linkClasses }} {{ $currentRoute === 'landboard.finance.index' ? 'bg-emerald-100 text-emerald-600 font-semibold' : 'text-slate-700' }}">
-            <i class="bi bi-bar-chart-line-fill text-lg"></i> 
+            <i class="bi bi-bar-chart-line text-lg"></i> 
             <span class="menu-text">Riwayat Keuangan</span>
             </a>
         </li>
