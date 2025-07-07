@@ -369,29 +369,32 @@ class TenantController extends Controller
         $account = $tenant->account;
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
-            'address' => 'required|string|max:255',
-            'gender' => 'nullable|in:male,female',
-            'activity_type' => 'nullable|string|max:255',
+            'name'             => 'required|string|max:255',
+            'phone'            => 'required|string|max:20',
+            'address'          => 'required|string|max:255',
+            'gender'           => 'nullable|in:male,female',
+            'activity_type'    => 'nullable|string|max:255',
             'institution_name' => 'nullable|string|max:255',
-            'bank_name' => 'required|string|max:100',
-            'bank_account' => 'required|digits_between:10,16',
-            'email' => 'nullable|email|unique:accounts,email,' . $account->id,
-            'username' => 'required|string|max:100|unique:accounts,username,' . $account->id,
-            'password' => 'nullable|confirmed|min:8',
+            'bank_name'        => 'required|string|max:100',
+            'bank_account'     => 'required|digits_between:10,16',
+            'email'            => 'nullable|email|unique:accounts,email,' . $account->id,
+            'username'         => 'required|string|max:100|unique:accounts,username,' . $account->id,
+            'password'         => 'nullable|confirmed|min:8',
+            'avatar'           => 'nullable|image|max:2048',
+            'identity_photo'   => 'nullable|image|max:2048',
+            'selfie_photo'     => 'nullable|image|max:2048',
         ]);
 
         $tenant->fill([
-            'name' => $validated['name'],
-            'phone' => $validated['phone'],
-            'address' => $validated['address'],
-            'gender' => $validated['gender'],
-            'activity_type' => $validated['activity_type'],
+            'name'             => $validated['name'],
+            'phone'            => $validated['phone'],
+            'address'          => $validated['address'],
+            'gender'           => $validated['gender'],
+            'activity_type'    => $validated['activity_type'],
             'institution_name' => $validated['institution_name'],
-        ])->save();
+        ]);
 
-        $account->bank_name = $validated['bank_name'];
+        $account->bank_name    = $validated['bank_name'];
         $account->bank_account = $validated['bank_account'];
 
         if (!empty($validated['email'])) {
@@ -402,25 +405,32 @@ class TenantController extends Controller
             $account->username = $validated['username'];
         }
 
-        if ($request->filled('password')) {
+        if (!empty($validated['password'])) {
             $account->password = Hash::make($validated['password']);
         }
 
         if ($request->hasFile('avatar')) {
-            $path = $request->file('avatar')->store('avatars', 'public');
-            $account->avatar = $path;
+            if ($account->avatar) {
+                Storage::disk('public')->delete($account->avatar);
+            }
+            $account->avatar = $request->file('avatar')->store('avatars', 'public');
         }
 
         if ($request->hasFile('identity_photo')) {
-            $path = $request->file('identity_photo')->store('identity_photos', 'public');
-            $tenant->identity_photo = $path;
+            if ($tenant->identity_photo) {
+                Storage::disk('public')->delete($tenant->identity_photo);
+            }
+            $tenant->identity_photo = $request->file('identity_photo')->store('tenant_identities', 'public');
         }
 
         if ($request->hasFile('selfie_photo')) {
-            $path = $request->file('selfie_photo')->store('selfie_photos', 'public');
-            $tenant->selfie_photo = $path;
+            if ($tenant->selfie_photo) {
+                Storage::disk('public')->delete($tenant->selfie_photo);
+            }
+            $tenant->selfie_photo = $request->file('selfie_photo')->store('tenant_selfies', 'public');
         }
 
+        $tenant->save();
         $account->save();
 
         return redirect()->route('landboard.tenants.index')->with('success', 'Data tenant berhasil diperbarui.');
