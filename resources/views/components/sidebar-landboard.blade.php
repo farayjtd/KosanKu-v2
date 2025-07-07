@@ -1,3 +1,55 @@
+<style>
+    .sidebar.collapsed {
+            width: 60px;
+        }
+        
+        .sidebar.collapsed .menu-text {
+            display: none;
+        }
+        
+        .sidebar.collapsed .menu-title {
+            display: none;
+        }
+        
+        .sidebar.collapsed .group-title {
+            display: none;
+        }
+        
+        .sidebar.collapsed .logo-text {
+            display: none;
+        }
+        
+        .sidebar.collapsed .menu-item {
+            justify-content: center;
+            padding: 0.25rem;
+        }
+        
+        .sidebar.collapsed .profile-btn,
+        .sidebar.collapsed .logout-btn {
+            padding: 0.25rem;
+            justify-content: center;
+            min-height: 48px;
+        }
+        
+        .sidebar.collapsed .profile-btn .btn-text,
+        .sidebar.collapsed .logout-btn .btn-text {
+            display: none;
+        }
+        
+        .sidebar-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+        }
+        
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+</style>
+
 <div id="sidebar" class="sidebar bg-white w-[240px] h-screen fixed flex flex-col overflow-y-hidden top-0 left-0 z-50 shadow-xl px-4 py-6 transition-all duration-300">
   @php
     use Illuminate\Support\Str;

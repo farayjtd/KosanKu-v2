@@ -428,8 +428,6 @@
 
     {{-- Konten utama --}}
     <div id="main-content" class="main-content p-6 md:pt-4 w-full">
-
-      {{-- Search Box with integrated Filters and Sort --}}
       <div class="search-input-wrapper mb-6 bg-white rounded-xl shadow-md p-3 flex items-center">
         <i class="bi bi-search search-icon text-gray-500"></i>
         <form id="room-search-form" method="GET" class="flex-grow flex items-center relative">
