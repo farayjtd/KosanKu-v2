@@ -140,32 +140,36 @@
             }
         }
 
-            .search-input-wrapper {
-        position: relative;
-    }
+        .search-input-wrapper {
+            position: relative;
+        }
 
-    .search-input-wrapper input[type="search"] {
-        padding-left: 2.5rem;
-        padding-right: 3.5rem;
-    }
+        .search-input-wrapper input[type="search"] {
+            padding-left: 2.5rem;
+            padding-right: 3.5rem;
+        }
 
-    .search-input-wrapper .search-icon {
-        position: absolute;
-        left: 1rem;
-    }
+        .search-input-wrapper .search-icon {
+            position: absolute;
+            left: 1rem;
+        }
 
-    .filter-sort-toggle-btn {
-        position: absolute;
-        right: 1rem;
-    }
+        .filter-sort-toggle-btn {
+            position: absolute;
+            right: 1rem;
+        }
 
-    .filter-sort-dropdown {
-        position: absolute;
-        top: 100%;
-        right: 0;
-        min-width: 200px;
-        z-index: 30;
-    }
+        .filter-sort-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            min-width: 200px;
+            z-index: 30;
+        }
+
+        .use-poppins {
+            font-family: 'Poppins', sans-serif;
+        }
         
   </style>
 </head>
@@ -174,8 +178,9 @@
     {{-- Sidebar --}}
     @include('components.sidebar-landboard')
 
-    <div id="main-content" class="main-content p-6 md:pt-4 w-full">
-        <div class="search-input-wrapper mb-6 bg-white rounded-xl shadow-md p-3 flex items-center">
+    <div id="main-content" class="main-content p-4 md:p-6 w-full">
+        <!-- Search Bar -->
+        <div class="search-input-wrapper mb-10 bg-white rounded-xl shadow-md p-3 flex items-center">
           <i class="bi bi-search search-icon text-gray-500 mr-4"></i>
           <form id="room-search-form" method="GET" class="flex-grow flex items-center relative">
               <input type="search" name="search" placeholder="Cari username" value="{{ request('username') }}"
@@ -200,72 +205,98 @@
         </div>
 
         {{-- Riwayat Pemasukan --}}
-        <div class="w-full bg-white rounded-md shadow-md mb-10">
-          <p class="use-poppins text-xl mb-4 p-4 rounded-tr-md rounded-tl-md text-center text-white bg-[#31c594]">Riwayat Pemasukan</p>
-          <table class="table-auto w-full bg-white rounded-md shadow-md">
-            <thead class="text-black">
-              <tr>
-                <th class="w-50">Tanggal</th>
-                <th class="w-100">Tenant</th>
-                <th class="w-auto">Kamar</th>
-                <th class="w-auto">Jumlah</th>
-                <th class="w-auto">Metode</th>
-              </tr>
-            </thead>
-            <tbody class="text-gray-800 text-center">
-              @forelse ($incomePayments as $payment)
-                <tr class="border-b-1 border-gray-300">
-                  <td>{{ Carbon::parse($payment->paid_at)->format('d M Y') }}</td>
-                  <td class="pb-2 text-center">
-                      <strong class="text-120px]">{{ $payment->rentalHistory->tenant?->account?->username ?? '[Username Tidak Ada]' }}</strong>
-                      ({{ $payment->rentalHistory->tenant?->name ?? 'Belum isi nama' }})
-                  </td>
-                  <td >{{ $payment->rentalHistory->room?->room_number ?? '[Kamar Terhapus]' }}</td>
-                  <td>Rp{{ number_format($payment->amount, 0, ',', '.') }}</td>
-                  <td>{{ ucfirst($payment->payment_method ?? '-') }}</td>
-                </tr>
-              @empty
-                <tr>
-                  <td colspan="5" class="p-15">Belum ada pemasukan.</td>
-                </tr>
-              @endforelse
-            </tbody>
-          </table>
+        <div class="relative mb-8">
+          <div class="absolute -top-5 left-0 bg-[#31c594] text-white px-6 py-3 rounded-bl-4xl rounded-tr-4xl z-10">
+            <h2 class="use-poppins text-base md:text-lg font-semibold">Riwayat Pemasukan</h2>
+          </div>
+          <div class="w-full bg-white rounded-lg shadow-md pt-4">
+            <div class="p-4">
+            @forelse ($incomePayments as $payment)
+            <h3 class="mt-4 text-[16px] font-semibold text-gray-800 text-sm">{{ $payment->rentalHistory->tenant?->name ?? 'Anonymous' }}</h3>
+            <div class="bg-white p-4 border-b-1 border-gray-300">
+                <div class="grid grid-cols-1 md:grid-cols-1 gap-2 text-xs">
+                  <div class="flex justify-between text-[14px]">
+                    <span class="text-gray-600">Tanggal:</span>
+                    <span class="text-gray-600 text-right">{{ Carbon::parse($payment->paid_at)->format('d/m/Y') }}</span>
+                  </div>
+                  
+                  <div class="flex justify-between text-[14px]">
+                    <span class="text-gray-600">Tenant:</span>
+                    <span class="text-right">{{ $payment->rentalHistory->tenant?->account?->username ?? '[Username Tidak Ada]' }}</span>
+                  </div>
+                  
+                  <div class="flex justify-between text-[14px]">
+                    <span class="text-gray-600">Kamar:</span>
+                    <span class="text-gray-600 text-right">{{ $payment->rentalHistory->room?->room_number ?? '[Kamar Terhapus]' }}</span>
+                  </div>
+                  
+                  <div class="flex justify-between text-[14px]">
+                    <span class="text-gray-600">Jumlah:</span>
+                    <span class="text-right text-[#31c594]">Rp {{ number_format($payment->amount, 0, ',', '.') }}</span>
+                  </div>
+                  
+                  <div class="flex justify-between text-[14px]">
+                    <span class="text-gray-600">Metode:</span>
+                    <span class="text-gray-600 text-right">{{ ucfirst($payment->payment_method ?? '-') }}</span>
+                  </div>
+                </div>
+              </div>
+            @empty
+              <div class="text-center py-8 text-gray-500">
+                <i class="bi bi-inbox text-4xl mb-2"></i>
+                <p class="text-sm">Belum ada pemasukan.</p>
+              </div>
+            @endforelse
+          </div>
         </div>
 
         {{-- Riwayat Pengeluaran --}}
-        <div class="w-full bg-white rounded-md shadow-md mb-10">
-          <p class="use-poppins text-xl mb-4 p-4 rounded-tr-md rounded-tl-md text-center text-white bg-[#31c594]">Riwayat Pengeluaran</p>
-          <table class="table-auto w-full bg-white rounded-md shadow-md">
-            <thead class="text-black">
-              <tr>
-                <th>Tanggal</th>
-                <th>Tenant</th>
-                <th>Kamar</th>
-                <th>Jumlah</th>
-              </tr>
-            </thead>
-            <tbody class="text-gray-800 text-center">
-              @forelse ($expensePayments as $payment)
-                <tr>
-                  <td>{{ Carbon::parse($payment->paid_at)->format('d M Y') }}</td>
-                  <td>
-                    {{ $payment->rentalHistory->tenant?->name ?? 'Belum isi nama' }}<br>
-                    <small>{{ $payment->rentalHistory->tenant?->account?->username ?? '[Username Tidak Ada]' }}</small>
-                  </td>
-                  <td>{{ $payment->rentalHistory->room?->room_number ?? '[Kamar Terhapus]' }}</td>
-                  <td style="color: red;">Rp{{ number_format($payment->amount, 0, ',', '.') }}</td>
-                </tr>
-              @empty
-                <tr>
-                  <td colspan="5" class="p-15">Belum ada pengeluaran.</td>
-                </tr>
-              @endforelse
-            </tbody>
-          </table>
+        <div class="relative mb-8 mt-10">
+          <div class="absolute -top-5 left-0 bg-[#31c594] text-white px-6 py-3 rounded-bl-4xl rounded-tr-4xl z-10">
+            <h2 class="use-poppins text-base md:text-lg font-semibold">Riwayat Pengeluaran</h2>
+          </div>
+          <div class="w-full bg-white rounded-lg shadow-md pt-12">
+            <div class="p-4 space-y-3">
+            @forelse ($expensePayments as $payment)
+              <div class="bg-white border border-l-4 border-l-red-500 border-gray-200 rounded-lg p-4">
+                <div class="flex justify-between items-start mb-2">
+                  <h3 class="font-semibold text-gray-800 text-sm">{{ $payment->rentalHistory->tenant?->name ?? 'Belum isi nama' }}</h3>
+                  <span class="text-xs text-gray-500">{{ Carbon::parse($payment->paid_at)->format('d/m/Y') }}</span>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                  <div>
+                    <span class="text-gray-600">Tanggal:</span>
+                    <div class="font-medium">{{ Carbon::parse($payment->paid_at)->format('d/m/Y') }}</div>
+                  </div>
+                  
+                  <div>
+                    <span class="text-gray-600">Tenant:</span>
+                    <div class="font-medium">{{ $payment->rentalHistory->tenant?->account?->username ?? '[Username Tidak Ada]' }}</div>
+                  </div>
+                  
+                  <div>
+                    <span class="text-gray-600">Kamar:</span>
+                    <div class="font-medium">{{ $payment->rentalHistory->room?->room_number ?? '[Kamar Terhapus]' }}</div>
+                  </div>
+                  
+                  <div>
+                    <span class="text-gray-600">Jumlah:</span>
+                    <div class="font-medium text-red-600">Rp {{ number_format($payment->amount, 0, ',', '.') }}</div>
+                  </div>
+                </div>
+              </div>
+            @empty
+              <div class="text-center py-8 text-gray-500">
+                <i class="bi bi-inbox text-4xl mb-2"></i>
+                <p class="text-sm">Belum ada pengeluaran.</p>
+              </div>
+            @endforelse
+          </div>
         </div>
       </div>
   </div>
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.getElementById('sidebar');
@@ -339,6 +370,7 @@
         }
     });
   });
+  
   function toggleFilterSortDropdown(button) {
         const dropdown = button.nextElementSibling;
         document.querySelectorAll('.filter-sort-dropdown').forEach(d => {
@@ -348,6 +380,7 @@
         });
         dropdown.classList.toggle('hidden');
         event.stopPropagation();
-    }</script>
+    }
+  </script>
 </body>
 </html>
