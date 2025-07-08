@@ -165,6 +165,14 @@
                         @endif
                       </td>
                     </tr>
+                  @empty
+                    <tr>
+                      <td colspan="8" class="text-center py-8 text-gray-500">
+                        <i class="bi bi-inbox text-2xl mb-2"></i>
+                        <p class="text-sm">Tidak ada permintaan pindah kamar.</p>
+                      </td>
+                    </tr>
+                  @endforelse
                 </tbody>
               </table>
             </div>
