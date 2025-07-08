@@ -58,7 +58,7 @@
     .sidebar-footer {
       margin-top: auto;
       padding: 1rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-1-top: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     .main-content {
@@ -223,7 +223,7 @@
     <div id="main-content" class="main-content p-6 md:pt-4 w-full">
       <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg">
         <div class="bg-gradient-to-r from-[#31c594] to-[#2ba882] rounded-t-2xl text-white p-8 text-center">
-          <h1 class="text-3xl font-bold font-poppins mb-2">Edit Kamar</h1>
+          <h1 class="text-3xl font-bold font-poppins mb-2"><i class="bi bi-pencil-square mr-2"></i>Edit Kamar</h1>
         </div>
         <div class="bg-white rounded-b-2xl shadow-xl p-8">
           @if ($errors->any())
@@ -240,17 +240,17 @@
 
             <div class="mb-4">
               <label class="block font-medium">Tipe Kamar</label>
-              <input type="text" name="type" value="{{ old('type', $room->type) }}" required class="w-full mt-1 p-2 border border-gray-200 rounded-lg">
+              <input type="text" name="type" value="{{ old('type', $room->type) }}" required class="w-full mt-1 p-2 border-1 border-gray-200 rounded-lg">
             </div>
 
             <div class="mb-4">
               <label class="block font-medium">Harga per Bulan</label>
-              <input type="number" name="price" value="{{ old('price', $room->price) }}" required class="w-full mt-1 p-2 border border-gray-200 rounded-lg">
+              <input type="number" name="price" value="{{ old('price', $room->price) }}" required class="w-full mt-1 p-2 border-1 border-gray-200 rounded-lg">
             </div>
 
             <div class="mb-4">
               <label class="block font-medium">Jenis Kelamin yang Diizinkan</label>
-              <select name="gender_type" required class="w-full mt-1 p-2 border border-gray-200 rounded-lg">
+              <select name="gender_type" required class="w-full mt-1 p-2 border-1 border-gray-200 rounded-lg">
                 <option value="male" {{ old('gender_type', $room->gender_type) === 'male' ? 'selected' : '' }}>Laki-laki</option>
                 <option value="female" {{ old('gender_type', $room->gender_type) === 'female' ? 'selected' : '' }}>Perempuan</option>
                 <option value="mixed" {{ old('gender_type', $room->gender_type) === 'mixed' ? 'selected' : '' }}>Campuran</option>
@@ -262,7 +262,7 @@
               <div id="existing-photos" class="flex flex-wrap gap-4 mt-2">
                 @foreach ($room->photos as $photo)
                   <div class="photo-wrapper">
-                    <img src="{{ asset('storage/' . $photo->path) }}" data-id="{{ $photo->id }}" class="ratio-16x9 h-30 object-cover rounded border transition" onclick="toggleSelectPhoto(this)">
+                    <img src="{{ asset('storage/' . $photo->path) }}" data-id="{{ $photo->id }}" class="ratio-16x9 h-30 object-cover rounded border-1 transition" onclick="toggleSelectPhoto(this)">
                     <i class="bi bi-trash delete-icon"></i>
                     <input type="checkbox" name="delete_photos[]" value="{{ $photo->id }}" class="hidden">
                   </div>
@@ -271,13 +271,92 @@
             </div>
 
             <div class="mb-4">
-              <label class="block font-medium">Tambah Foto Baru</label>
+              <label class="block font-medium text-gray-800">Tambah Foto Baru</label>
               <div id="photo-container">
-                <div class="flex gap-4 mt-2">
-                  <input type="file" name="photos[]" accept="image/*" class="block w-full text-sm border border-gray-200 p-3 rounded-md">
+                <div class="flex gap-2 mt-2 items-center">
+                  <label class="w-full cursor-pointer flex items-center justify-between p-3 bg-white border border-gray-300 rounded-md text-sm hover:bg-gray-50">
+                    <span class="file-name truncate text-gray-500">Pilih file...</span>
+                    <span class="text-gray-400 font-medium">Browse</span>
+                    <input type="file" name="photos[]" accept="image/*" class="hidden" onchange="updateFileName(this)">
+                  </label>
+                  <button type="button" onclick="removeField(this)" class="text-red-600 hover:text-red-800 text-lg">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                  <button type="button" onclick="addPhoto()" class="text-lg text-black hover:text-[#31c594]">
+                    <i class="bi bi-plus-lg"></i>
+                  </button>
                 </div>
               </div>
-              <button type="button" onclick="addPhoto()" class="mt-2 text-sm text-green-600 hover:underline">+ Tambah Foto</button>
+              
+            </div>
+            
+            <div class="mb-4">
+              <label class="block font-medium">Fasilitas</label>
+              <div id="facility-container">
+                @forelse ($room->facilities as $facility)
+                  <div class="flex gap-2 mt-2 items-center">
+                    <input type="text" name="facilities[]" value="{{ $facility->name }}" class="w-full p-3 border border-gray-200 rounded-md">
+                    <button type="button" onclick="removeField(this)" class="text-red-600 hover:text-red-800 text-lg">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                    <button type="button" onclick="addFacility()" class="text-black hover:text-[#31c594] text-lg">
+                      <i class="bi bi-plus-lg"></i>
+                    </button>
+                  </div>
+                @empty
+                  <div class="flex gap-2 mt-2 items-center">
+                    <input type="text" name="facilities[]" class="w-full p-3 border border-gray-200 rounded-md">
+                    <button type="button" onclick="removeField(this)" class="text-red-600 hover:text-red-800 text-lg">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                    <button type="button" onclick="addFacility()" class="text-black hover:text-[#31c594] text-lg">
+                      <i class="bi bi-plus-lg"></i>
+                    </button>
+                  </div>
+                @endforelse
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="block font-medium">Aturan</label>
+              <div id="rule-container">
+                @forelse ($room->rules as $rule)
+                  <div class="flex gap-2 mt-2 items-center">
+                    <input type="text" name="rules[]" value="{{ $rule->name }}" class="w-full p-3 border border-gray-200 rounded-md">
+                    <button type="button" onclick="removeField(this)" class="text-red-600 hover:text-red-800 text-lg">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                    <button type="button" onclick="addRule()" class="text-black hover:text-[#31c594] text-lg">
+                      <i class="bi bi-plus-lg"></i>
+                    </button>
+                  </div>
+                @empty
+                  <div class="flex gap-2 mt-2 items-center">
+                    <input type="text" name="rules[]" class="w-full p-3 border border-gray-200 rounded-md">
+                    <button type="button" onclick="removeField(this)" class="text-red-600 hover:text-red-800 text-lg">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                    <button type="button" onclick="addRule()" class="text-black hover:text-[#31c594] text-lg">
+                      <i class="bi bi-plus-lg"></i>
+                    </button>
+                  </div>
+                @endforelse
+              </div>
+            </div>
+
+
+            <div class="mb-6">
+              <label class="block font-medium mb-2">Perbarui Untuk</label>
+              <div class="space-y-2">
+                <label class="inline-flex items-center">
+                  <input type="radio" name="apply_all" value="0" checked class="text-green-600">
+                  <span class="ml-2">Hanya kamar ini</span>
+                </label><br>
+                <label class="inline-flex items-center">
+                  <input type="radio" name="apply_all" value="1" class="text-green-600">
+                  <span class="ml-2">Semua kamar tipe ini ({{ $room->type }})</span>
+                </label>
+              </div>
             </div>
             <button type="submit" class="w-full py-3 bg-[#2ba882] text-white rounded-md transition">Simpan Perubahan</button>
           </form>
@@ -287,24 +366,63 @@
   </div>
 
   <script>
-    function addPhoto() {
+    function addPhoto () {
       const container = document.getElementById('photo-container');
+
       const div = document.createElement('div');
-      div.className = 'flex gap-4 mt-2';
+      div.className = 'flex gap-2 mt-2 items-center';
+
       div.innerHTML = `
-        <input type="file" name="photos[]" accept="image/*" class="block w-full text-sm text-gray-600">
-        <button type="button" onclick="removeField(this)" class="bg-red-600 text-white px-3 py-1 rounded">Hapus</button>
+        <label class="w-full cursor-pointer flex items-center justify-between p-3 bg-white border border-gray-300 rounded-md text-sm hover:bg-gray-50">
+          <span class="file-name truncate text-gray-500">Pilih file...</span>
+          <span class="text-gray-400 font-medium">Browse</span>
+          <input type="file" name="photos[]" accept="image/*" class="hidden"
+                onchange="updateFileName(this)">
+        </label>
+
+        <button type="button"
+                class="text-red-600 hover:text-red-800 text-lg"
+                onclick="removeField(this)">
+          <i class="bi bi-trash"></i>
+        </button>
+
+        <button type="button"
+                class="text-lg text-black hover:text-[#31c594]"
+                onclick="addPhoto()">
+          <i class="bi bi-plus-lg"></i>
+        </button>
       `;
+
       container.appendChild(div);
+    }
+
+    function removeField(btn) {
+      const row = btn.closest('.flex');
+      const container = row.parentElement;
+      if (container.querySelectorAll('.flex').length > 1) {
+        row.remove();
+      } else {
+        alert('Minimal 1 foto harus ada.');
+      }
+    }
+
+    function updateFileName(input) {
+      const span = input.closest('label').querySelector('.file-name');
+      span.textContent = input.files.length ? input.files[0].name : 'Pilih file...';
     }
 
     function addFacility() {
       const container = document.getElementById('facility-container');
       const div = document.createElement('div');
-      div.className = 'flex gap-2 mt-2';
+      div.className = 'flex gap-2 mt-2 items-center';
       div.innerHTML = `
-        <input type="text" name="facilities[]" class="w-full p-2 border border-green-300 rounded-md">
-        <button type="button" class="bg-red-600 text-white px-3 py-1 rounded" onclick="removeField(this)">Hapus</button>
+        <input type="text" name="facilities[]" class="w-full p-3 border border-gray-200 rounded-md">
+        <button type="button" onclick="removeField(this)" class="text-red-600 hover:text-red-800 text-lg">
+          <i class="bi bi-trash"></i>
+        </button>
+        <button type="button" onclick="addFacility()" class="text-black hover:text-[#31c594] text-lg">
+          <i class="bi bi-plus-lg"></i>
+        </button>
       `;
       container.appendChild(div);
     }
@@ -312,21 +430,26 @@
     function addRule() {
       const container = document.getElementById('rule-container');
       const div = document.createElement('div');
-      div.className = 'flex gap-2 mt-2';
+      div.className = 'flex gap-2 mt-2 items-center';
       div.innerHTML = `
-        <input type="text" name="rules[]" class="w-full p-2 border border-green-300 rounded-md">
-        <button type="button" class="bg-red-600 text-white px-3 py-1 rounded" onclick="removeField(this)">Hapus</button>
+        <input type="text" name="rules[]" class="w-full p-3 border border-gray-200 rounded-md">
+        <button type="button" onclick="removeField(this)" class="text-red-600 hover:text-red-800 text-lg">
+          <i class="bi bi-trash"></i>
+        </button>
+        <button type="button" onclick="addRule()" class="text-black hover:text-[#31c594] text-lg">
+          <i class="bi bi-plus-lg"></i>
+        </button>
       `;
       container.appendChild(div);
     }
 
-    function removeField(button) {
-      const group = button.closest('.flex');
-      const container = group.parentElement;
+    function removeField(btn) {
+      const parent = btn.closest('.flex');
+      const container = parent.parentElement;
       if (container.querySelectorAll('.flex').length > 1) {
-        group.remove();
+        parent.remove();
       } else {
-        alert("Minimal 1 input harus ada.");
+        alert('Minimal satu kolom harus tetap ada.');
       }
     }
 
