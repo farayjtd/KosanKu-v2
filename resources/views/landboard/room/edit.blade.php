@@ -4,271 +4,381 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit Kamar</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/font.css">
+  @vite('resources/css/app.css')
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      background: #f5f3f0;
+    .action-button-hidden {
+      display: none !important;
     }
-
-    .main-content {
-      flex: 1;
-      padding: 30px;
-    }
-
-    .card {
-      background: #fffaf6;
-      padding: 30px;
-      border-radius: 14px;
-      max-width: 820px;
-      margin: auto;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
-    }
-
-    h2 {
-      text-align: center;
-      color: #5a4430;
-      margin-bottom: 24px;
-    }
-
-    label {
-      display: block;
-      margin-top: 18px;
-      font-weight: 600;
-      color: #6b4e3d;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 10px;
-      margin-top: 6px;
-      border: 1px solid #d6ccc2;
-      border-radius: 8px;
-      font-size: 14px;
-      background: #fdfdfb;
-      box-sizing: border-box;
-    }
-
-    .group {
-      display: flex;
-      gap: 12px;
-      margin-top: 10px;
-      align-items: center;
-    }
-
-    .remove-btn {
-      background: #b91c1c;
-      color: white;
-      border: none;
-      padding: 6px 10px;
-      border-radius: 6px;
+    .photo-wrapper {
+      position: relative;
+      display: inline-block;
       cursor: pointer;
     }
-
-    .add-btn {
-      margin-top: 12px;
-      background: #4299e1;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 8px;
-      cursor: pointer;
+    .photo-wrapper img {
+      transition: 0.3s ease;
     }
-
-    button[type="submit"] {
-      margin-top: 30px;
-      width: 100%;
-      padding: 14px;
-      background: #6e5947;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      cursor: pointer;
+    .photo-wrapper:hover .delete-icon {
+      opacity: 1;
     }
-
-    button[type="submit"]:hover {
-      background: #5a4430;
+    .delete-icon {
+      position: absolute;
+      top: 2.5rem;
+      right: 4.6rem;
+      padding: 4px;
+      border-radius: 50%;
+      color: #dc2626;
+      font-size: 1.2rem;
+      opacity: 0;
+      transition: 0.2s ease;
     }
-
-    img.preview {
-      width: 100px;
-      border-radius: 8px;
-      margin-top: 6px;
-      border: 1px solid #ddd;
-    }
-
-    .radio-group {
-      margin-top: 14px;
-    }
-
-    .radio-group label {
-      margin-right: 18px;
-      font-weight: normal;
-      color: #4a4a4a;
-    }
-
-    ul.error-list {
-      color: red;
-      margin-top: 12px;
-      list-style: disc;
-      padding-left: 20px;
-    }
-
-    @media (max-width: 768px) {
-      .main-content {
-        padding: 20px;
-      }
-
-      .card {
-        padding: 20px;
-        margin: 20px;
-      }
-
-      .group {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+    .photo-selected {
+      opacity: 0.5;
+      filter: grayscale(100%);
     }
   </style>
 </head>
-<body>
+<body class="bg-cover bg-no-repeat bg-center min-h-screen font-sans" style="background-image: url('/assets/auth.png')">
+  <div id="wrapper" class="flex min-h-screen">
+    @include('components.sidebar-landboard')
 
-  {{-- Sidebar --}}
-  @include('components.sidebar-landboard')
+    <div id="main-content" class="main-content p-6 md:pt-4 w-full">
+      <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg">
+        <div class="bg-gradient-to-r from-[#31c594] to-[#2ba882] rounded-t-2xl text-white p-8 text-center">
+          <h1 class="text-3xl font-bold font-poppins mb-2"><i class="bi bi-pencil-square mr-2"></i>Edit Kamar</h1>
+        </div>
+        <div class="bg-white rounded-b-2xl shadow-xl p-8">
+          @if ($errors->any())
+            <ul class="mb-4 list-disc text-red-600 pl-5">
+              @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          @endif
 
-  <div class="main-content">
-    <div class="card">
-      <h2>Edit Kamar</h2>
+          <form action="{{ route('landboard.rooms.update', $room->id) }}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+            @csrf
+            @method('PUT')
 
-      {{-- Error Messages --}}
-      @if ($errors->any())
-        <ul class="error-list">
-          @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-          @endforeach
-        </ul>
-      @endif
-
-      {{-- Form Edit --}}
-      <form action="{{ route('landboard.rooms.update', $room->id) }}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
-        @csrf
-        @method('PUT')
-
-        <label>Tipe Kamar</label>
-        <input type="text" name="type" value="{{ old('type', $room->type) }}" required>
-
-        <label>Harga per Bulan</label>
-        <input type="number" name="price" value="{{ old('price', $room->price) }}" required>
-
-        <label>Jenis Kelamin yang Diizinkan</label>
-        <select name="gender_type" required>
-          <option value="male" {{ old('gender_type', $room->gender_type) === 'male' ? 'selected' : '' }}>Laki-laki</option>
-          <option value="female" {{ old('gender_type', $room->gender_type) === 'female' ? 'selected' : '' }}>Perempuan</option>
-          <option value="mixed" {{ old('gender_type', $room->gender_type) === 'mixed' ? 'selected' : '' }}>Campuran</option>
-        </select>
-
-        {{-- Foto Lama --}}
-        <label>Foto Lama</label>
-        <div id="existing-photos">
-          @foreach ($room->photos as $photo)
-            <div class="group">
-              <img src="{{ asset('storage/' . $photo->path) }}" class="preview">
-              <label><input type="checkbox" name="delete_photos[]" value="{{ $photo->id }}"> Hapus</label>
+            <div class="mb-4">
+              <label class="block font-medium">Tipe Kamar</label>
+              <input type="text" name="type" value="{{ old('type', $room->type) }}" required class="w-full mt-1 p-2 border-1 border-gray-200 rounded-lg">
             </div>
-          @endforeach
-        </div>
 
-        {{-- Foto Baru --}}
-        <label>Tambah Foto Baru</label>
-        <div id="photo-container">
-          <div class="group">
-            <input type="file" name="photos[]" accept="image/*">
-          </div>
-        </div>
-        <button type="button" class="add-btn" onclick="addPhoto()">+ Tambah Foto</button>
-
-        {{-- Fasilitas --}}
-        <label>Fasilitas</label>
-        <div id="facility-container">
-          @forelse ($room->facilities as $facility)
-            <div class="group">
-              <input type="text" name="facilities[]" value="{{ $facility->name }}">
-              <button type="button" class="remove-btn" onclick="removeField(this)">Hapus</button>
+            <div class="mb-4">
+              <label class="block font-medium">Harga per Bulan</label>
+              <input type="number" name="price" value="{{ old('price', $room->price) }}" required class="w-full mt-1 p-2 border-1 border-gray-200 rounded-lg">
             </div>
-          @empty
-            <div class="group"><input type="text" name="facilities[]"></div>
-          @endforelse
-        </div>
-        <button type="button" class="add-btn" onclick="addFacility()">+ Tambah Fasilitas</button>
 
-        {{-- Aturan --}}
-        <label>Aturan</label>
-        <div id="rule-container">
-          @forelse ($room->rules as $rule)
-            <div class="group">
-              <input type="text" name="rules[]" value="{{ $rule->name }}">
-              <button type="button" class="remove-btn" onclick="removeField(this)">Hapus</button>
+            <div class="mb-4">
+              <label class="block font-medium">Jenis Kelamin yang Diizinkan</label>
+              <select name="gender_type" required class="w-full mt-1 p-2 border-1 border-gray-200 rounded-lg">
+                <option value="male" {{ old('gender_type', $room->gender_type) === 'male' ? 'selected' : '' }}>Laki-laki</option>
+                <option value="female" {{ old('gender_type', $room->gender_type) === 'female' ? 'selected' : '' }}>Perempuan</option>
+                <option value="mixed" {{ old('gender_type', $room->gender_type) === 'mixed' ? 'selected' : '' }}>Campuran</option>
+              </select>
             </div>
-          @empty
-            <div class="group"><input type="text" name="rules[]"></div>
-          @endforelse
-        </div>
-        <button type="button" class="add-btn" onclick="addRule()">+ Tambah Aturan</button>
 
-        {{-- Opsi Update --}}
-        <label>Perbarui Untuk</label>
-        <div class="radio-group">
-          <label><input type="radio" name="apply_all" value="0" checked> Hanya kamar ini</label>
-          <label><input type="radio" name="apply_all" value="1"> Semua kamar tipe ini ({{ $room->type }})</label>
-        </div>
+            <div class="mb-4">
+              <label class="block font-medium">Foto Lama</label>
+              <div id="existing-photos" class="flex flex-wrap gap-4 mt-2">
+                @foreach ($room->photos as $photo)
+                  <div class="photo-wrapper">
+                    <img src="{{ asset('storage/' . $photo->path) }}" data-id="{{ $photo->id }}" class="ratio-16x9 h-30 object-cover rounded border-1 transition" onclick="toggleSelectPhoto(this)">
+                    <i class="bi bi-trash delete-icon"></i>
+                    <input type="checkbox" name="delete_photos[]" value="{{ $photo->id }}" class="hidden">
+                  </div>
+                @endforeach
+              </div>
+            </div>
 
-        <button type="submit">Simpan Perubahan</button>
-      </form>
+            <div class="mb-4">
+              <label class="block font-medium text-gray-800">Tambah Foto Baru</label>
+              <div id="photo-container">
+                <div class="flex gap-2 mt-2 items-center">
+                  <label class="w-full cursor-pointer flex items-center justify-between p-3 bg-white border border-gray-300 rounded-md text-sm hover:bg-gray-50">
+                    <span class="file-name truncate text-gray-500">Pilih file...</span>
+                    <span class="text-gray-400 font-medium">Browse</span>
+                    <input type="file" name="photos[]" accept="image/*" class="hidden" onchange="updateFileName(this)">
+                  </label>
+                  <button type="button" onclick="removeField(this)" class="remove-button-photo bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </div>
+              <button type="button" 
+                id="add-photo-btn"
+                onclick="addPhoto()" class="mt-2 bg-[#31c594] hover:bg-[#2ba882] text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2">
+                <i class="bi bi-plus"></i>Tambah foto
+              </button>
+              
+            </div>
+            
+            <div class="mb-4">
+              <label class="block font-medium">Fasilitas</label>
+              <div id="facility-container">
+                @forelse ($room->facilities as $facility)
+                  <div class="flex gap-2 mt-2 items-center">
+                    <input type="text" name="facilities[]" value="{{ $facility->name }}" class="w-full p-3 border border-gray-200 rounded-md">
+                    <button type="button" onclick="removeField(this)" class="remove-button-facility bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                  <button type="button" 
+                    id="add-facility-button"
+                    onclick="addFacility()" 
+                    class="mt-2 bg-[#31c594] hover:bg-[#2ba882] text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2">
+                    <i class="bi bi-plus"></i>Tambah fasilitas
+                  </button>
+                @empty
+                  <div class="flex gap-2 mt-2 items-center">
+                    <input type="text" name="facilities[]" class="w-full p-3 border border-gray-200 rounded-md">
+                    <button type="button" onclick="removeField(this)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                    <button type="button" onclick="addFacility()" class="text-black hover:text-[#31c594] text-lg">
+                      <i class="bi bi-plus-lg"></i>
+                    </button>
+                  </div>
+                @endforelse
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="block font-medium">Aturan</label>
+              <div id="rule-container">
+                @forelse ($room->rules as $rule)
+                  <div class="flex gap-2 mt-2 items-center">
+                    <input type="text" name="rules[]" value="{{ $rule->name }}" class="w-full p-3 border border-gray-200 rounded-md">
+                    <button type="button" onclick="removeField(this)" class="remove-button-rule bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1">
+                      <i class="bi bi-trash"></i>
+                    </div>
+                  </button>
+                  <button type="button" 
+                    id="add-rule-button"
+                    onclick="addRule()" class="mt-2 bg-[#31c594] hover:bg-[#2ba882] text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2">
+                    <i class="bi bi-plus-lg"></i>Tambah aturan
+                  </button>
+                @empty
+                  <div class="flex gap-2 mt-2 items-center">
+                    <input type="text" name="rules[]" class="w-full p-3 border border-gray-200 rounded-md">
+                    <button type="button" onclick="removeField(this)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                    <button type="button" onclick="addRule()" class="text-black hover:text-[#31c594] text-lg">
+                      <i class="bi bi-plus-lg"></i>
+                    </button>
+                  </div>
+                @endforelse
+              </div>
+            </div>
+
+
+            <div class="mb-6">
+              <label class="block font-medium mb-2">Perbarui Untuk</label>
+              <div class="space-y-2">
+                <label class="inline-flex items-center">
+                  <input type="radio" name="apply_all" value="0" checked class="text-green-600">
+                  <span class="ml-2">Hanya kamar ini</span>
+                </label><br>
+                <label class="inline-flex items-center">
+                  <input type="radio" name="apply_all" value="1" class="text-green-600">
+                  <span class="ml-2">Semua kamar tipe ini ({{ $room->type }})</span>
+                </label>
+              </div>
+            </div>
+            <button type="submit" class="w-full py-3 bg-[#2ba882] text-white rounded-md transition">Simpan Perubahan</button>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
 
-  {{-- Script --}}
   <script>
-    function addPhoto() {
+    function updateActionButton() {
+      const sections = [
+        {
+          selector: 'input[name="facilities[]"]',
+          addBtnId: 'add-facility-button',
+          removeBtnClass: 'remove-button-facility'
+        },
+        {
+          selector: 'input[name="rules[]"]',
+          addBtnId: 'add-rule-button',
+          removeBtnClass: 'remove-button-rule'
+        },
+        {
+          selector: 'input[name="photos[]"]',
+          addBtnId: 'add-photo-button',
+          removeBtnClass: 'remove-button-photo'
+        }
+      ];
+      sections.forEach(({ selector, addBtnId, removeBtnClass }) => {
+        const inputs = document.querySelectorAll(selector);
+        const filled = [...inputs].some(input => input.value.trim() !== '');
+        const addBtn = document.getElementById(addBtnId);
+        const removeBtns = document.querySelectorAll(`.${removeBtnClass}`);
+
+        if (addBtn) {
+          addBtn.classList.toggle('action-button-hidden', !filled);
+        }
+
+        removeBtns.forEach(btn => {
+          btn.classList.toggle('action-button-hidden', !filled);
+        });
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('main-content');
+      const toggleBtn = document.getElementById('toggleSidebar');
+      updateActionButton();
+      document.querySelectorAll('input[name="facilities[]"], input[name="rules[]"], input[name="photos[]"]').forEach(input => {
+        input.addEventListener('input', updateActionButtonsVisibility);
+      });
+      const overlay = document.createElement('div');
+      overlay.className = 'mobile-overlay';
+      overlay.id = 'mobile-overlay';
+      document.body.appendChild(overlay);
+
+      function initializeSidebar() {
+        if (window.innerWidth <= 768) {
+          if (sidebar) {
+            sidebar.classList.add('collapsed');
+            sidebar.classList.remove('mobile-expanded');
+          }
+          if (mainContent) {
+            mainContent.classList.add('collapsed');
+          }
+          overlay.classList.remove('active');
+        } else {
+          if (sidebar) {
+            sidebar.classList.remove('mobile-expanded');
+          }
+          overlay.classList.remove('active');
+        }
+      }
+
+      initializeSidebar();
+
+      if (toggleBtn && sidebar) {
+        toggleBtn.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            if (sidebar.classList.contains('mobile-expanded')) {
+              sidebar.classList.remove('mobile-expanded');
+              sidebar.classList.add('collapsed');
+              overlay.classList.remove('active');
+            } else {
+              sidebar.classList.remove('collapsed');
+              sidebar.classList.add('mobile-expanded');
+              overlay.classList.add('active');
+            }
+          } else {
+            sidebar.classList.toggle('collapsed');
+            if (mainContent) {
+              mainContent.classList.toggle('collapsed');
+            }
+          }
+        });
+      }
+      
+      overlay.addEventListener('click', function() {
+        if (window.innerWidth <= 768) {
+          sidebar.classList.remove('mobile-expanded');
+          sidebar.classList.add('collapsed');
+          overlay.classList.remove('active');
+        }
+      });
+
+      window.addEventListener('resize', function() {
+        initializeSidebar();
+      });
+    });
+    
+    function addPhoto () {
       const container = document.getElementById('photo-container');
+
       const div = document.createElement('div');
-      div.className = 'group';
+      div.className = 'flex gap-2 mt-2 items-center';
+
       div.innerHTML = `
-        <input type="file" name="photos[]" accept="image/*">
-        <button type="button" class="remove-btn" onclick="removeField(this)">Hapus</button>`;
+        <label class="w-full cursor-pointer flex items-center justify-between p-3 bg-white border border-gray-300 rounded-md text-sm hover:bg-gray-50">
+          <span class="file-name truncate text-gray-500">Pilih file...</span>
+          <span class="text-gray-400 font-medium">Browse</span>
+          <input type="file" name="photos[]" accept="image/*" class="hidden"
+                onchange="updateFileName(this)">
+        </label>
+
+        <button type="button"
+                class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1"
+                onclick="removeField(this)">
+          <i class="bi bi-trash"></i>
+        </button>
+
+        <button type="button"
+                class="text-lg text-black hover:text-[#31c594]"
+                onclick="addPhoto()">
+          <i class="bi bi-plus-lg"></i>
+        </button>
+      `;
+
       container.appendChild(div);
+      updateActionButton();
+    }
+
+    function removeField(btn) {
+      const row = btn.closest('.flex');
+      const container = row.parentElement;
+      if (container.querySelectorAll('.flex').length > 1) {
+        row.remove();
+      } else {
+        alert('Minimal 1 foto harus ada.');
+      }
+      updateActionButton();
+    }
+
+    function updateFileName(input) {
+      const span = input.closest('label').querySelector('.file-name');
+      span.textContent = input.files.length ? input.files[0].name : 'Pilih file...';
     }
 
     function addFacility() {
       const container = document.getElementById('facility-container');
       const div = document.createElement('div');
-      div.className = 'group';
+      div.className = 'flex gap-2 mt-2 items-center';
       div.innerHTML = `
-        <input type="text" name="facilities[]">
-        <button type="button" class="remove-btn" onclick="removeField(this)">Hapus</button>`;
+        <input type="text" name="facilities[]" class="w-full p-3 border border-gray-200 rounded-md">
+        <button type="button" onclick="removeField(this)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1">
+          <i class="bi bi-trash"></i>
+        </button>
+        <button type="button" onclick="addFacility()" class="text-black hover:text-[#31c594] text-lg">
+          <i class="bi bi-plus-lg"></i>
+        </button>
+      `;
       container.appendChild(div);
+      updateActionButton();
     }
 
     function addRule() {
       const container = document.getElementById('rule-container');
       const div = document.createElement('div');
-      div.className = 'group';
+      div.className = 'flex gap-2 mt-2 items-center';
       div.innerHTML = `
-        <input type="text" name="rules[]">
-        <button type="button" class="remove-btn" onclick="removeField(this)">Hapus</button>`;
+        <input type="text" name="rules[]" class="w-full p-3 border border-gray-200 rounded-md">
+        <button type="button" onclick="removeField(this)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1">
+          <i class="bi bi-trash"></i>
+        </button>
+        <button type="button" onclick="addRule()" class="text-black hover:text-[#31c594] text-lg">
+          <i class="bi bi-plus-lg"></i>
+        </button>
+      `;
       container.appendChild(div);
-    }
-
-    function removeField(button) {
-      const group = button.closest('.group');
-      const container = group.parentElement;
-      if (container.querySelectorAll('.group').length > 1) {
-        group.remove();
-      } else {
-        alert("Minimal 1 input harus ada.");
-      }
+      updateActionButton();
     }
 
     function validateForm() {
@@ -300,7 +410,12 @@
 
       return true;
     }
+    function toggleSelectPhoto(img) {
+      const wrapper = img.closest('.photo-wrapper');
+      const checkbox = wrapper.querySelector('input[type="checkbox"]');
+      const selected = img.classList.toggle('photo-selected');
+      checkbox.checked = selected;
+    }
   </script>
-
 </body>
 </html>

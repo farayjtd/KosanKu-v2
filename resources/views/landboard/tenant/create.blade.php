@@ -6,145 +6,6 @@
   <title>Buat Akun Tenant</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
   @vite('resources/css/app.css')
-  <style>[x-cloak]{display:none}
-    .sidebar.collapsed {
-      width: 80px;
-    }
-
-    .sidebar.collapsed .menu-text,
-    .sidebar.collapsed .menu-title,
-    .sidebar.collapsed .group-title,
-    .sidebar.collapsed .logo-text,
-    .sidebar.collapsed .profile-btn .btn-text,
-    .sidebar.collapsed .logout-btn .btn-text {
-      display: none;
-    }
-
-    .sidebar.collapsed .menu-item,
-    .sidebar.collapsed .profile-btn,
-    .sidebar.collapsed .logout-btn {
-      justify-content: center;
-      padding: 0.45rem;
-      min-height: 48px;
-    }
-    .sidebar.collapsed .menu-item {
-        min-height: unset;
-    }
-
-    .sidebar-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding: 1rem;
-    }
-
-    .sidebar-footer {
-      margin-top: auto;
-      padding: 1rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .main-content {
-      margin-left: 240px;
-      width: calc(100% - 240px);
-      transition: all 0.3s ease;
-      min-height: 100vh;
-    }
-
-    .main-content.collapsed {
-      margin-left: 80px;
-      width: calc(100% - 80px);
-    }
-
-    @media (max-width: 768px) {
-      .sidebar {
-        width: 80px;
-      }
-      .sidebar .menu-text,
-      .sidebar .menu-title,
-      .sidebar .group-title,
-      .sidebar .logo-text,
-      .sidebar .profile-btn .btn-text,
-      .sidebar .logout-btn .btn-text {
-        display: none;
-      }
-      .sidebar .menu-item {
-        justify-content: center;
-        padding: 0.75rem;
-      }
-      .sidebar .profile-btn,
-      .sidebar .logout-btn {
-        padding: 0.75rem;
-        justify-content: center;
-        min-height: 48px;
-      }
-      .main-content {
-        margin-left: 80px;
-        width: calc(100% - 80px);
-      }
-      .main-content.collapsed {
-        margin-left: 80px;
-        width: calc(100% - 80px);
-      }
-    }
-
-    @media (max-width: 640px) {
-      .sidebar {
-        width: 60px;
-      }
-      .sidebar .menu-item {
-        padding: 0.5rem;
-      }
-      .sidebar .profile-btn,
-      .sidebar .logout-btn {
-        padding: 0.5rem;
-        min-height: 40px;
-      }
-      .main-content {
-        margin-left: 60px;
-        width: calc(100% - 60px);
-      }
-      .main-content.collapsed {
-        margin-left: 60px;
-        width: calc(100% - 60px);
-      }
-      @media (max-width: 768px) {
-        .sidebar.mobile-expanded {
-          width: 100vw !important;
-          z-index: 60;
-        }
-        .sidebar.mobile-expanded .menu-text,
-        .sidebar.mobile-expanded .menu-title,
-        .sidebar.mobile-expanded .group-title,
-        .sidebar.mobile-expanded .logo-text,
-        .sidebar.mobile-expanded .btn-text {
-          display: block !important;
-        }
-        .sidebar.mobile-expanded .menu-item {
-          justify-content: flex-start !important;
-          padding: 0.5rem 1rem !important;
-        }
-        .sidebar.mobile-expanded .profile-btn,
-        .sidebar.mobile-expanded .logout-btn {
-          justify-content: center !important;
-          padding: 0.5rem 1rem !important;
-        }
-        .mobile-overlay {
-          display: none;
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100vw;
-          height: 100vh;
-          background: rgba(0, 0, 0, 0.5);
-          z-index: 50;
-        }
-        .mobile-overlay.active {
-          display: block;
-        }
-      }
-    }
-  </style>
 </head>
 <body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen w-full">
@@ -164,13 +25,13 @@
           {{-- Flash Messages --}}
           @if(session('success'))
             <div class="mb-4 px-4 py-2 rounded-lg bg-emerald-100 text-emerald-700 border border-emerald-300">
-              <i class="bi bi-check-circle-fill mr-2"></i> {{ session('success') }}
+              <i class="bi bi-check-circle mr-2"></i> {{ session('success') }}
             </div>
           @endif
 
           @if($errors->any())
             <div class="mb-4 px-4 py-2 rounded-lg bg-red-100 text-red-700 border border-red-300">
-              <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+              <i class="bi bi-exclamation-triangle mr-2"></i>
               <ul class="list-disc list-inside">
                 @foreach($errors->all() as $error)
                   <li>{{ $error }}</li>
@@ -184,28 +45,28 @@
 
             <div>
               <label class="block font-medium text-sm text-gray-700">
-                <i class="bi bi-person-fill mr-1"></i> Username
+                <i class="bi bi-person mr-1"></i> Username
               </label>
               <input type="text" name="username" value="{{ old('username') }}" required class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20">
             </div>
 
             <div>
               <label class="block font-medium text-sm text-gray-700">
-                <i class="bi bi-lock-fill mr-1"></i> Password
+                <i class="bi bi-lock mr-1"></i> Password
               </label>
               <input type="password" name="password" required class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20">
             </div>
 
             <div>
               <label class="block font-medium text-sm text-gray-700">
-                <i class="bi bi-lock-fill mr-1"></i> Konfirmasi Password
+                <i class="bi bi-lock mr-1"></i> Konfirmasi Password
               </label>
               <input type="password" name="password_confirmation" required class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20">
             </div>
 
             <div>
               <label class="block font-medium text-sm text-gray-700">
-                <i class="bi bi-house-door-fill mr-1"></i> Pilih Kamar
+                <i class="bi bi-house-door mr-1"></i> Pilih Kamar
               </label>
               <select name="room_id" required class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20">
                 <option value="">-- Pilih Kamar --</option>

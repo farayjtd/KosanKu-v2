@@ -10,148 +10,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/font.css">
-  <script src="{{ asset('js/sidebar.js') }}" defer></script>
   @vite('resources/css/app.css')
-
   <style>
-    .sidebar.collapsed {
-      width: 80px;
-    }
-
-    .sidebar.collapsed .menu-text,
-    .sidebar.collapsed .menu-title,
-    .sidebar.collapsed .group-title,
-    .sidebar.collapsed .logo-text,
-    .sidebar.collapsed .profile-btn .btn-text,
-    .sidebar.collapsed .logout-btn .btn-text {
-      display: none;
-    }
-
-    .sidebar.collapsed .menu-item,
-    .sidebar.collapsed .profile-btn,
-    .sidebar.collapsed .logout-btn {
-      justify-content: center;
-      padding: 0.45rem;
-      min-height: 48px;
-    }
-    .sidebar.collapsed .menu-item {
-        min-height: unset;
-    }
-
-    .sidebar-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding: 1rem;
-    }
-
-    .sidebar-footer {
-      margin-top: auto;
-      padding: 1rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .main-content {
-      margin-left: 240px;
-      width: calc(100% - 240px);
-      transition: all 0.3s ease;
-      min-height: 100vh;
-    }
-
-    .main-content.collapsed {
-      margin-left: 80px;
-      width: calc(100% - 80px);
-    }
-
-    @media (max-width: 768px) {
-      .sidebar {
-        width: 80px;
-      }
-      .sidebar .menu-text,
-      .sidebar .menu-title,
-      .sidebar .group-title,
-      .sidebar .logo-text,
-      .sidebar .profile-btn .btn-text,
-      .sidebar .logout-btn .btn-text {
-        display: none;
-      }
-      .sidebar .menu-item {
-        justify-content: center;
-        padding: 0.75rem;
-      }
-      .sidebar .profile-btn,
-      .sidebar .logout-btn {
-        padding: 0.75rem;
-        justify-content: center;
-        min-height: 48px;
-      }
-      .main-content {
-        margin-left: 80px;
-        width: calc(100% - 80px);
-      }
-      .main-content.collapsed {
-        margin-left: 80px;
-        width: calc(100% - 80px);
-      }
-    }
-
-    @media (max-width: 640px) {
-      .sidebar {
-        width: 60px;
-      }
-      .sidebar .menu-item {
-        padding: 0.5rem;
-      }
-      .sidebar .profile-btn,
-      .sidebar .logout-btn {
-        padding: 0.5rem;
-        min-height: 40px;
-      }
-      .main-content {
-        margin-left: 60px;
-        width: calc(100% - 60px);
-      }
-      .main-content.collapsed {
-        margin-left: 60px;
-        width: calc(100% - 60px);
-      }
-      @media (max-width: 768px) {
-        .sidebar.mobile-expanded {
-          width: 100vw !important;
-          z-index: 60;
-        }
-        .sidebar.mobile-expanded .menu-text,
-        .sidebar.mobile-expanded .menu-title,
-        .sidebar.mobile-expanded .group-title,
-        .sidebar.mobile-expanded .logo-text,
-        .sidebar.mobile-expanded .btn-text {
-          display: block !important;
-        }
-        .sidebar.mobile-expanded .menu-item {
-          justify-content: flex-start !important;
-          padding: 0.5rem 1rem !important;
-        }
-        .sidebar.mobile-expanded .profile-btn,
-        .sidebar.mobile-expanded .logout-btn {
-          justify-content: center !important;
-          padding: 0.5rem 1rem !important;
-        }
-        .mobile-overlay {
-          display: none;
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100vw;
-          height: 100vh;
-          background: rgba(0, 0, 0, 0.5);
-          z-index: 50;
-        }
-        .mobile-overlay.active {
-          display: block;
-        }
-      }
-    }
-
     .card-container {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -167,6 +27,12 @@
       display: flex; /* Use flexbox for layout inside the card */
       overflow: hidden; /* Ensure rounded corners on image */
       position: relative;
+    }
+    .carousel-img {
+      display: none;
+    }
+    .carousel-img.active {
+      display: block;
     }
 
     .room-card .photo-section {
@@ -475,18 +341,18 @@
       <div class="flex flex-col sm:flex-row bg-white rounded-xl shadow-md overflow-hidden">
         <!-- Photo section -->
         <div class="relative sm:w-1/3 h-48 sm:h-auto">
-          <div class="h-full" data-room-id="{{ $room->id }}">
+          <div class="h-full photo-carousel" data-room-id="{{ $room->id }}">
             @forelse ($room->photos as $index => $photo)
-            <img src="{{ asset('storage/'.$photo->path) }}"
-                class="absolute inset-0 w-full h-full object-cover {{ $index === 0 ? 'block' : 'hidden' }}">
+              <img src="{{ asset('storage/'.$photo->path) }}"
+                  class="carousel-img {{ $index === 0 ? 'active' : '' }}">
             @empty
-            <img src="https://via.placeholder.com/400x250?text=No+Image"
-                class="absolute inset-0 w-full h-full object-cover">
+              <img src="https://via.placeholder.com/400x250?text=No+Image"
+                  class="carousel-img active">
             @endforelse
 
             @if ($room->photos->count() > 1)
-            <button class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded p-1" onclick="prevPhoto({{ $room->id }})">&#10094;</button>
-            <button class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded p-1" onclick="nextPhoto({{ $room->id }})">&#10095;</button>
+              <button class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded p-1" onclick="prevPhoto('{{ $room->id }}')">&#10094;</button>
+              <button class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded p-1" onclick="nextPhoto('{{ $room->id }}')">&#10095;</button>
             @endif
           </div>
         </div>
@@ -509,7 +375,6 @@
             </p>
           </div>
 
-
           <div class="flex flex-col text-xs md:text-sm">
             <span class="mt-2"><i class="bi bi-gender-ambiguous mr-2"></i>Gender : {{ ucfirst($room->gender_type) }}</span>
             <span class="mt-1 mb-2"><i class="bi bi-bar-chart-line mr-2"></i>Status :
@@ -518,13 +383,13 @@
           </div>
 
           <div class="mt-auto grid grid-cols-4 gap-2 text-center text-xs">
-            <a href="{{ route('landboard.rooms.show', $room->id) }}" class="flex items-center justify-center gap-1 py-2 bg-emerald-500 text-white rounded-md hover:bg-emerald-600 transition"><i class="bi bi-info-circle-fill text-base"></i><span class="hidden md:inline">Detail</span></a>
-            <a href="{{ route('landboard.rooms.duplicate-form', $room->id) }}" class="flex items-center justify-center gap-1 py-2 bg-emerald-500 text-white rounded-md hover:bg-emerald-600 transition"><i class="bi bi-files text-base"></i><span class="hidden md:inline">Duplikat</span></a>
-            <a href="{{ route('landboard.rooms.edit-form', $room->id) }}" class="flex items-center justify-center gap-1 py-2 bg-emerald-500 text-white rounded-md hover:bg-emerald-600 transition"><i class="bi bi-pencil-square text-base"></i><span class="hidden md:inline">Edit</span></a>
+            <a href="{{ route('landboard.rooms.show', $room->id) }}" class="flex items-center justify-center gap-1 py-2 bg-emerald-500 text-white rounded-md hover:bg-emerald-600"><i class="bi bi-info-circle text-base"></i><span class="hidden md:inline">Detail</span></a>
+            <a href="{{ route('landboard.rooms.duplicate-form', $room->id) }}" class="flex items-center justify-center gap-1 py-2 bg-emerald-500 text-white rounded-md hover:bg-emerald-600"><i class="bi bi-files text-base"></i><span class="hidden md:inline">Duplikat</span></a>
+            <a href="{{ route('landboard.rooms.edit-form', $room->id) }}" class="flex items-center justify-center gap-1 py-2 bg-emerald-500 text-white rounded-md hover:bg-emerald-600"><i class="bi bi-pencil-square text-base"></i><span class="hidden md:inline">Edit</span></a>
             <form action="{{ route('landboard.rooms.destroy', $room->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus kamar ini?')" class="contents">
               @csrf
               @method('DELETE')
-              <button type="submit" class="flex items-center justify-center gap-1 py-2 bg-red-400 text-white rounded-md hover:bg-red-600 transition"><i class="bi bi-trash-fill text-base"></i><span class="hidden md:inline">Hapus</span></button>
+              <button type="submit" class="flex items-center justify-center gap-1 py-2 bg-red-400 text-white rounded-md hover:bg-red-600 transition"><i class="bi bi-trash text-base"></i><span class="hidden md:inline">Hapus</span></button>
             </form>
           </div>
         </div>
@@ -610,23 +475,24 @@
   </script>
   {{-- Carousel Script --}}
   <script>
-    function nextPhoto(roomId) {
-      const container = document.querySelector(`.photo-carousel[data-room-id="${roomId}"]`);
-      const images = container.querySelectorAll('.carousel-img');
-      let activeIndex = [...images].findIndex(img => img.classList.contains('active'));
-      images[activeIndex].classList.remove('active');
-      const nextIndex = (activeIndex + 1) % images.length;
-      images[nextIndex].classList.add('active');
-    }
+  function nextPhoto(roomId) {
+    const container = document.querySelector(`.photo-carousel[data-room-id="${roomId}"]`);
+    const images = container.querySelectorAll('.carousel-img');
+    let activeIndex = [...images].findIndex(img => img.classList.contains('active'));
+    images[activeIndex].classList.remove('active');
+    const nextIndex = (activeIndex + 1) % images.length;
+    images[nextIndex].classList.add('active');
+  }
 
-    function prevPhoto(roomId) {
-      const container = document.querySelector(`.photo-carousel[data-room-id="${roomId}"]`);
-      const images = container.querySelectorAll('.carousel-img');
-      let activeIndex = [...images].findIndex(img => img.classList.contains('active'));
-      images[activeIndex].classList.remove('active');
-      const prevIndex = (activeIndex - 1 + images.length) % images.length;
-      images[prevIndex].classList.add('active');
-    }
+  function prevPhoto(roomId) {
+    const container = document.querySelector(`.photo-carousel[data-room-id="${roomId}"]`);
+    const images = container.querySelectorAll('.carousel-img');
+    let activeIndex = [...images].findIndex(img => img.classList.contains('active'));
+    images[activeIndex].classList.remove('active');
+    const prevIndex = (activeIndex - 1 + images.length) % images.length;
+    images[prevIndex].classList.add('active');
+  }
+
 
     function toggleFilterSortDropdown(button) {
         const dropdown = button.nextElementSibling;

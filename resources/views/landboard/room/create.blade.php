@@ -9,192 +9,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/font.css">
-  <script src="{{ asset('js/sidebar.js') }}" defer></script>
   @vite('resources/css/app.css')
   <style>
-    /* Sidebar Styles */
-    .sidebar.collapsed {
-      width: 80px;
-    }
-    
-    .sidebar.collapsed .menu-text {
-      display: none;
-    }
-    
-    .sidebar.collapsed .menu-title {
-      display: none;
-    }
-    
-    .sidebar.collapsed .group-title {
-      display: none;
-    }
-    
-    .sidebar.collapsed .logo-text {
-      display: none;
-    }
-    
-    .sidebar.collapsed .menu-item {
-      justify-content: center;
-      padding: 0.45rem;
-    }
-    
-    .sidebar.collapsed .profile-btn,
-    .sidebar.collapsed .logout-btn {
-      padding: 0.45rem;
-      justify-content: center;
-      min-height: 48px;
-    }
-    
-    .sidebar.collapsed .profile-btn .btn-text,
-    .sidebar.collapsed .logout-btn .btn-text {
-      display: none;
-    }
-    
-    .sidebar-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding: 1rem;
-    }
-    
-    .sidebar-footer {
-      margin-top: auto;
-      padding: 1rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .main-content {
-      margin-left: 240px;
-      width: calc(100% - 240px);
-      transition: all 0.3s ease;
-      min-height: 100vh;
-    }
-    
-    .main-content.collapsed {
-      margin-left: 80px;
-      width: calc(100% - 80px);
-    }
-    
-    @media (max-width: 768px) {
-      .sidebar {
-        width: 80px;
-      }
-      
-      .sidebar .menu-text {
-        display: none;
-      }
-      
-      .sidebar .menu-title {
-        display: none;
-      }
-      
-      .sidebar .group-title {
-        display: none;
-      }
-      
-      .sidebar .logo-text {
-        display: none;
-      }
-      
-      .sidebar .menu-item {
-        justify-content: center;
-        padding: 0.75rem;
-      }
-      
-      .sidebar .profile-btn,
-      .sidebar .logout-btn {
-        padding: 0.75rem;
-        justify-content: center;
-        min-height: 48px;
-      }
-      
-      .sidebar .profile-btn .btn-text,
-      .sidebar .logout-btn .btn-text {
-        display: none;
-      }
-      
-      .main-content {
-        margin-left: 80px;
-        width: calc(100% - 80px);
-      }
-      
-      .main-content.collapsed {
-        margin-left: 80px;
-        width: calc(100% - 80px);
-      }
-      
-      .sidebar.mobile-expanded {
-        width: 100vw !important;
-        z-index: 60;
-      }
-      
-      .sidebar.mobile-expanded .menu-text,
-      .sidebar.mobile-expanded .menu-title,
-      .sidebar.mobile-expanded .group-title,
-      .sidebar.mobile-expanded .logo-text,
-      .sidebar.mobile-expanded .btn-text {
-        display: block !important;
-      }
-      
-      .sidebar.mobile-expanded .menu-item {
-        justify-content: flex-start !important;
-        padding: 0.5rem 1rem !important;
-      }
-      
-      .sidebar.mobile-expanded .profile-btn,
-      .sidebar.mobile-expanded .logout-btn {
-        justify-content: center !important;
-        padding: 0.5rem 1rem !important;
-      }
-      
-      .mobile-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 50;
-      }
-      
-      .mobile-overlay.active {
-        display: block;
-      }
-    }
-    
-    @media (max-width: 640px) {
-      .sidebar {
-        width: 60px;
-      }
-      
-      .sidebar .menu-item {
-        padding: 0.5rem;
-      }
-      
-      .sidebar .profile-btn,
-      .sidebar .logout-btn {
-        padding: 0.5rem;
-        min-height: 40px;
-      }
-      
-      .main-content {
-        margin-left: 60px;
-        width: calc(100% - 60px);
-      }
-      
-      .main-content.collapsed {
-        margin-left: 60px;
-        width: calc(100% - 60px);
-      }
+    .action-button-hidden {
+      display: none !important;
     }
   </style>
+
 </head>
 <body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
     {{-- Sidebar --}}
     @include('components.sidebar-landboard')
-
     <div id="main-content" class="main-content p-6">
       {{-- Pesan Sukses --}}
       @if(session('success'))
@@ -292,13 +118,20 @@
                          placeholder="Contoh: AC, WiFi, Lemari" 
                          required>
                   <button type="button" 
-                          class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1" 
+                          class="remove-button-facility bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1" 
                           onclick="removeField(this)">
                     <i class="bi bi-trash"></i>
                   </button>
+                  <!-- <button type="button" 
+                      id="add-facility-button"
+                      class=" bg-[#31c594] hover:bg-[#2ba882] text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2" 
+                      onclick="addField('facility-container', 'facilities[]')">
+                      <i class="bi bi-plus"></i>
+                  </button> -->
                 </div>
               </div>
               <button type="button" 
+                      id="add-facility-button"
                       class="mt-2 bg-[#31c594] hover:bg-[#2ba882] text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2" 
                       onclick="addField('facility-container', 'facilities[]')">
                 <i class="bi bi-plus"></i>Tambah Fasilitas
@@ -317,13 +150,14 @@
                          placeholder="Contoh: Tidak boleh merokok, Jam malam 22:00" 
                          required>
                   <button type="button" 
-                          class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1" 
+                          class="remove-button-rule bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1" 
                           onclick="removeField(this)">
                     <i class="bi bi-trash"></i>
                   </button>
                 </div>
               </div>
               <button type="button" 
+                      id="add-rule-button"
                       class="mt-2 bg-[#31c594] hover:bg-[#2ba882] text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2" 
                       onclick="addField('rule-container', 'rules[]')">
                 <i class="bi bi-plus"></i>Tambah Aturan
@@ -342,13 +176,14 @@
                          accept="image/*" 
                          required>
                   <button type="button" 
-                          class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1" 
+                          class="remove-button-photo bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1" 
                           onclick="removeField(this)">
                     <i class="bi bi-trash"></i>
                   </button>
                 </div>
               </div>
               <button type="button" 
+                      id="add-photo-button"
                       class="mt-2 bg-[#31c594] hover:bg-[#2ba882] text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2" 
                       onclick="addField('photo-container', 'photos[]', 'file')">
                 <i class="bi bi-plus"></i>Tambah Foto
@@ -366,12 +201,48 @@
   </div>
 
   <script>
-    // Sidebar functionality
+    function updateActionButtonsVisibility() {
+    const sections = [
+      {
+        selector: 'input[name="facilities[]"]',
+        addBtnId: 'add-facility-button',
+        removeBtnClass: 'remove-button-facility'
+      },
+      {
+        selector: 'input[name="rules[]"]',
+        addBtnId: 'add-rule-button',
+        removeBtnClass: 'remove-button-rule'
+      },
+      {
+        selector: 'input[name="photos[]"]',
+        addBtnId: 'add-photo-button',
+        removeBtnClass: 'remove-button-photo'
+      }
+    ];
+
+    sections.forEach(({ selector, addBtnId, removeBtnClass }) => {
+      const inputs = document.querySelectorAll(selector);
+      const filled = [...inputs].some(input => input.value.trim() !== '');
+      const addBtn = document.getElementById(addBtnId);
+      const removeBtns = document.querySelectorAll(`.${removeBtnClass}`);
+
+      if (addBtn) {
+        addBtn.classList.toggle('action-button-hidden', !filled);
+      }
+
+      removeBtns.forEach(btn => {
+        btn.classList.toggle('action-button-hidden', !filled);
+      });
+    });
+  }
     document.addEventListener('DOMContentLoaded', function() {
       const sidebar = document.getElementById('sidebar');
       const mainContent = document.getElementById('main-content');
       const toggleBtn = document.getElementById('toggleSidebar');
-      
+      updateActionButtonsVisibility();
+      document.querySelectorAll('input[name="facilities[]"], input[name="rules[]"], input[name="photos[]"]').forEach(input => {
+        input.addEventListener('input', updateActionButtonsVisibility);
+      });
       const overlay = document.createElement('div');
       overlay.className = 'mobile-overlay';
       overlay.id = 'mobile-overlay';
@@ -431,7 +302,6 @@
       });
     });
 
-    // Form functionality
     function removeField(button) {
       const group = button.closest('.flex');
       const container = group.parentElement;
@@ -440,28 +310,39 @@
       } else {
         alert('Minimal 1 input harus ada.');
       }
+      updateActionButtonsVisibility();
+
     }
 
     function addField(containerId, inputName, type = 'text') {
+      if (inputName === 'photos[]' && getPhotoInputCount() >= 7) {
+        alert('Maksimal hanya bisa upload 7 foto.');
+        return;
+      }
+
       const container = document.getElementById(containerId);
       const div = document.createElement('div');
       div.className = 'flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center';
-      
+
       const placeholder = getPlaceholder(inputName);
       const inputClass = 'flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20';
       const fileInputClass = inputClass + ' file:mr-4 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-[#31c594] file:text-white hover:file:bg-[#2ba882]';
-      
+
       div.innerHTML = `
         <input type="${type}" name="${inputName}" 
-               class="${type === 'file' ? fileInputClass : inputClass}" 
-               ${type === 'file' ? 'accept="image/*"' : `placeholder="${placeholder}"`} required>
+              class="${type === 'file' ? fileInputClass : inputClass}" 
+              ${type === 'file' ? 'accept="image/*"' : `placeholder="${placeholder}"`} required>
         <button type="button" 
                 class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1" 
                 onclick="removeField(this)">
           <i class="bi bi-trash"></i>
         </button>`;
+
       container.appendChild(div);
+      updateActionButtonsVisibility();
+
     }
+
 
     function getPlaceholder(inputName) {
       if (inputName.includes('facilities')) {
@@ -471,6 +352,11 @@
       }
       return '';
     }
+
+    function getPhotoInputCount() {
+      return document.querySelectorAll('#photo-container input[type="file"]').length;
+    }
+
 
     function validateForm() {
       const checks = [
@@ -486,8 +372,14 @@
         }
       }
 
+      if (getPhotoInputCount() > 7) {
+        alert('Anda hanya boleh mengunggah maksimal 7 foto.');
+        return false;
+      }
+
       return true;
     }
+
   </script>
 </body>
 </html>

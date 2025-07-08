@@ -11,201 +11,21 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/font.css">
-  <script src="{{ asset('js/sidebar.js') }}" defer></script>
   @vite('resources/css/app.css')
-  <style>
-        .sidebar.collapsed {
-            width: 80px;
-        }
-        
-        .sidebar.collapsed .menu-text {
-            display: none;
-        }
-        
-        .sidebar.collapsed .menu-title {
-            display: none;
-        }
-        
-        .sidebar.collapsed .group-title {
-            display: none;
-        }
-        
-        .sidebar.collapsed .logo-text {
-            display: none;
-        }
-        
-        .sidebar.collapsed .menu-item {
-            justify-content: center;
-            padding: 0.45rem;
-        }
-        
-        .sidebar.collapsed .profile-btn,
-        .sidebar.collapsed .logout-btn {
-            padding: 0.45rem;
-            justify-content: center;
-            min-height: 48px;
-        }
-        
-        .sidebar.collapsed .profile-btn .btn-text,
-        .sidebar.collapsed .logout-btn .btn-text {
-            display: none;
-        }
-        
-        .sidebar-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 1rem;
-        }
-        
-        .sidebar-footer {
-            margin-top: auto;
-            padding: 1rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .main-content {
-            margin-left: 240px;
-            width: calc(100% - 240px);
-            transition: all 0.3s ease;
-            min-height: 100vh;
-        }
-        
-        .main-content.collapsed {
-            margin-left: 80px;
-            width: calc(100% - 80px);
-        }
-        
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 80px;
-            }
-            
-            .sidebar .menu-text {
-                display: none;
-            }
-            
-            .sidebar .menu-title {
-                display: none;
-            }
-            
-            .sidebar .group-title {
-                display: none;
-            }
-            
-            .sidebar .logo-text {
-                display: none;
-            }
-            
-            .sidebar .menu-item {
-                justify-content: center;
-                padding: 0.75rem;
-            }
-            
-            .sidebar .profile-btn,
-            .sidebar .logout-btn {
-                padding: 0.75rem;
-                justify-content: center;
-                min-height: 48px;
-            }
-            
-            .sidebar .profile-btn .btn-text,
-            .sidebar .logout-btn .btn-text {
-                display: none;
-            }
-            
-            .main-content {
-                margin-left: 80px;
-                width: calc(100% - 80px);
-            }
-            
-            .main-content.collapsed {
-                margin-left: 80px;
-                width: calc(100% - 80px);
-            }
-        }
-        
-        @media (max-width: 640px) {
-            .sidebar {
-                width: 60px;
-            }
-            
-            .sidebar .menu-item {
-                padding: 0.5rem;
-            }
-            
-            .sidebar .profile-btn,
-            .sidebar .logout-btn {
-                padding: 0.5rem;
-                min-height: 40px;
-            }
-            
-            .main-content {
-                margin-left: 60px;
-                width: calc(100% - 60px);
-            }
-            
-            .main-content.collapsed {
-                margin-left: 60px;
-                width: calc(100% - 60px);
-            }
-            @media (max-width: 768px) {
-              .sidebar.mobile-expanded {
-                width: 100vw !important;
-                z-index: 60;
-              }
-              
-              .sidebar.mobile-expanded .menu-text,
-              .sidebar.mobile-expanded .menu-title,
-              .sidebar.mobile-expanded .group-title,
-              .sidebar.mobile-expanded .logo-text,
-              .sidebar.mobile-expanded .btn-text {
-                display: block !important;
-              }
-              
-              .sidebar.mobile-expanded .menu-item {
-                justify-content: flex-start !important;
-                padding: 0.5rem 1rem !important;
-              }
-              
-              .sidebar.mobile-expanded .profile-btn,
-              .sidebar.mobile-expanded .logout-btn {
-                justify-content: center !important;
-                padding: 0.5rem 1rem !important;
-              }
-              
-              .mobile-overlay {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                background: rgba(0, 0, 0, 0.5);
-                z-index: 50;
-              }
-              
-              .mobile-overlay.active {
-                display: block;
-              }
-            }
-        }
-    </style>
 </head>
 <body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
     @include('components.sidebar-landboard')
     <div id="main-content" class="main-content p-6 md:pt-4">
       <p class="text-xl p-4 rounded-xl text-left text-white bg-[#31c594]">Selamat datang kembali, <strong class="use-poppins">{{ Auth::user()->landboard->name }}</strong></p>
-      
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
         <div class="bg-white p-6 rounded-xl shadow">
           <div class="flex items-center justify-between">
             <div>
-              <h3 class="text-lg font-semibold text-black mb-2">Total Penghuni</h3>
-              <p class="text-3xl font-bold text-gray-800">{{ $totalTenants }}</p>
+              <h3 class="text-lg font-semibold text-gray-700 mb-2">Total Penghuni</h3>
+              <p class="text-3xl font-bold text-gray-700">{{ $totalTenants }}</p>
             </div>
-            <div class="text-4xl text-black">
+            <div class="text-4xl text-gray-700">
               <i class="bi bi-people"></i>
             </div>
           </div>
@@ -214,7 +34,7 @@
         <div class="bg-white p-6 rounded-xl shadow">
           <div class="flex items-center justify-between">
             <div>
-              <h3 class="text-lg font-semibold text-black mb-2">Data Kamar</h3>
+              <h3 class="text-lg font-semibold text-gray-700 mb-2">Data Kamar</h3>
               <div class="space-y-1">
                 <div class="flex justify-between text-sm">
                   <span>Total:</span>
@@ -230,7 +50,7 @@
                 </div>
               </div>
             </div>
-            <div class="text-4xl text-black">
+            <div class="text-4xl text-gray-700">
               <i class="bi bi-door-open"></i>
             </div>
           </div>
@@ -239,7 +59,7 @@
         <div class="bg-white p-6 rounded-xl shadow">
           <div class="flex items-center justify-between">
             <div>
-              <h3 class="text-lg font-semibold text-black mb-2">Data Pemasukan</h3>
+              <h3 class="text-lg font-semibold text-gray-700 mb-2">Data Pemasukan</h3>
               <div class="space-y-1">
                 <div class="flex justify-between text-sm">
                   <span>Bulan Ini:</span>
@@ -251,7 +71,7 @@
                 </div>
               </div>
             </div>
-            <div class="text-4xl text-black">
+            <div class="text-4xl text-gray-700">
               <i class="bi bi-currency-dollar"></i>
             </div>
           </div>
@@ -260,7 +80,7 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
         <div class="bg-white p-4 rounded-xl shadow">
-          <h3 class="text-lg font-semibold text-black mb-4">Kalender</h3>
+          <h3 class="text-lg font-semibold text-gray-700 mb-4">Kalender</h3>
           <div id="calendar" class="text-sm">
             <div class="grid grid-cols-7 gap-1 mb-2">
               <div class="text-center font-semibold text-gray-600 p-1">Min</div>
@@ -277,7 +97,7 @@
         </div>
 
         <div class="bg-white p-4 rounded-xl shadow">
-          <h3 class="text-lg font-semibold text-black mb-4">Grafik Pemasukan</h3>
+          <h3 class="text-lg font-semibold text-gray-700 mb-4">Grafik Pemasukan</h3>
           <div style="height: 200px;">
             <canvas id="incomeChart"></canvas>
           </div>
@@ -289,7 +109,7 @@
           
           <div class="bg-white p-6 rounded-xl shadow border-l-4 border-green-500">
             <div class="flex items-center justify-between mb-4">
-              <h4 class="text-lg font-semibold text-green-700">Transaksi Terbaru</h4>
+              <h4 class="text-lg font-semibold text-gray-700">Transaksi Terbaru</h4>
               <i class="bi bi-credit-card text-2xl text-green-600"></i>
             </div>
             @if($recentPayments->count() > 0)
@@ -312,7 +132,7 @@
 
           <div class="bg-white p-6 rounded-xl shadow border-l-4 border-blue-500">
             <div class="flex items-center justify-between mb-4">
-              <h4 class="text-lg font-semibold text-blue-700">Tenant Baru</h4>
+              <h4 class="text-lg font-semibold text-gray-700">Tenant Baru</h4>
               <i class="bi bi-person-plus text-2xl text-blue-600"></i>
             </div>
             @if($newTenants->count() > 0)
@@ -339,7 +159,7 @@
 
           <div class="bg-white p-6 rounded-xl shadow border-l-4 border-red-500">
             <div class="flex items-center justify-between mb-4">
-              <h4 class="text-lg font-semibold text-red-700">Tagihan Belum Lunas</h4>
+              <h4 class="text-lg font-semibold text-gray-700">Tagihan Belum Lunas</h4>
               <i class="bi bi-exclamation-triangle text-2xl text-red-600"></i>
             </div>
             @if($unpaidPayments->count() > 0)
@@ -359,7 +179,6 @@
               <p class="text-sm text-gray-500">Tidak ada tagihan belum lunas</p>
             @endif
           </div>
-
         </div>
       </div>
     </div>
@@ -447,7 +266,7 @@
     for (let day = 1; day <= daysInMonth; day++) {
       const isToday = day === today;
       const className = isToday 
-        ? 'text-center p-1 bg-[#31c594] text-white rounded-full cursor-pointer text-xs' 
+        ? 'text-center p-1 bg-emerald-100 text-emerald-700 font-bold rounded-full cursor-pointer text-xs' 
         : 'text-center p-1 hover:bg-gray-100 rounded-full cursor-pointer text-xs';
       calendarDates.innerHTML += `<div class="${className}">${day}</div>`;
     }
@@ -462,7 +281,7 @@
       datasets: [{
         label: 'Pemasukan',
         data: {!! json_encode($monthlyAmounts) !!},
-        backgroundColor: '#31c594',
+        backgroundColor: 'rgb(209 250 229)',
       }]
     },
     options: {

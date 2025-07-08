@@ -19,9 +19,9 @@
     <form 
       action="{{ route('login.process') }}" 
       method="POST" 
-      class="bg-[#F7F9F4] px-6 py-8 md:px-10 md:py-10 rounded-3xl shadow-gray-100 shadow-xs w-full"
+      class="bg-white px-6 py-8 md:px-10 md:py-10 rounded-3xl shadow-gray-100 shadow-xs w-full"
     >
-      <h2 class="text-2xl font-semibold text-[#31c594] text-left mb-2 use-poppins leading-snug">
+      <h2 class="text-2xl font-semibold text-[#31c594] text-left mb-2 use-poppins">
         Selamat Datang<br>di KosanKu!
       </h2>
       <p class="text-xs font-medium text-gray-500 text-left mb-6 use-poppins">
@@ -37,7 +37,7 @@
       @endif
 
       <label for="username" class="block text-sm font-medium text-gray-700 mt-2">
-        <i class="bi bi-person-fill mr-2"></i>Username
+        <i class="bi bi-person mr-2"></i>Username
       </label>
       <input 
         type="text" 
@@ -49,7 +49,7 @@
       >
 
       <label for="password" class="block text-sm font-medium text-gray-700 mt-4">
-        <i class="bi bi-lock-fill mr-2"></i>Password
+        <i class="bi bi-lock mr-2"></i>Password
       </label>
       <div class="relative">
         <input 
@@ -60,7 +60,7 @@
           class="w-full mt-1 px-4 py-2 pr-10 rounded-xl text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0"
         >
         <button type="button" id="togglePassword" class="absolute right-3 top-5.5 -translate-y-1/2 text-gray-500 hover:text-[#31c594]">
-          <i class="bi bi-eye-slash-fill" id="eyeIcon"></i>
+          <i class="bi bi-eye-slash" id="eyeIcon"></i>
         </button>
       </div>
 
@@ -88,8 +88,8 @@
     togglePassword.addEventListener("click", function () {
       const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
       passwordInput.setAttribute("type", type);
-      eyeIcon.classList.toggle("bi-eye-fill");
-      eyeIcon.classList.toggle("bi-eye-slash-fill");
+      eyeIcon.classList.toggle("bi-eye");
+      eyeIcon.classList.toggle("bi-eye-slash");
     });
   </script>
 </body>
