@@ -13,7 +13,7 @@
 </head>
 <body class="min-h-screen bg-cover bg-no-repeat bg-center flex items-center justify-center px-4 md:px-0" style="background-image: url('/assets/auth.png')">
 
-  <div class="bg-[#F7F9F4] px-8 py-10 rounded-3xl shadow-gray-100 shadow-xs w-full max-w-md">
+  <div class="bg-white px-8 py-10 rounded-3xl shadow-gray-100 shadow-xs w-full max-w-md">
     <h2 class="use-poppins text-2xl font-semibold text-[#31c594] text-left mb-2">Reset Password</h2>
     <h2 class="use-poppins text-xs font-semibold text-gray-500 text-left mb-6">Masukkan email valid, dan tunggu hingga <br> kami mengirimkan email ke anda</h2>
 
