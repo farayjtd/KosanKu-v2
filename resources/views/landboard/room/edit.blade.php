@@ -11,6 +11,9 @@
   <link rel="stylesheet" href="/style/font.css">
   @vite('resources/css/app.css')
   <style>
+    .action-button-hidden {
+      display: none !important;
+    }
     .photo-wrapper {
       position: relative;
       display: inline-block;
@@ -102,14 +105,16 @@
                     <span class="text-gray-400 font-medium">Browse</span>
                     <input type="file" name="photos[]" accept="image/*" class="hidden" onchange="updateFileName(this)">
                   </label>
-                  <button type="button" onclick="removeField(this)" class="text-red-600 hover:text-red-800 text-lg">
+                  <button type="button" onclick="removeField(this)" class="remove-button-photo bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1">
                     <i class="bi bi-trash"></i>
-                  </button>
-                  <button type="button" onclick="addPhoto()" class="text-lg text-black hover:text-[#31c594]">
-                    <i class="bi bi-plus-lg"></i>
                   </button>
                 </div>
               </div>
+              <button type="button" 
+                id="add-photo-btn"
+                onclick="addPhoto()" class="mt-2 bg-[#31c594] hover:bg-[#2ba882] text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2">
+                <i class="bi bi-plus"></i>Tambah foto
+              </button>
               
             </div>
             
@@ -119,17 +124,20 @@
                 @forelse ($room->facilities as $facility)
                   <div class="flex gap-2 mt-2 items-center">
                     <input type="text" name="facilities[]" value="{{ $facility->name }}" class="w-full p-3 border border-gray-200 rounded-md">
-                    <button type="button" onclick="removeField(this)" class="text-red-600 hover:text-red-800 text-lg">
+                    <button type="button" onclick="removeField(this)" class="remove-button-facility bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1">
                       <i class="bi bi-trash"></i>
                     </button>
-                    <button type="button" onclick="addFacility()" class="text-black hover:text-[#31c594] text-lg">
-                      <i class="bi bi-plus-lg"></i>
-                    </button>
                   </div>
+                  <button type="button" 
+                    id="add-facility-button"
+                    onclick="addFacility()" 
+                    class="mt-2 bg-[#31c594] hover:bg-[#2ba882] text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2">
+                    <i class="bi bi-plus"></i>Tambah fasilitas
+                  </button>
                 @empty
                   <div class="flex gap-2 mt-2 items-center">
                     <input type="text" name="facilities[]" class="w-full p-3 border border-gray-200 rounded-md">
-                    <button type="button" onclick="removeField(this)" class="text-red-600 hover:text-red-800 text-lg">
+                    <button type="button" onclick="removeField(this)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1">
                       <i class="bi bi-trash"></i>
                     </button>
                     <button type="button" onclick="addFacility()" class="text-black hover:text-[#31c594] text-lg">
@@ -146,17 +154,19 @@
                 @forelse ($room->rules as $rule)
                   <div class="flex gap-2 mt-2 items-center">
                     <input type="text" name="rules[]" value="{{ $rule->name }}" class="w-full p-3 border border-gray-200 rounded-md">
-                    <button type="button" onclick="removeField(this)" class="text-red-600 hover:text-red-800 text-lg">
+                    <button type="button" onclick="removeField(this)" class="remove-button-rule bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1">
                       <i class="bi bi-trash"></i>
-                    </button>
-                    <button type="button" onclick="addRule()" class="text-black hover:text-[#31c594] text-lg">
-                      <i class="bi bi-plus-lg"></i>
-                    </button>
-                  </div>
+                    </div>
+                  </button>
+                  <button type="button" 
+                    id="add-rule-button"
+                    onclick="addRule()" class="mt-2 bg-[#31c594] hover:bg-[#2ba882] text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2">
+                    <i class="bi bi-plus-lg"></i>Tambah aturan
+                  </button>
                 @empty
                   <div class="flex gap-2 mt-2 items-center">
                     <input type="text" name="rules[]" class="w-full p-3 border border-gray-200 rounded-md">
-                    <button type="button" onclick="removeField(this)" class="text-red-600 hover:text-red-800 text-lg">
+                    <button type="button" onclick="removeField(this)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1">
                       <i class="bi bi-trash"></i>
                     </button>
                     <button type="button" onclick="addRule()" class="text-black hover:text-[#31c594] text-lg">
@@ -189,11 +199,48 @@
   </div>
 
   <script>
+    function updateActionButton() {
+      const sections = [
+        {
+          selector: 'input[name="facilities[]"]',
+          addBtnId: 'add-facility-button',
+          removeBtnClass: 'remove-button-facility'
+        },
+        {
+          selector: 'input[name="rules[]"]',
+          addBtnId: 'add-rule-button',
+          removeBtnClass: 'remove-button-rule'
+        },
+        {
+          selector: 'input[name="photos[]"]',
+          addBtnId: 'add-photo-button',
+          removeBtnClass: 'remove-button-photo'
+        }
+      ];
+      sections.forEach(({ selector, addBtnId, removeBtnClass }) => {
+        const inputs = document.querySelectorAll(selector);
+        const filled = [...inputs].some(input => input.value.trim() !== '');
+        const addBtn = document.getElementById(addBtnId);
+        const removeBtns = document.querySelectorAll(`.${removeBtnClass}`);
+
+        if (addBtn) {
+          addBtn.classList.toggle('action-button-hidden', !filled);
+        }
+
+        removeBtns.forEach(btn => {
+          btn.classList.toggle('action-button-hidden', !filled);
+        });
+      });
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
       const sidebar = document.getElementById('sidebar');
       const mainContent = document.getElementById('main-content');
       const toggleBtn = document.getElementById('toggleSidebar');
-      
+      updateActionButton();
+      document.querySelectorAll('input[name="facilities[]"], input[name="rules[]"], input[name="photos[]"]').forEach(input => {
+        input.addEventListener('input', updateActionButtonsVisibility);
+      });
       const overlay = document.createElement('div');
       overlay.className = 'mobile-overlay';
       overlay.id = 'mobile-overlay';
@@ -268,7 +315,7 @@
         </label>
 
         <button type="button"
-                class="text-red-600 hover:text-red-800 text-lg"
+                class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1"
                 onclick="removeField(this)">
           <i class="bi bi-trash"></i>
         </button>
@@ -281,6 +328,7 @@
       `;
 
       container.appendChild(div);
+      updateActionButton();
     }
 
     function removeField(btn) {
@@ -291,6 +339,7 @@
       } else {
         alert('Minimal 1 foto harus ada.');
       }
+      updateActionButton();
     }
 
     function updateFileName(input) {
@@ -304,7 +353,7 @@
       div.className = 'flex gap-2 mt-2 items-center';
       div.innerHTML = `
         <input type="text" name="facilities[]" class="w-full p-3 border border-gray-200 rounded-md">
-        <button type="button" onclick="removeField(this)" class="text-red-600 hover:text-red-800 text-lg">
+        <button type="button" onclick="removeField(this)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1">
           <i class="bi bi-trash"></i>
         </button>
         <button type="button" onclick="addFacility()" class="text-black hover:text-[#31c594] text-lg">
@@ -312,6 +361,7 @@
         </button>
       `;
       container.appendChild(div);
+      updateActionButton();
     }
 
     function addRule() {
@@ -320,7 +370,7 @@
       div.className = 'flex gap-2 mt-2 items-center';
       div.innerHTML = `
         <input type="text" name="rules[]" class="w-full p-3 border border-gray-200 rounded-md">
-        <button type="button" onclick="removeField(this)" class="text-red-600 hover:text-red-800 text-lg">
+        <button type="button" onclick="removeField(this)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1">
           <i class="bi bi-trash"></i>
         </button>
         <button type="button" onclick="addRule()" class="text-black hover:text-[#31c594] text-lg">
@@ -328,16 +378,7 @@
         </button>
       `;
       container.appendChild(div);
-    }
-
-    function removeField(btn) {
-      const parent = btn.closest('.flex');
-      const container = parent.parentElement;
-      if (container.querySelectorAll('.flex').length > 1) {
-        parent.remove();
-      } else {
-        alert('Minimal satu kolom harus tetap ada.');
-      }
+      updateActionButton();
     }
 
     function validateForm() {
