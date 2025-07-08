@@ -5,146 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Daftar Tenant</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/font.css">
   @vite('resources/css/app.css')
-  <style>[x-cloak]{display:none}
-    .sidebar.collapsed {
-      width: 80px;
-    }
-
-    .sidebar.collapsed .menu-text,
-    .sidebar.collapsed .menu-title,
-    .sidebar.collapsed .group-title,
-    .sidebar.collapsed .logo-text,
-    .sidebar.collapsed .profile-btn .btn-text,
-    .sidebar.collapsed .logout-btn .btn-text {
-      display: none;
-    }
-
-    .sidebar.collapsed .menu-item,
-    .sidebar.collapsed .profile-btn,
-    .sidebar.collapsed .logout-btn {
-      justify-content: center;
-      padding: 0.45rem;
-      min-height: 48px;
-    }
-    .sidebar.collapsed .menu-item {
-        min-height: unset;
-    }
-
-    .sidebar-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding: 1rem;
-    }
-
-    .sidebar-footer {
-      margin-top: auto;
-      padding: 1rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .main-content {
-      margin-left: 240px;
-      width: calc(100% - 240px);
-      transition: all 0.3s ease;
-      min-height: 100vh;
-    }
-
-    .main-content.collapsed {
-      margin-left: 80px;
-      width: calc(100% - 80px);
-    }
-
-    @media (max-width: 768px) {
-      .sidebar {
-        width: 80px;
-      }
-      .sidebar .menu-text,
-      .sidebar .menu-title,
-      .sidebar .group-title,
-      .sidebar .logo-text,
-      .sidebar .profile-btn .btn-text,
-      .sidebar .logout-btn .btn-text {
-        display: none;
-      }
-      .sidebar .menu-item {
-        justify-content: center;
-        padding: 0.75rem;
-      }
-      .sidebar .profile-btn,
-      .sidebar .logout-btn {
-        padding: 0.75rem;
-        justify-content: center;
-        min-height: 48px;
-      }
-      .main-content {
-        margin-left: 80px;
-        width: calc(100% - 80px);
-      }
-      .main-content.collapsed {
-        margin-left: 80px;
-        width: calc(100% - 80px);
-      }
-    }
-
-    @media (max-width: 640px) {
-      .sidebar {
-        width: 60px;
-      }
-      .sidebar .menu-item {
-        padding: 0.5rem;
-      }
-      .sidebar .profile-btn,
-      .sidebar .logout-btn {
-        padding: 0.5rem;
-        min-height: 40px;
-      }
-      .main-content {
-        margin-left: 60px;
-        width: calc(100% - 60px);
-      }
-      .main-content.collapsed {
-        margin-left: 60px;
-        width: calc(100% - 60px);
-      }
-      @media (max-width: 768px) {
-        .sidebar.mobile-expanded {
-          width: 100vw !important;
-          z-index: 60;
-        }
-        .sidebar.mobile-expanded .menu-text,
-        .sidebar.mobile-expanded .menu-title,
-        .sidebar.mobile-expanded .group-title,
-        .sidebar.mobile-expanded .logo-text,
-        .sidebar.mobile-expanded .btn-text {
-          display: block !important;
-        }
-        .sidebar.mobile-expanded .menu-item {
-          justify-content: flex-start !important;
-          padding: 0.5rem 1rem !important;
-        }
-        .sidebar.mobile-expanded .profile-btn,
-        .sidebar.mobile-expanded .logout-btn {
-          justify-content: center !important;
-          padding: 0.5rem 1rem !important;
-        }
-        .mobile-overlay {
-          display: none;
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100vw;
-          height: 100vh;
-          background: rgba(0, 0, 0, 0.5);
-          z-index: 50;
-        }
-        .mobile-overlay.active {
-          display: block;
-        }
-      }
-    }
-  </style>
 </head>
 <body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen w-full">
@@ -194,14 +59,14 @@
 
       <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       @foreach($tenants as $index => $tenant)
-          <div class="bg-white shadow-md rounded-xl p-4 border border-[#e3dcd6] relative">
+          <div class="bg-white shadow-md rounded-xl p-6 border border-[#e3dcd6] relative">
             <div class="flex items-start gap-4">
               <img src="{{asset('storage/'. $tenant->selfie_photo) ?? '/assets/default-avatar.png' }}" alt="Foto Tenant" class="w-24 h-24 rounded-full object-cover border border-gray-300">
               <div>
-                <h3 class="text-lg font-semibold mb-1">{{ $tenant->name ?? 'Belum diisi' }}</h3>
-                <p class="text-sm text-gray-600 mb-1"><strong>Username:</strong> {{ $tenant->account->username }}</p>
-                <p class="text-sm text-gray-600 mb-1"><strong>No Kamar:</strong> {{ $tenant->room->room_number ?? '-' }}</p>
-                <p class="text-xs sm:text-sm {{ $tenant->status === 'aktif' ? 'text-green-600' : 'text-red-600' }}"><strong class="text-gray-600">Status:</strong> {{ ucfirst($tenant->status ?? 'aktif') }}</p>
+                <h2 class="text-md use-poppins mb-1">{{ $tenant->name ?? 'Belum diisi' }}</h2>
+                <p class="text-sm use-poppins-normal text-gray-500 mb-1"><strong>Username:</strong> {{ $tenant->account->username }}</p>
+                <p class="text-sm use-poppins-normal text-gray-500 mb-1"><strong>No Kamar:</strong> {{ $tenant->room->room_number ?? '-' }}</p>
+                <p class="text-sm use-poppins-normal text-gray-500 sm:text-sm {{ $tenant->status === 'aktif' ? 'text-green-600' : 'text-red-600' }}"><strong class="text-gray-500">Status:</strong> {{ ucfirst($tenant->status ?? 'aktif') }}</p>
               </div>
               <div class="ml-auto relative">
                 <button onclick="toggleDropdown(this)" class="text-gray-600 hover:text-black focus:outline-none">
