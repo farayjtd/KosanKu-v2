@@ -48,8 +48,8 @@
 
     <div id="main-content" class="main-content p-6 md:pt-4 w-full">
       <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg">
-        <div class="bg-gradient-to-r from-[#31c594] to-[#2ba882] rounded-t-2xl text-white p-8 text-center">
-          <h1 class="text-3xl font-bold font-poppins mb-2"><i class="bi bi-pencil-square mr-2"></i>Edit Kamar</h1>
+        <div class="bg-gradient-to-r from-[#31c594] to-[#2ba882] rounded-t-2xl text-white p-6 text-center">
+          <h2 class="text-xl font-bold font-poppins mb-2"><i class="bi bi-pencil-square mr-2"></i>Edit Kamar</h1>
         </div>
         <div class="bg-white rounded-b-2xl shadow-xl p-8">
           @if ($errors->any())
@@ -191,7 +191,7 @@
                 </label>
               </div>
             </div>
-            <button type="submit" class="w-full py-3 bg-[#2ba882] text-white rounded-md transition">Simpan Perubahan</button>
+            <button type="submit" class="w-full bg-[#31c594] text-white px-8 py-4 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"><i class="bi bi-save mr-2"></i>Simpan</button>
           </form>
         </div>
       </div>

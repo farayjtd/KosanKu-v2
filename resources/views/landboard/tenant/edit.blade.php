@@ -57,7 +57,7 @@
             </div>
 
             <div class="mb-4">
-              <i class="bi bi-shield-lock mr-2"></i>
+              <i class="bi bi-lock mr-2"></i>
               <label>Konfirmasi Password Baru</label>
               <input type="password" name="password_confirmation" class="w-full mt-1 p-2 border-1 border-gray-200 rounded-lg">
             </div>
@@ -163,7 +163,7 @@
                 <img src="{{ asset('storage/' . $tenant->selfie_photo) }}" alt="Selfie" class="ratio-16x9 h-30 object-cover rounded border-1 transition">
               @endif
             </div>
-            <button type="submit" class="w-full bg-[#31c594] text-white px-8 py-4 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30">Simpan Perubahan</button>
+            <button type="submit" class="w-full bg-[#31c594] text-white px-8 py-4 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"><i class="bi bi-save mr-2"></i>Simpan</button>
           </form>
         </div>
       </div>

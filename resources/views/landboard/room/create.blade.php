@@ -112,7 +112,7 @@
                 <i class="bi bi-gear mr-2"></i>Fasilitas Kamar
               </label>
               <div class="rounded-lg bg-gray-50" id="facility-container">
-                <div class="flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
+                <div class="group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
                   <input type="text" name="facilities[]" 
                          class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
                          placeholder="Contoh: AC, WiFi, Lemari" 
@@ -144,7 +144,7 @@
                 <i class="bi bi-list-ul mr-2"></i>Aturan Kamar
               </label>
               <div class="rounded-lg bg-gray-50" id="rule-container">
-                <div class="flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
+                <div class="group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
                   <input type="text" name="rules[]" 
                          class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
                          placeholder="Contoh: Tidak boleh merokok, Jam malam 22:00" 
@@ -170,7 +170,7 @@
                 <i class="bi bi-camera mr-2"></i>Foto Kamar
               </label>
               <div class="rounded-lg bg-gray-50" id="photo-container">
-                <div class="flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
+                <div class="group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
                   <input type="file" name="photos[]" 
                          class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20 file:mr-4 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-[#31c594] file:text-white hover:file:bg-[#2ba882]" 
                          accept="image/*" 
@@ -192,7 +192,7 @@
 
             <button type="submit" 
                     class="w-full bg-[#31c594] text-white px-8 py-4 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30">
-              <i class="bi bi-save mr-2"></i>Simpan Kamar
+              <i class="bi bi-save mr-2"></i>Simpan
             </button>
           </form>
         </div>
@@ -303,16 +303,18 @@
     });
 
     function removeField(button) {
-      const group = button.closest('.flex');
+      const group = button.closest('.group');
       const container = group.parentElement;
-      if (container.querySelectorAll('.flex').length > 1) {
+
+      const allGroups = container.querySelectorAll('.group');
+
+      if (allGroups.length > 1) {
         group.remove();
       } else {
         alert('Minimal 1 input harus ada.');
       }
-      updateActionButtonsVisibility();
-
     }
+
 
     function addField(containerId, inputName, type = 'text') {
       if (inputName === 'photos[]' && getPhotoInputCount() >= 7) {
@@ -322,7 +324,7 @@
 
       const container = document.getElementById(containerId);
       const div = document.createElement('div');
-      div.className = 'flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center';
+      div.className = 'group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center';
 
       const placeholder = getPlaceholder(inputName);
       const inputClass = 'flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20';
@@ -339,9 +341,8 @@
         </button>`;
 
       container.appendChild(div);
-      updateActionButtonsVisibility();
-
     }
+
 
 
     function getPlaceholder(inputName) {
