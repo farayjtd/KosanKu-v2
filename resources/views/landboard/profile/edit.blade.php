@@ -13,7 +13,6 @@
 </head>
 <body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
-    {{-- Include the same sidebar as dashboard --}}
     @include('components.sidebar-landboard')
     
     <div id="main-content" class="main-content p-6 md:pt-4">
