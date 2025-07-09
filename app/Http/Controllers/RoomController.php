@@ -87,6 +87,23 @@ class RoomController extends Controller
         $query = Room::with(['photos', 'facilities', 'rules'])
             ->where('landboard_id', Auth::user()->landboard->id);
 
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('room_number', 'like', "%$search%")
+                ->orWhere('type', 'like', "%$search%")
+                ->orWhere('gender_type', 'like', "%$search%")
+                ->orWhere('status', 'like', "%$search%")
+                ->orWhereHas('facilities', function ($f) use ($search) {
+                    $f->where('name', 'like', "%$search%");
+                })
+                ->orWhereHas('rules', function ($r) use ($search) {
+                    $r->where('name', 'like', "%$search%");
+                });
+            });
+        }
+
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }

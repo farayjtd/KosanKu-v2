@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\Payment;
 use App\Models\RentalHistory;
 use Carbon\Carbon;
@@ -198,11 +199,58 @@ class PaymentController extends Controller
         return redirect()->back()->with('success', 'Payment marked as paid successfully');
     }
 
-    public function cashIndex()
+    public function cashIndex(Request $request)
     {
-        $payments = Payment::with(['rentalHistory.room', 'tenant'])
+        $payments = Payment::with(['rentalHistory.room', 'tenant.account'])
             ->where('status', 'unpaid')
-            ->orderByDesc('created_at')
+            ->when($request->filled('search'), function ($query) use ($request) {
+                $search = $request->search;
+                $query->where(function ($subquery) use ($search) {
+                    $subquery->whereHas('tenant', function ($q) use ($search) {
+                        $q->where('name', 'like', "%$search%")
+                        ->orWhereHas('account', function ($qq) use ($search) {
+                            $qq->where('username', 'like', "%$search%");
+                        });
+                    })->orWhereHas('rentalHistory.room', function ($q) use ($search) {
+                        $q->where('room_number', 'like', "%$search%");
+                    });
+                });
+            })
+            ->when($request->filled('sort'), function ($query) use ($request) {
+                switch ($request->sort) {
+                    case 'due_date_asc':
+                        $query->orderBy('due_date', 'asc');
+                        break;
+                    case 'due_date_desc':
+                        $query->orderBy('due_date', 'desc');
+                        break;
+                    case 'amount_asc':
+                        $query->orderBy('amount', 'asc');
+                        break;
+                    case 'amount_desc':
+                        $query->orderBy('amount', 'desc');
+                        break;
+                    case 'username_asc':
+                        $query->orderBy(
+                            Account::select('username')
+                                ->whereColumn('accounts.id', 'tenants.account_id'),
+                            'asc'
+                        );
+                        break;
+                    case 'username_desc':
+                        $query->orderBy(
+                            Account::select('username')
+                                ->whereColumn('accounts.id', 'tenants.account_id'),
+                            'desc'
+                        );
+                        break;
+                    default:
+                        $query->orderBy('created_at', 'desc'); 
+                        break;
+                }
+            }, function ($query) {
+                $query->orderBy('created_at', 'desc'); 
+            })
             ->get();
 
         return view('landboard.payment.index', compact('payments'));

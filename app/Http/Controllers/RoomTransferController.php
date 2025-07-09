@@ -147,7 +147,7 @@ class RoomTransferController extends Controller
             ->whereHas('currentRoom', function ($query) use ($landboard) {
                 $query->where('landboard_id', $landboard->id);
             })
-            ->latest()
+            ->latest('created_at')
             ->get();
 
         return view('landboard.room-transfer.index', compact('requests'));

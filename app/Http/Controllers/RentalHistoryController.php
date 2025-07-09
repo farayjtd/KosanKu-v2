@@ -113,35 +113,20 @@ class RentalHistoryController extends Controller
     public function landboardIndex(Request $request)
     {
         $landboard = Auth::user()->landboard;
+        $keyword = $request->search;
 
-        $sort = $request->get('sort', 'start_desc'); 
-        
-        $sortMap = [
-            'start_asc'   => ['start_date', 'asc'],
-            'start_desc'  => ['start_date', 'desc'],
-            'tenant_asc'  => ['tenants.name', 'asc'],
-            'tenant_desc' => ['tenants.name', 'desc'],
-            'room_asc'    => ['rooms.room_number', 'asc'],
-            'room_desc'   => ['rooms.room_number', 'desc'],
-        ];
-
-        [$sortField, $sortOrder] = $sortMap[$sort] ?? ['start_date', 'desc'];
-
-        $histories = RentalHistory::with(['room', 'tenant'])
-            ->whereHas('room', fn($q) => $q->where('landboard_id', $landboard->id))
-            ->join('tenants', 'rental_histories.tenant_id', '=', 'tenants.id')
-            ->join('rooms', 'rental_histories.room_id', '=', 'rooms.id')
-            ->orderBy($sortField, $sortOrder)
-            ->select('rental_histories.*') 
+        $histories = RentalHistory::with(['room', 'tenant.account'])
+            ->whereHas('room', function ($q) use ($landboard) {
+                $q->where('landboard_id', $landboard->id);
+            })
+            ->orderByDesc('start_date')
             ->get();
 
-        $today = Carbon::now()->timezone('Asia/Jakarta')->startOfDay();
+        $today = now()->timezone('Asia/Jakarta')->startOfDay();
 
         foreach ($histories as $history) {
             $start = Carbon::parse($history->start_date)->timezone('Asia/Jakarta')->startOfDay();
-            $end   = $history->end_date 
-                ? Carbon::parse($history->end_date)->timezone('Asia/Jakarta')->startOfDay()
-                : null;
+            $end = $history->end_date ? Carbon::parse($history->end_date)->timezone('Asia/Jakarta')->startOfDay() : null;
 
             if ($start->gt($today)) {
                 $history->computed_status = 'Belum Dimulai';
@@ -150,11 +135,15 @@ class RentalHistoryController extends Controller
             } else {
                 $history->computed_status = 'Sedang Berjalan';
             }
-
-            $history->tenant_name = $history->tenant->name ?? '[Tenant tidak tersedia]';
-            $history->room_name   = $history->room->room_number ?? '[Kamar tidak tersedia]';
         }
 
-        return view('landboard.rental-history.index', compact('histories', 'sort'));
+        if ($keyword) {
+            $histories = $histories->filter(function ($history) use ($keyword) {
+                return stripos($history->tenant->name ?? '', $keyword) !== false
+                    || stripos($history->room->room_number ?? '', $keyword) !== false
+                    || stripos($history->computed_status ?? '', $keyword) !== false;
+            })->values(); 
+        }
+        return view('landboard.rental-history.index', compact('histories', 'keyword'));
     }
 }

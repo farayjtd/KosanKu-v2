@@ -76,8 +76,28 @@
             </div>
           </div>
         </div>
-      </div>
 
+        <div class="bg-white p-6 rounded-xl shadow mt-4">
+  <div class="flex items-center justify-between">
+    <div>
+      <h3 class="text-lg font-semibold text-gray-700 mb-2">Data Pengeluaran</h3>
+      <div class="space-y-1">
+        <div class="flex justify-between text-sm">
+          <span>Bulan Ini:</span>
+          <span class="font-semibold">Rp{{ number_format($monthlyExpense ?? 0, 0, ',', '.') }}</span>
+        </div>
+        <div class="flex justify-between text-sm">
+          <span>Tahun Ini:</span>
+          <span class="font-semibold">Rp{{ number_format($yearlyExpense ?? 0, 0, ',', '.') }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="text-4xl text-gray-700">
+      <i class="bi bi-wallet2"></i>
+    </div>
+  </div>
+</div>
+    </div>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
         <div class="bg-white p-4 rounded-xl shadow">
           <h3 class="text-lg font-semibold text-gray-700 mb-4">Kalender</h3>
@@ -100,6 +120,13 @@
           <h3 class="text-lg font-semibold text-gray-700 mb-4">Grafik Pemasukan</h3>
           <div style="height: 200px;">
             <canvas id="incomeChart"></canvas>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl shadow mt-6">
+          <h3 class="text-lg font-semibold text-gray-700 mb-4">Grafik Pengeluaran</h3>
+          <div style="height: 200px;">
+            <canvas id="expenseChart"></canvas>
           </div>
         </div>
       </div>
@@ -301,6 +328,34 @@
       }
     }
   });
+
+const expenseCtx = document.getElementById('expenseChart');
+new Chart(expenseCtx, {
+  type: 'bar',
+  data: {
+    labels: {!! json_encode($monthlyLabels) !!},
+    datasets: [{
+      label: 'Pengeluaran',
+      data: {!! json_encode($monthlyExpenseAmounts) !!},
+      backgroundColor: 'rgb(254 202 202)', 
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          callback: function(value) {
+            return 'Rp' + value.toLocaleString('id-ID');
+          }
+        }
+      }
+    }
+  }
+});
+
 </script>
 
 </body>

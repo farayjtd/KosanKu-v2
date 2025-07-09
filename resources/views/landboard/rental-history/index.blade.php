@@ -276,7 +276,7 @@
 </head>
 <body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
-    {{-- Sidebar --}}
+    {{-- Sidebar --}}d
     @include('components.sidebar-landboard')
 
     <div id="main-content" class="main-content p-4 md:p-6 w-full">
@@ -345,7 +345,12 @@
                       <td colspan="5" class="text-center py-8 text-gray-500">
                         <div class="flex flex-col items-center">
                           <i class="bi bi-inbox text-4xl mb-2"></i>
-                          <p class="text-sm">Belum ada riwayat sewa ditemukan.</p>
+                          @if(request('search'))
+                          {{-- Desain --}}
+                            Tidak ada hasil untuk kata: <strong>"{{ request('search') }}"</strong>
+                          @else
+                            Belum ada riwayat sewa ditemukan.
+                          @endif
                         </div>
                       </td>
                     </tr>

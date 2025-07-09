@@ -13,8 +13,8 @@ class FinanceController extends Controller
         $landboard = Auth::user()->landboard;
 
         $selectedMonth = $request->month ?? 'all';
-        $username = $request->username ?? null;
         $sort = $request->sort ?? null;
+        $keyword = $request->search;
 
         $usernames = $landboard->rooms()
             ->with('rentalHistories.tenant.account')
@@ -34,9 +34,18 @@ class FinanceController extends Controller
             ->when($selectedMonth !== 'all', function ($q) use ($selectedMonth) {
                 $q->whereMonth('paid_at', $selectedMonth);
             })
-            ->when($username, function ($q) use ($username) {
-                $q->whereHas('tenant.account', function ($qq) use ($username) {
-                    $qq->where('username', 'like', "%$username%");
+            ->when($keyword, function ($q) use ($keyword) {
+                $q->where(function ($qq) use ($keyword) {
+                    $qq->whereHas('rentalHistory.tenant', fn ($tq) =>
+                            $tq->where('name', 'like', "%$keyword%")
+                        )
+                        ->orWhereHas('rentalHistory.tenant.account', fn ($aq) =>
+                            $aq->where('username', 'like', "%$keyword%")
+                        )
+                        ->orWhereHas('rentalHistory.room', fn ($rq) =>
+                            $rq->where('room_number', 'like', "%$keyword%")
+                        )
+                        ->orWhere('payment_method', 'like', "%$keyword%");
                 });
             });
 
@@ -66,9 +75,18 @@ class FinanceController extends Controller
             ->when($selectedMonth !== 'all', function ($q) use ($selectedMonth) {
                 $q->whereMonth('paid_at', $selectedMonth);
             })
-            ->when($username, function ($q) use ($username) {
-                $q->whereHas('tenant.account', function ($qq) use ($username) {
-                    $qq->where('username', 'like', "%$username%");
+            ->when($keyword, function ($q) use ($keyword) {
+                $q->where(function ($qq) use ($keyword) {
+                    $qq->whereHas('rentalHistory.tenant', fn ($tq) =>
+                            $tq->where('name', 'like', "%$keyword%")
+                        )
+                        ->orWhereHas('rentalHistory.tenant.account', fn ($aq) =>
+                            $aq->where('username', 'like', "%$keyword%")
+                        )
+                        ->orWhereHas('rentalHistory.room', fn ($rq) =>
+                            $rq->where('room_number', 'like', "%$keyword%")
+                        )
+                        ->orWhere('payment_method', 'like', "%$keyword%");
                 });
             });
 
@@ -94,7 +112,7 @@ class FinanceController extends Controller
             'incomePayments',
             'expensePayments',
             'selectedMonth',
-            'username',
+            'keyword',
             'usernames',
             'sort'
         ));

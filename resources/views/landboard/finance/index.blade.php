@@ -211,7 +211,7 @@
     <div class="search-input-wrapper mb-10 bg-white rounded-xl shadow-md p-3 flex items-center">
           <i class="bi bi-search search-icon text-gray-500 mr-4"></i>
           <form id="room-search-form" method="GET" class="flex-grow flex items-center relative">
-              <input type="search" name="search" placeholder="Cari username" value="{{ request('username') }}"
+              <input type="search" name="search" placeholder="Cari username"  value="{{ old('search', request('search')) }}"
                     class="w-full rounded-4xl border-none outline-none bg-transparent">
               <button type="button" class="filter-sort-toggle-btn text-black text-2xl cursor-pointer p-1 rounded-full transition duration-200 ease-in-out hover:bg-gray-100" onclick="toggleFilterSortDropdown(this)">
                   <i class="bi bi-sliders"></i>
@@ -226,7 +226,7 @@
                           <option value="amount_asc" {{ request('sort') == 'amount_asc' ? 'selected' : '' }}>Jumlah Bayar Terkecil</option>
                           <option value="date_desc" {{ request('sort') == 'date_desc' ? 'selected' : '' }}>Pembayaran Terbaru</option>
                           <option value="date_asc" {{ request('sort') == 'date_asc' ? 'selected' : '' }}>Pembayaran Terlama</option>
-                      </select>
+                      </select>  y
                   </div>
               </div>
           </form>
@@ -268,7 +268,12 @@
             @else
               <div class="text-center py-8 text-gray-500">
                 <i class="bi bi-inbox text-4xl mb-2"></i>
-                <p class="text-sm">Belum ada pemasukan.</p>
+                @if(request('search'))
+                {{-- Desain --}}
+                  Tidak ada hasil untuk kata: <strong>"{{ request('search') }}"</strong>
+                @else
+                  Belum ada pemasukan.
+                @endif
               </div>
             @endif
           </div>
@@ -310,7 +315,12 @@
             @else
               <div class="text-center py-8 text-gray-500">
                 <i class="bi bi-inbox text-4xl mb-2"></i>
-                <p class="text-sm">Belum ada pengeluaran.</p>
+                @if(request('search'))
+                {{-- Desain --}}
+                  Tidak ada hasil untuk kata: <strong>"{{ request('search') }}"</strong>
+                @else
+                  Belum ada Pengeluaran.
+                @endif
               </div>
             @endif
           </div>

@@ -347,12 +347,21 @@
                     </tr>
                   @empty
                     <tr>
-                      <td colspan="6" class="text-center py-8 text-gray-500">
-                        <div class="flex flex-col items-center">
-                          <i class="bi bi-inbox text-4xl mb-2"></i>
-                          <p class="text-sm">No pending cash payments.</p>
-                        </div>
-                      </td>
+                      <tr>
+                        <td colspan="6" class="text-center py-6 text-gray-500">
+                          @if (request('search'))
+                            {{-- Desain --}}
+                            <p class="text-sm">
+                              Tidak ada hasil untuk kata: <strong>"{{ request('search') }}"</strong>
+                            </p>
+                          @else
+                            <div class="flex flex-col items-center">
+                              <i class="bi bi-inbox text-4xl mb-2"></i>
+                              <p class="text-sm">No pending cash payments.</p>
+                            </div>
+                          @endif
+                        </td>
+                      </tr>
                     </tr>
                   @endforelse
                 </tbody>

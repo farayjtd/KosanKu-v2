@@ -45,14 +45,14 @@ Route::prefix('landboard')->middleware(['auth', 'role:landboard'])->name('landbo
     Route::delete('/rooms/{room}', [RoomController::class, 'destroy'])->name('rooms.destroy');
 
     Route::get('/tenants', [TenantController::class, 'index'])->name('tenants.index');
-    Route::get('/tenants/create', [TenantController::class, 'showCreateTenantForm'])->name('tenants.create-form');
-    Route::post('/tenants/store', [TenantController::class, 'storeNewTenant'])->name('tenants.store');
-    Route::get('/tenants/{id}', [TenantController::class, 'show'])->name('tenants.show');
-    Route::get('/tenants/{id}/edit', [TenantController::class, 'showEditTenantForm'])->name('tenants.edit');
-    Route::put('/tenants/{id}', [TenantController::class, 'updateTenantData'])->name('tenants.update');
-    Route::delete('/tenants/{id}', [TenantController::class, 'deactivateTenant'])->name('tenants.destroy');
-    Route::get('/tenants/{id}/reactivate', [TenantController::class, 'showReactivateForm'])->name('tenants.reactivate.form');
-    Route::post('/tenants/{id}/reactivate', [TenantController::class, 'reactivateTenant'])->name('tenants.reactivate');
+    Route::get('/tenants/create', [LandboardController::class, 'showCreateTenantForm'])->name('tenants.create-form');
+    Route::post('/tenants/store', [LandboardController::class, 'storeNewTenant'])->name('tenants.store');
+    Route::get('/tenants/{id}', [LandboardController::class, 'show'])->name('tenants.show');
+    Route::get('/tenants/{id}/edit', [LandboardController::class, 'showEditTenantForm'])->name('tenants.edit');
+    Route::put('/tenants/{id}', [LandboardController::class, 'updateTenantData'])->name('tenants.update');
+    Route::delete('/tenants/{id}', [LandboardController::class, 'deactivateTenant'])->name('tenants.destroy');
+    Route::get('/tenants/{id}/reactivate', [LandboardController::class, 'showReactivateForm'])->name('tenants.reactivate.form');
+    Route::post('/tenants/{id}/reactivate', [LandboardController::class, 'reactivateTenant'])->name('tenants.reactivate');
 
     Route::get('/finance', [FinanceController::class, 'index'])->name('finance.index');
     Route::get('/payments', [PaymentController::class, 'cashIndex'])->name('payments.index');

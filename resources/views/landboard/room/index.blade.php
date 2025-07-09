@@ -337,64 +337,76 @@
 
       {{-- Daftar Kamar --}}
       <div class="flex flex-col gap-6">
-      @foreach($rooms as $room)
-      <div class="flex flex-col sm:flex-row bg-white rounded-xl shadow-md overflow-hidden">
-        <!-- Photo section -->
-        <div class="relative sm:w-1/3 h-48 sm:h-auto">
-          <div class="h-full photo-carousel" data-room-id="{{ $room->id }}">
-            @forelse ($room->photos as $index => $photo)
-              <img src="{{ asset('storage/'.$photo->path) }}"
-                  class="carousel-img {{ $index === 0 ? 'active' : '' }}">
-            @empty
-              <img src="https://via.placeholder.com/400x250?text=No+Image"
-                  class="carousel-img active">
-            @endforelse
-
-            @if ($room->photos->count() > 1)
-              <button class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded p-1" onclick="prevPhoto('{{ $room->id }}')">&#10094;</button>
-              <button class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded p-1" onclick="nextPhoto('{{ $room->id }}')">&#10095;</button>
+      @if ($rooms->isEmpty())
+        <div class="text-center text-gray-500 mt-4">
+          {{-- Desain --}}
+            @if (request('search'))
+                Tidak ada kamar yang cocok dengan kata kunci:
+                <strong>"{{ request('search') }}"</strong>
+            @else
+                Data kamar tidak ditemukan.
             @endif
-          </div>
         </div>
-
-        <!-- Details section -->
-        <div class="flex flex-col flex-1 p-4">
-          <div class="flex justify-between leading-tight">
-            <h3 class="text-lg md:text-xl font-semibold use-poppins">{{ $room->room_number }} <br> {{ $room->type }}</h3>
-            <span class="use-poppins text-xl md:text-2xl font-bold text-emerald-500">Rp{{ number_format($room->price, 0, ',', '.') }}</span>
-          </div>
-
-          <div>
-            <p class="font-medium mb-1 text-sm md:text-base">Fasilitas:</p>
-            <p class="text-xs md:text-sm leading-snug text-gray-700">
-              @forelse ($room->facilities as $index => $facility)
-                {{ $facility->name }}@if (!$loop->last), @endif
+      @else
+        @foreach($rooms as $room)
+        <div class="flex flex-col sm:flex-row bg-white rounded-xl shadow-md overflow-hidden">
+          <!-- Photo section -->
+          <div class="relative sm:w-1/3 h-48 sm:h-auto">
+            <div class="h-full photo-carousel" data-room-id="{{ $room->id }}">
+              @forelse ($room->photos as $index => $photo)
+                <img src="{{ asset('storage/'.$photo->path) }}"
+                    class="carousel-img {{ $index === 0 ? 'active' : '' }}">
               @empty
-                Tidak ada fasilitas yang tercatat.
+                <img src="https://via.placeholder.com/400x250?text=No+Image"
+                    class="carousel-img active">
               @endforelse
-            </p>
+
+              @if ($room->photos->count() > 1)
+                <button class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded p-1" onclick="prevPhoto('{{ $room->id }}')">&#10094;</button>
+                <button class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white rounded p-1" onclick="nextPhoto('{{ $room->id }}')">&#10095;</button>
+              @endif
+            </div>
           </div>
 
-          <div class="flex flex-col text-xs md:text-sm">
-            <span class="mt-2"><i class="bi bi-gender-ambiguous mr-2"></i>Gender : {{ ucfirst($room->gender_type) }}</span>
-            <span class="mt-1 mb-2"><i class="bi bi-bar-chart-line mr-2"></i>Status :
-              <span class="{{ $room->status == 'available' ? 'text-green-600' : ($room->status == 'occupied' ? 'text-red-600' : 'text-orange-500') }}">{{ ucfirst($room->status) }}</span>
-            </span>
-          </div>
+          <!-- Details section -->
+          <div class="flex flex-col flex-1 p-4">
+            <div class="flex justify-between leading-tight">
+              <h3 class="text-lg md:text-xl font-semibold use-poppins">{{ $room->room_number }} <br> {{ $room->type }}</h3>
+              <span class="use-poppins text-xl md:text-2xl font-bold text-emerald-500">Rp{{ number_format($room->price, 0, ',', '.') }}</span>
+            </div>
 
-          <div class="mt-auto grid grid-cols-4 gap-2 text-center text-xs">
-            <a href="{{ route('landboard.rooms.show', $room->id) }}" class="flex items-center justify-center gap-1 bg-[#31c594] text-white py-2 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"><i class="bi bi-info-circle text-base"></i><span class="hidden md:inline">Detail</span></a>
-            <a href="{{ route('landboard.rooms.duplicate-form', $room->id) }}" class="flex items-center justify-center gap-1 bg-[#31c594] text-white py-2 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"><i class="bi bi-files text-base"></i><span class="hidden md:inline">Duplikat</span></a>
-            <a href="{{ route('landboard.rooms.edit-form', $room->id) }}" class="flex items-center justify-center gap-1 bg-[#31c594] text-white py-2 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"><i class="bi bi-pencil-square text-base"></i><span class="hidden md:inline">Edit</span></a>
-            <form action="{{ route('landboard.rooms.destroy', $room->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus kamar ini?')" class="contents">
-              @csrf
-              @method('DELETE')
-              <button type="submit" class="flex items-center justify-center gap-1 bg-red-400 text-white py-2 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#ff0000]/30"><i class="bi bi-trash text-base"></i><span class="hidden md:inline">Hapus</span></button>
-            </form>
+            <div>
+              <p class="font-medium mb-1 text-sm md:text-base">Fasilitas:</p>
+              <p class="text-xs md:text-sm leading-snug text-gray-700">
+                @forelse ($room->facilities as $index => $facility)
+                  {{ $facility->name }}@if (!$loop->last), @endif
+                @empty
+                  Tidak ada fasilitas yang tercatat.
+                @endforelse
+              </p>
+            </div>
+
+            <div class="flex flex-col text-xs md:text-sm">
+              <span class="mt-2"><i class="bi bi-gender-ambiguous mr-2"></i>Gender : {{ ucfirst($room->gender_type) }}</span>
+              <span class="mt-1 mb-2"><i class="bi bi-bar-chart-line mr-2"></i>Status :
+                <span class="{{ $room->status == 'available' ? 'text-green-600' : ($room->status == 'occupied' ? 'text-red-600' : 'text-orange-500') }}">{{ ucfirst($room->status) }}</span>
+              </span>
+            </div>
+
+            <div class="mt-auto grid grid-cols-4 gap-2 text-center text-xs">
+              <a href="{{ route('landboard.rooms.show', $room->id) }}" class="flex items-center justify-center gap-1 bg-[#31c594] text-white py-2 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"><i class="bi bi-info-circle text-base"></i><span class="hidden md:inline">Detail</span></a>
+              <a href="{{ route('landboard.rooms.duplicate-form', $room->id) }}" class="flex items-center justify-center gap-1 bg-[#31c594] text-white py-2 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"><i class="bi bi-files text-base"></i><span class="hidden md:inline">Duplikat</span></a>
+              <a href="{{ route('landboard.rooms.edit-form', $room->id) }}" class="flex items-center justify-center gap-1 bg-[#31c594] text-white py-2 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"><i class="bi bi-pencil-square text-base"></i><span class="hidden md:inline">Edit</span></a>
+              <form action="{{ route('landboard.rooms.destroy', $room->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus kamar ini?')" class="contents">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="flex items-center justify-center gap-1 bg-red-400 text-white py-2 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#ff0000]/30"><i class="bi bi-trash text-base"></i><span class="hidden md:inline">Hapus</span></button>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
-      @endforeach
+        @endforeach
+      @endif
     </div>
     </div>
   </div>

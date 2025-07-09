@@ -27,9 +27,9 @@
         <i class="bi bi-search search-icon text-gray-500 mr-2"></i>
         <form id="room-search-form" method="GET" class="flex-grow flex items-center relative">
           <input type="search" name="search" placeholder="Cari nama atau username"
-                 value="{{ request('search') }}"
+                 value="{{ request('search') }}" 
                  class="w-full border-none outline-none bg-transparent">
-          <button type="button" class="filter-sort-toggle-btn text-black text-2xl cursor-pointer p-1 rounded-full transition duration-200 ease-in-out hover:bg-gray-100" onclick="toggleFilterSortDropdown(this)">
+          <button type="submit" class="filter-sort-toggle-btn text-black text-2xl cursor-pointer p-1 rounded-full transition duration-200 ease-in-out hover:bg-gray-100" onclick="toggleFilterSortDropdown(this)">
             <i class="bi bi-sliders"></i>
           </button>
           <div class="filter-sort-dropdown hidden absolute right-0 top-full z-10 bg-white rounded-lg shadow-lg mt-2 p-4 w-64">
@@ -58,37 +58,48 @@
       </div>
 
       <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      @foreach($tenants as $index => $tenant)
-          <div class="bg-white shadow-md rounded-xl p-6 border border-[#e3dcd6] relative">
-            <div class="flex items-start gap-4">
-              <img src="{{asset('storage/'. $tenant->selfie_photo) ?? '/assets/default-avatar.png' }}" alt="Foto Tenant" class="w-24 h-24 rounded-full object-cover border border-gray-300">
-              <div>
-                <h2 class="text-md use-poppins mb-1">{{ $tenant->name ?? 'Belum diisi' }}</h2>
-                <p class="text-sm use-poppins-normal text-gray-500 mb-1"><strong>Username:</strong> {{ $tenant->account->username }}</p>
-                <p class="text-sm use-poppins-normal text-gray-500 mb-1"><strong>No Kamar:</strong> {{ $tenant->room->room_number ?? '-' }}</p>
-                <p class="text-sm use-poppins-normal text-gray-500 sm:text-sm {{ $tenant->status === 'aktif' ? 'text-green-600' : 'text-red-600' }}"><strong class="text-gray-500">Status:</strong> {{ ucfirst($tenant->status ?? 'aktif') }}</p>
-              </div>
-              <div class="ml-auto relative">
-                <button onclick="toggleDropdown(this)" class="text-gray-600 hover:text-black focus:outline-none">
-                  <i class="bi bi-three-dots-vertical"></i>
-                </button>
-                <div class="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg z-10 hidden">
-                  <a href="{{ route('landboard.tenants.show', $tenant->id) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Detail</a>
-                  @if($tenant->status === 'nonaktif')
-                    <a href="{{ route('landboard.tenants.reactivate.form', $tenant->id) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Aktifkan</a>
-                  @else
-                    <a href="{{ route('landboard.tenants.edit', $tenant->id) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
-                    <form action="{{ route('landboard.tenants.destroy', $tenant->id) }}" method="POST" onsubmit="return confirm('Yakin nonaktifkan tenant ini?')">
-                      @csrf
-                      @method('DELETE')
-                      <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Nonaktifkan</button>
-                    </form>
-                  @endif
+      @if ($tenants->isEmpty())
+        <div class="text-center text-gray-500 mt-4">
+          {{-- Desain --}}
+            @if(request('search'))
+                Tidak ada tenant dengan kata kunci "<strong>{{ request('search') }}</strong>"
+            @else
+                Belum ada data tenant yang tersedia.
+            @endif
+        </div>
+      @else
+        @foreach($tenants as $index => $tenant)
+            <div class="bg-white shadow-md rounded-xl p-6 border border-[#e3dcd6] relative">
+              <div class="flex items-start gap-4">
+                <img src="{{asset('storage/'. $tenant->selfie_photo) ?? '/assets/default-avatar.png' }}" alt="Foto Tenant" class="w-24 h-24 rounded-full object-cover border border-gray-300">
+                <div>
+                  <h2 class="text-md use-poppins mb-1">{{ $tenant->name ?? 'Belum diisi' }}</h2>
+                  <p class="text-sm use-poppins-normal text-gray-500 mb-1"><strong>Username:</strong> {{ $tenant->account->username }}</p>
+                  <p class="text-sm use-poppins-normal text-gray-500 mb-1"><strong>No Kamar:</strong> {{ $tenant->room->room_number ?? '-' }}</p>
+                  <p class="text-sm use-poppins-normal text-gray-500 sm:text-sm {{ $tenant->status === 'aktif' ? 'text-green-600' : 'text-red-600' }}"><strong class="text-gray-500">Status:</strong> {{ ucfirst($tenant->status ?? 'aktif') }}</p>
+                </div>
+                <div class="ml-auto relative">
+                  <button onclick="toggleDropdown(this)" class="text-gray-600 hover:text-black focus:outline-none">
+                    <i class="bi bi-three-dots-vertical"></i>
+                  </button>
+                  <div class="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-md shadow-lg z-10 hidden">
+                    <a href="{{ route('landboard.tenants.show', $tenant->id) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Detail</a>
+                    @if($tenant->status === 'nonaktif')
+                      <a href="{{ route('landboard.tenants.reactivate.form', $tenant->id) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Aktifkan</a>
+                    @else
+                      <a href="{{ route('landboard.tenants.edit', $tenant->id) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
+                      <form action="{{ route('landboard.tenants.destroy', $tenant->id) }}" method="POST" onsubmit="return confirm('Yakin nonaktifkan tenant ini?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Nonaktifkan</button>
+                      </form>
+                    @endif
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        @endforeach
+          @endforeach
+        @endif
       </div>
     </div>
   </div>
