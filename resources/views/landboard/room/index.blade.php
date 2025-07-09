@@ -383,13 +383,13 @@
           </div>
 
           <div class="mt-auto grid grid-cols-4 gap-2 text-center text-xs">
-            <a href="{{ route('landboard.rooms.show', $room->id) }}" class="flex items-center justify-center gap-1 py-2 bg-emerald-500 text-white rounded-md hover:bg-emerald-600"><i class="bi bi-info-circle text-base"></i><span class="hidden md:inline">Detail</span></a>
-            <a href="{{ route('landboard.rooms.duplicate-form', $room->id) }}" class="flex items-center justify-center gap-1 py-2 bg-emerald-500 text-white rounded-md hover:bg-emerald-600"><i class="bi bi-files text-base"></i><span class="hidden md:inline">Duplikat</span></a>
-            <a href="{{ route('landboard.rooms.edit-form', $room->id) }}" class="flex items-center justify-center gap-1 py-2 bg-emerald-500 text-white rounded-md hover:bg-emerald-600"><i class="bi bi-pencil-square text-base"></i><span class="hidden md:inline">Edit</span></a>
+            <a href="{{ route('landboard.rooms.show', $room->id) }}" class="flex items-center justify-center gap-1 bg-[#31c594] text-white py-2 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"><i class="bi bi-info-circle text-base"></i><span class="hidden md:inline">Detail</span></a>
+            <a href="{{ route('landboard.rooms.duplicate-form', $room->id) }}" class="flex items-center justify-center gap-1 bg-[#31c594] text-white py-2 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"><i class="bi bi-files text-base"></i><span class="hidden md:inline">Duplikat</span></a>
+            <a href="{{ route('landboard.rooms.edit-form', $room->id) }}" class="flex items-center justify-center gap-1 bg-[#31c594] text-white py-2 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"><i class="bi bi-pencil-square text-base"></i><span class="hidden md:inline">Edit</span></a>
             <form action="{{ route('landboard.rooms.destroy', $room->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus kamar ini?')" class="contents">
               @csrf
               @method('DELETE')
-              <button type="submit" class="flex items-center justify-center gap-1 py-2 bg-red-400 text-white rounded-md hover:bg-red-600 transition"><i class="bi bi-trash text-base"></i><span class="hidden md:inline">Hapus</span></button>
+              <button type="submit" class="flex items-center justify-center gap-1 bg-red-400 text-white py-2 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#ff0000]/30"><i class="bi bi-trash text-base"></i><span class="hidden md:inline">Hapus</span></button>
             </form>
           </div>
         </div>

@@ -73,7 +73,7 @@
 
       <button 
         type="submit" 
-        class="w-2/3 mt-6 py-2 bg-[#31c594] text-white font-semibold rounded-xl mx-auto block hover:bg-[#2ab88d] duration-300 cursor-pointer"
+        class="w-full mt-2 py-2 bg-[#31c594] text-white px-8 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"
       >
         Login
       </button>

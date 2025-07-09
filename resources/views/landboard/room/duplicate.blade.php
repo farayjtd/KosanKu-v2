@@ -7,297 +7,213 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/font.css">
   @vite('resources/css/app.css')
-  <style>
-              .sidebar.collapsed {
-      width: 80px;
-    }
-    
-    .sidebar.collapsed .menu-text {
-      display: none;
-    }
-    
-    .sidebar.collapsed .menu-title {
-      display: none;
-    }
-    
-    .sidebar.collapsed .group-title {
-      display: none;
-    }
-    
-    .sidebar.collapsed .logo-text {
-      display: none;
-    }
-    
-    .sidebar.collapsed .menu-item {
-      justify-content: center;
-      padding: 0.45rem;
-    }
-    
-    .sidebar.collapsed .profile-btn,
-    .sidebar.collapsed .logout-btn {
-      padding: 0.45rem;
-      justify-content: center;
-      min-height: 48px;
-    }
-    
-    .sidebar.collapsed .profile-btn .btn-text,
-    .sidebar.collapsed .logout-btn .btn-text {
-      display: none;
-    }
-    
-    .sidebar-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding: 1rem;
-    }
-    
-    .sidebar-footer {
-      margin-top: auto;
-      padding: 1rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .main-content {
-      margin-left: 240px;
-      width: calc(100% - 240px);
-      transition: all 0.3s ease;
-      min-height: 100vh;
-    }
-    
-    .main-content.collapsed {
-      margin-left: 80px;
-      width: calc(100% - 80px);
-    }
-    
-    @media (max-width: 768px) {
-      .sidebar {
-        width: 80px;
-      }
-      
-      .sidebar .menu-text {
-        display: none;
-      }
-      
-      .sidebar .menu-title {
-        display: none;
-      }
-      
-      .sidebar .group-title {
-        display: none;
-      }
-      
-      .sidebar .logo-text {
-        display: none;
-      }
-      
-      .sidebar .menu-item {
-        justify-content: center;
-        padding: 0.75rem;
-      }
-      
-      .sidebar .profile-btn,
-      .sidebar .logout-btn {
-        padding: 0.75rem;
-        justify-content: center;
-        min-height: 48px;
-      }
-      
-      .sidebar .profile-btn .btn-text,
-      .sidebar .logout-btn .btn-text {
-        display: none;
-      }
-      
-      .main-content {
-        margin-left: 80px;
-        width: calc(100% - 80px);
-      }
-      
-      .main-content.collapsed {
-        margin-left: 80px;
-        width: calc(100% - 80px);
-      }
-    }
-    
-    @media (max-width: 640px) {
-      .sidebar {
-        width: 60px;
-      }
-      
-      .sidebar .menu-item {
-        padding: 0.5rem;
-      }
-      
-      .sidebar .profile-btn,
-      .sidebar .logout-btn {
-        padding: 0.5rem;
-        min-height: 40px;
-      }
-      
-      .main-content {
-        margin-left: 60px;
-        width: calc(100% - 60px);
-      }
-      
-      .main-content.collapsed {
-        margin-left: 60px;
-        width: calc(100% - 60px);
-      }
-      
-      @media (max-width: 768px) {
-        .sidebar.mobile-expanded {
-          width: 100vw !important;
-          z-index: 60;
-        }
-        
-        .sidebar.mobile-expanded .menu-text,
-        .sidebar.mobile-expanded .menu-title,
-        .sidebar.mobile-expanded .group-title,
-        .sidebar.mobile-expanded .logo-text,
-        .sidebar.mobile-expanded .btn-text {
-          display: block !important;
-        }
-        
-        .sidebar.mobile-expanded .menu-item {
-          justify-content: flex-start !important;
-          padding: 0.5rem 1rem !important;
-        }
-        
-        .sidebar.mobile-expanded .profile-btn,
-        .sidebar.mobile-expanded .logout-btn {
-          justify-content: center !important;
-          padding: 0.5rem 1rem !important;
-        }
-        
-        .mobile-overlay {
-          display: none;
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100vw;
-          height: 100vh;
-          background: rgba(0, 0, 0, 0.5);
-          z-index: 50;
-        }
-        
-        .mobile-overlay.active {
-          display: block;
-        }
-      }
-    }
-  </style>
 </head>
-<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
 
+<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
     @include('components.sidebar-landboard')
 
-    <div id="main-content" class="main-content p-6 md:pt-4 w-full">
-      <div class="text-center max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6">
-        <h2 class="use-poppins">Duplikat Kamar Tipe: {{ $room->type }}</h2>
-
-        <div class="bg-gray-100 p-4 rounded-lg mb-4">
-          <p>Duplikasi akan menyalin semua data kamar seperti <strong>fasilitas, aturan, harga, gender, dan foto</strong>.</p>
-          <p>
-            Nomor terakhir: <strong>{{ $lastNumber }}</strong><br>
-            Kamar baru akan dimulai dari: <strong>{{ $room->type }}-{{ $lastNumber + 1 }}</strong>
-          </p>
+    <div id="main-content" class="main-content p-6 md:pt-4 flex-1">
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center">
+          <div class="ml-4">
+            <h3 class="text-2xl font-bold text-gray-800 use-poppins">Duplikat Kamar</h3>
+            <p class="text-gray-600 use-poppins-normal">Tipe: {{ $room->type }}</p>
+          </div>
         </div>
+      </div>
 
-        <form method="POST" action="{{ route('landboard.rooms.duplicate', $room->id) }}" class="space-y-4 mt-4">
-          @csrf
-
-          <div>
-            <label for="room_quantity" class="block text-sm font-medium text-gray-700 mb-1">Jumlah Kamar yang Akan Dibuat:</label>
-            <input type="number" name="room_quantity" id="room_quantity" min="1" required
-                  class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-emerald-400 transition duration-150" />
+      <div class="p-6 bg-white rounded-xl mt-4">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden p-6">
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+              <i class="bi bi-info-circle"></i>
+            </div>
+            <h4 class="text-lg font-semibold text-gray-800 ml-3">Informasi Duplikasi</h4>
+          </div>
+          
+          <div class="rounded-lg p-4 mb-6 border-gray-200 border-1 bg-gray-50">
+            <p class="text-sm text-blue-800 mb-2">
+              <i class="bi bi-lightbulb mr-2"></i>
+              Duplikasi akan menyalin semua data kamar seperti:
+            </p>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-2 mt-3">
+              <div class="flex items-center text-sm text-blue-700">
+                <i class="bi bi-check-circle-fill text-blue-500 mr-2"></i>
+                Fasilitas
+              </div>
+              <div class="flex items-center text-sm text-blue-700">
+                <i class="bi bi-check-circle-fill text-blue-500 mr-2"></i>
+                Aturan
+              </div>
+              <div class="flex items-center text-sm text-blue-700">
+                <i class="bi bi-check-circle-fill text-blue-500 mr-2"></i>
+                Harga
+              </div>
+              <div class="flex items-center text-sm text-blue-700">
+                <i class="bi bi-check-circle-fill text-blue-500 mr-2"></i>
+                Gender
+              </div>
+              <div class="flex items-center text-sm text-blue-700">
+                <i class="bi bi-check-circle-fill text-blue-500 mr-2"></i>
+                Foto
+              </div>
+            </div>
           </div>
 
-          <button type="submit"
-                  class="bg-emerald-500 text-white px-6 py-2 rounded-md font-semibold hover:bg-emerald-600 transition duration-200">
-            Duplikat Sekarang
-          </button>
-        </form>
+          <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="border-b border-gray-200 pb-2 md:border-b-0 md:border-r md:border-gray-200 md:pr-4">
+                <span class="text-gray-600 font-medium text-sm">Nomor Terakhir:</span>
+                <span class="text-gray-800 font-semibold text-sm ml-2">{{ $lastNumber }}</span>
+              </div>
+              <div class="pt-2 md:pt-0 md:pl-4">
+                <span class="text-gray-600 font-medium text-sm">Kamar Baru Dimulai Dari:</span>
+                <span class="text-[#31c594] font-semibold text-sm ml-2">{{ $room->type }}-{{ $lastNumber + 1 }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
+        <div class="mt-6 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden p-6">
+          <div class="flex items-center mb-4">
+            <div class="w-10 h-10 bg-opacity-10 rounded-full flex items-center justify-center">
+              <i class="bi bi-files"></i>
+            </div>
+            <h4 class="text-lg font-semibold text-gray-800 ml-3">Buat Duplikat</h4>
+          </div>
+
+          <form method="POST" action="{{ route('landboard.rooms.duplicate', $room->id) }}" class="space-y-6">
+            @csrf
+
+            <div>
+              <label for="room_quantity" class="block text-sm font-medium text-gray-700 mb-2">
+                <i class="bi bi-hash mr-1"></i>
+                Jumlah Kamar yang Akan Dibuat:
+              </label>
+              <div class="relative">
+                <input 
+                  type="number" 
+                  name="room_quantity" 
+                  id="room_quantity" 
+                  min="1" 
+                  max="50"
+                  required
+                  class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#31c594] focus:border-[#31c594] transition duration-150 text-sm"
+                  placeholder="Masukkan jumlah kamar (1-50)"
+                />
+              </div>
+              <p class="text-xs text-gray-500 mt-1">
+                <i class="bi bi-info-circle mr-1"></i>
+                Maksimal 50 kamar dapat dibuat sekaligus
+              </p>
+            </div>
+
+            <div class="flex items-center justify-between pt-4 border-t border-gray-200">
+              <a 
+                href="{{ route('landboard.rooms.index') }}" 
+                class="bg-gray-500 text-white px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-200 hover:bg-gray-600 hover:shadow-md"
+              >
+                <i class="bi bi-arrow-left mr-2"></i>
+                Batal
+              </a>
+
+              <button 
+                type="submit"
+                class="bg-[#31c594] text-white px-8 py-3 rounded-lg text-sm font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"
+              >
+                <i class="bi bi-files mr-2"></i>
+                Duplikat Sekarang
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('main-content');
-    const toggleBtn = document.getElementById('toggleSidebar');
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('main-content');
+      const toggleBtn = document.getElementById('toggleSidebar');
 
-    const overlay = document.createElement('div');
-    overlay.className = 'mobile-overlay';
-    overlay.id = 'mobile-overlay';
-    document.body.appendChild(overlay);
+      const overlay = document.createElement('div');
+      overlay.className = 'mobile-overlay';
+      overlay.id = 'mobile-overlay';
+      document.body.appendChild(overlay);
 
-    function initializeSidebar() {
-      if (window.innerWidth <= 768) {
-        if (sidebar) {
-          sidebar.classList.add('collapsed');
-          sidebar.classList.remove('mobile-expanded');
-        }
-        if (mainContent) {
-          mainContent.classList.add('collapsed');
-        }
-        overlay.classList.remove('active');
-      } else {
-        if (sidebar) {
-          sidebar.classList.remove('mobile-expanded');
-        }
-        overlay.classList.remove('active');
-      }
-    }
-
-    initializeSidebar();
-
-    if (toggleBtn && sidebar) {
-      toggleBtn.addEventListener('click', function() {
+      function initializeSidebar() {
         if (window.innerWidth <= 768) {
-          if (sidebar.classList.contains('mobile-expanded')) {
-            sidebar.classList.remove('mobile-expanded');
+          if (sidebar) {
             sidebar.classList.add('collapsed');
-            overlay.classList.remove('active');
-          } else {
-            sidebar.classList.remove('collapsed');
-            sidebar.classList.add('mobile-expanded');
-            overlay.classList.add('active');
+            sidebar.classList.remove('mobile-expanded');
           }
-        } else {
-          sidebar.classList.toggle('collapsed');
           if (mainContent) {
-            mainContent.classList.toggle('collapsed');
+            mainContent.classList.add('collapsed');
           }
+          overlay.classList.remove('active');
+        } else {
+          if (sidebar) {
+            sidebar.classList.remove('mobile-expanded');
+          }
+          overlay.classList.remove('active');
+        }
+      }
+
+      initializeSidebar();
+
+      if (toggleBtn && sidebar) {
+        toggleBtn.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            if (sidebar.classList.contains('mobile-expanded')) {
+              sidebar.classList.remove('mobile-expanded');
+              sidebar.classList.add('collapsed');
+              overlay.classList.remove('active');
+            } else {
+              sidebar.classList.remove('collapsed');
+              sidebar.classList.add('mobile-expanded');
+              overlay.classList.add('active');
+            }
+          }
+        });
+      }
+
+      overlay.addEventListener('click', function() {
+        if (window.innerWidth <= 768) {
+          sidebar.classList.remove('mobile-expanded');
+          sidebar.classList.add('collapsed');
+          overlay.classList.remove('active');
         }
       });
-    }
 
-    overlay.addEventListener('click', function() {
-      if (window.innerWidth <= 768) {
-        sidebar.classList.remove('mobile-expanded');
-        sidebar.classList.add('collapsed');
-        overlay.classList.remove('active');
-      }
-    });
+      window.addEventListener('resize', function() {
+        initializeSidebar();
+      });
 
-    window.addEventListener('resize', function() {
-      initializeSidebar();
-    });
+      // Form validation
+      const form = document.querySelector('form');
+      const quantityInput = document.getElementById('room_quantity');
 
-    document.addEventListener('click', function(event) {
-        if (!event.target.closest('.search-input-wrapper')) {
-            const filterSortDropdown = document.querySelector('.filter-sort-dropdown');
-            if (filterSortDropdown && !filterSortDropdown.classList.contains('hidden')) {
-                filterSortDropdown.classList.add('hidden');
-            }
+      form.addEventListener('submit', function(e) {
+        const quantity = parseInt(quantityInput.value);
+        
+        if (quantity < 1 || quantity > 50) {
+          e.preventDefault();
+          alert('Jumlah kamar harus antara 1-50');
+          quantityInput.focus();
+          return;
         }
+
+        const confirmed = confirm(`Apakah Anda yakin ingin membuat ${quantity} kamar baru?`);
+        if (!confirmed) {
+          e.preventDefault();
+        }
+      });
     });
-  });
   </script>
 </body>
 </html>
