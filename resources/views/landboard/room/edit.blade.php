@@ -37,6 +37,9 @@
       opacity: 0.5;
       filter: grayscale(100%);
     }
+    .action-button-hidden {
+      display: none !important;
+    }
   </style>
 </head>
 <body class="bg-cover bg-no-repeat bg-center min-h-screen font-sans" style="background-image: url('/assets/auth.png')">
@@ -99,8 +102,7 @@
                 <div class="group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
                   <input type="file" name="photos[]" 
                          class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20 file:mr-4 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-[#31c594] file:text-white hover:file:bg-[#2ba882]" 
-                         accept="image/*" 
-                         required>
+                         accept="image/*">
                   <button type="button" 
                           class="remove-button-photo bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1" 
                           onclick="removeField(this)">
@@ -108,7 +110,10 @@
                   </button>
                 </div>
               </div>
-              <button type="button" id="add-photo-btn" onclick="addPhoto()" class="mt-2 bg-[#31c594] hover:bg-[#2ba882] text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2">
+              <button type="button" 
+                      id="add-photo-button"
+                      class="mt-2 bg-[#31c594] hover:bg-[#2ba882] text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2" 
+                      onclick="addField('photo-container', 'photos[]', 'file')">
                 <i class="bi bi-plus"></i>Tambah foto
               </button>
             </div>
@@ -116,21 +121,36 @@
             <div class="mb-4">
               <label class="block font-medium">Fasilitas</label>
               <div class="rounded-lg bg-gray-50" id="facility-container">
-              @forelse ($room->facilities as $facility)
-                <div class="group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
-                  <input type="text" name="facilities[]" value="{{$facility->name}}" 
-                         class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
-                         placeholder="Contoh: AC, WiFi, Lemari">
-                  <button type="button" 
-                          class="remove-button-facility bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1" 
-                          onclick="removeField(this)">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </div>
-              @empty
+                @forelse ($room->facilities as $facility)
+                  <div class="group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
+                    <input type="text" name="facilities[]" value="{{$facility->name}}" 
+                           class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
+                           placeholder="Contoh: AC, WiFi, Lemari" 
+                           required>
+                    <button type="button" 
+                            class="remove-button-facility bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1" 
+                            onclick="removeField(this)">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                @empty
+                  <div class="group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
+                    <input type="text" name="facilities[]" 
+                           class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
+                           placeholder="Contoh: AC, WiFi, Lemari" 
+                           required>
+                    <button type="button" 
+                            class="remove-button-facility bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1" 
+                            onclick="removeField(this)">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                @endforelse
               </div>
-              @endforelse
-              <button type="button" id="add-facility-button" onclick="addFacility()" class="mt-2 bg-[#31c594] hover:bg-[#2ba882] text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2">
+              <button type="button" 
+                      id="add-facility-button"
+                      class="mt-2 bg-[#31c594] hover:bg-[#2ba882] text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2" 
+                      onclick="addField('facility-container', 'facilities[]')">
                 <i class="bi bi-plus"></i>Tambah fasilitas
               </button>
             </div>
@@ -138,22 +158,36 @@
             <div class="mb-4">
               <label class="block font-medium">Aturan</label>
               <div class="rounded-lg bg-gray-50" id="rule-container">
-              @forelse ($room->rules as $rule)
-                <div class="group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
-                  <input type="text" name="rules[]" value="{{ $rule->name }}"
-                         class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
-                         placeholder="Contoh: Tidak boleh merokok, Jam malam 22:00" 
-                         >
-                  <button type="button" 
-                          class="remove-button-rule bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1" 
-                          onclick="removeField(this)">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </div>
-              @empty
+                @forelse ($room->rules as $rule)
+                  <div class="group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
+                    <input type="text" name="rules[]" value="{{ $rule->name }}"
+                           class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
+                           placeholder="Contoh: Tidak boleh merokok, Jam malam 22:00" 
+                           required>
+                    <button type="button" 
+                            class="remove-button-rule bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1" 
+                            onclick="removeField(this)">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                @empty
+                  <div class="group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
+                    <input type="text" name="rules[]" 
+                           class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
+                           placeholder="Contoh: Tidak boleh merokok, Jam malam 22:00" 
+                           required>
+                    <button type="button" 
+                            class="remove-button-rule bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1" 
+                            onclick="removeField(this)">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                @endforelse
               </div>
-              @endforelse
-              <button type="button" id="add-rule-button" onclick="addRule()" class="mt-2 bg-[#31c594] hover:bg-[#2ba882] text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2">
+              <button type="button" 
+                      id="add-rule-button"
+                      class="mt-2 bg-[#31c594] hover:bg-[#2ba882] text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2" 
+                      onclick="addField('rule-container', 'rules[]')">
                 <i class="bi bi-plus"></i>Tambah aturan
               </button>
             </div>
@@ -182,7 +216,7 @@
   </div>
 
   <script>
-    function updateActionButton() {
+    function updateActionButtonsVisibility() {
       const sections = [
         {
           selector: 'input[name="facilities[]"]',
@@ -194,12 +228,13 @@
           addBtnId: 'add-rule-button',
           removeBtnClass: 'remove-button-rule'
         },
-        {
-          selector: 'input[name="photos[]"]',
-          addBtnId: 'add-photo-button',
-          removeBtnClass: 'remove-button-photo'
-        }
+        // {
+        //   selector: 'input[name="photos[]"]',
+        //   addBtnId: 'add-photo-button',
+        //   removeBtnClass: 'remove-button-photo'
+        // }
       ];
+
       sections.forEach(({ selector, addBtnId, removeBtnClass }) => {
         const inputs = document.querySelectorAll(selector);
         const filled = [...inputs].some(input => input.value.trim() !== '');
@@ -216,11 +251,12 @@
       });
     }
 
+    
     document.addEventListener('DOMContentLoaded', function() {
       const sidebar = document.getElementById('sidebar');
       const mainContent = document.getElementById('main-content');
       const toggleBtn = document.getElementById('toggleSidebar');
-      updateActionButton();
+      updateActionButtonsVisibility();
       document.querySelectorAll('input[name="facilities[]"], input[name="rules[]"], input[name="photos[]"]').forEach(input => {
         input.addEventListener('input', updateActionButtonsVisibility);
       });
@@ -282,118 +318,113 @@
         initializeSidebar();
       });
     });
-    
-    function addPhoto () {
-      const container = document.getElementById('photo-container');
 
+    function removeField(button) {
+      const group = button.closest('.group');
+      const container = group.parentElement;
+      const allGroups = container.querySelectorAll('.group');
+
+      if (allGroups.length > 1) {
+        group.remove();
+      } else {
+        alert('Minimal 1 input harus ada.');
+      }
+      
+      // Update visibility after removal
+      updateActionButtonsVisibility();
+    }
+
+    function addField(containerId, inputName, type = 'text') {
+      if (inputName === 'photos[]' && getPhotoInputCount() >= 7) {
+        alert('Maksimal hanya bisa upload 7 foto.');
+        return;
+      }
+
+      const container = document.getElementById(containerId);
       const div = document.createElement('div');
-      div.className = 'flex gap-2 mt-2 items-center';
+      div.className = 'group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center';
+
+      const placeholder = getPlaceholder(inputName);
+      const inputClass = 'flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20';
+      const fileInputClass = inputClass + ' file:mr-4 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-[#31c594] file:text-white hover:file:bg-[#2ba882]';
+
+      // Determine remove button class based on input type
+      let removeButtonClass = 'bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1';
+      if (inputName.includes('facilities')) {
+        removeButtonClass = 'remove-button-facility ' + removeButtonClass;
+      } else if (inputName.includes('rules')) {
+        removeButtonClass = 'remove-button-rule ' + removeButtonClass;
+      } else if (inputName.includes('photos')) {
+        removeButtonClass = 'remove-button-photo ' + removeButtonClass;
+      }
 
       div.innerHTML = `
-        <label class="w-full cursor-pointer flex items-center justify-between p-3 bg-white border border-gray-300 rounded-md text-sm hover:bg-gray-50">
-          <span class="file-name truncate text-gray-500">Pilih file...</span>
-          <span class="text-gray-400 font-medium">Browse</span>
-          <input type="file" name="photos[]" accept="image/*" class="hidden"
-                onchange="updateFileName(this)">
-        </label>
-
-        <button type="button"
-                class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1"
+        <input type="${type}" name="${inputName}" 
+              class="${type === 'file' ? fileInputClass : inputClass}" 
+              ${type === 'file' ? 'accept="image/*"' : `placeholder="${placeholder}"`} required>
+        <button type="button" 
+                class="${removeButtonClass}" 
                 onclick="removeField(this)">
           <i class="bi bi-trash"></i>
-        </button>
-
-        <button type="button"
-                class="text-lg text-black hover:text-[#31c594]"
-                onclick="addPhoto()">
-          <i class="bi bi-plus-lg"></i>
-        </button>
-      `;
+        </button>`;
 
       container.appendChild(div);
-      updateActionButton();
+      
+      // Add event listener to new input
+      const newInput = div.querySelector('input');
+      newInput.addEventListener('input', updateActionButtonsVisibility);
+      
+      // Update visibility after addition
+      updateActionButtonsVisibility();
     }
 
-    function removeField(btn) {
-      const row = btn.closest('.flex');
-      const container = row.parentElement;
-      const siblings = container.querySelectorAll('.flex');
-      if (siblings.length > 1) {
-        row.remove();
-      } else {
-        const input = row.querySelector('input');
-        if (input) input.value = '';
+    function getPlaceholder(inputName) {
+      if (inputName.includes('facilities')) {
+        return 'Contoh: Kasur, Meja Belajar, Kamar Mandi Dalam';
+      } else if (inputName.includes('rules')) {
+        return 'Contoh: Dilarang membawa tamu menginap';
       }
+      return '';
     }
 
-    function updateFileName(input) {
-      const span = input.closest('label').querySelector('.file-name');
-      span.textContent = input.files.length ? input.files[0].name : 'Pilih file...';
-    }
-
-    function addFacility() {
-      const container = document.getElementById('facility-container');
-      const div = document.createElement('div');
-      div.className = 'flex gap-2 mt-2 items-center';
-      div.innerHTML = `
-        <input type="text" name="facilities[]" class="w-full p-3 border border-gray-200 rounded-md">
-        <button type="button" onclick="removeField(this)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1">
-          <i class="bi bi-trash"></i>
-        </button>
-        <button type="button" onclick="addFacility()" class="text-black hover:text-[#31c594] text-lg">
-          <i class="bi bi-plus-lg"></i>
-        </button>
-      `;
-      container.appendChild(div);
-      updateActionButton();
-    }
-
-    function addRule() {
-      const container = document.getElementById('rule-container');
-      const div = document.createElement('div');
-      div.className = 'flex gap-2 mt-2 items-center';
-      div.innerHTML = `
-        <input type="text" name="rules[]" class="w-full p-3 border border-gray-200 rounded-md">
-        <button type="button" onclick="removeField(this)" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1">
-          <i class="bi bi-trash"></i>
-        </button>
-        <button type="button" onclick="addRule()" class="text-black hover:text-[#31c594] text-lg">
-          <i class="bi bi-plus-lg"></i>
-        </button>
-      `;
-      container.appendChild(div);
-      updateActionButton();
+    function getPhotoInputCount() {
+      return document.querySelectorAll('#photo-container input[type="file"]').length;
     }
 
     function validateForm() {
-      const facilityInputs = document.querySelectorAll('input[name="facilities[]"]');
-      const ruleInputs = document.querySelectorAll('input[name="rules[]"]');
+      const checks = [
+        { selector: 'input[name="facilities[]"]', msg: 'Minimal 1 fasilitas harus diisi.' },
+        { selector: 'input[name="rules[]"]', msg: 'Minimal 1 aturan harus diisi.' }
+      ];
+
+      // Check facilities and rules
+      for (const { selector, msg } of checks) {
+        if (![...document.querySelectorAll(selector)].some(input => input.value.trim() !== '')) {
+          alert(msg);
+          return false;
+        }
+      }
+
+      // Check photos (new photos or existing photos not deleted)
       const photoInputs = document.querySelectorAll('input[name="photos[]"]');
       const existingChecked = document.querySelectorAll('input[name="delete_photos[]"]:checked');
       const totalOldPhotos = document.querySelectorAll('#existing-photos input[type="checkbox"]').length;
       const hasOldPhotoRemaining = totalOldPhotos > existingChecked.length;
-
-      const hasFacility = [...facilityInputs].some(input => input.value.trim() !== '');
-      const hasRule = [...ruleInputs].some(input => input.value.trim() !== '');
       const hasNewPhoto = [...photoInputs].some(input => input.value !== '');
 
-      if (!hasFacility) {
-        alert("Minimal 1 fasilitas harus diisi.");
-        return false;
-      }
-
-      if (!hasRule) {
-        alert("Minimal 1 aturan harus diisi.");
-        return false;
-      }
-
       if (!hasNewPhoto && !hasOldPhotoRemaining) {
-        alert("Minimal harus ada 1 foto (lama atau baru).");
+        alert('Minimal harus ada 1 foto (lama atau baru).');
+        return false;
+      }
+
+      if (getPhotoInputCount() > 7) {
+        alert('Anda hanya boleh mengunggah maksimal 7 foto.');
         return false;
       }
 
       return true;
     }
+
     function toggleSelectPhoto(img) {
       const wrapper = img.closest('.photo-wrapper');
       const checkbox = wrapper.querySelector('input[type="checkbox"]');
