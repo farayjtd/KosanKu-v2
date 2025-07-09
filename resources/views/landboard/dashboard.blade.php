@@ -119,6 +119,7 @@
                   <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
                     <div>
                       <p class="text-sm font-medium">{{ $payment->tenant->name }}</p>
+                      <p class="text-sm"> telah melakukan transaksi sebesar</p>
                       <p class="text-xs text-gray-500">{{ $payment->created_at->format('d M Y') }}</p>
                     </div>
                     <p class="text-sm font-semibold text-green-600">Rp{{ number_format($payment->amount, 0, ',', '.') }}</p>
@@ -142,13 +143,14 @@
                   <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
                     <div>
                       <p class="text-sm font-medium">{{ $tenant->name }}</p>
-                      <p class="text-xs text-gray-500">Kamar {{ $tenant->room->room_number ?? '-' }}</p>
+                      <p class="text-sm"> telah menempati kamar</p>
+                      <p class="text-xs text-blue-600">
+                      {{ $tenant->rentalHistories->last()?->start_date
+                        ? Carbon::parse($tenant->rentalHistories->last()->start_date)->format('d M Y')
+                        : '-' }}
+                      </p>
                     </div>
-                    <p class="text-xs text-blue-600">
-                    {{ $tenant->rentalHistories->last()?->start_date
-                      ? Carbon::parse($tenant->rentalHistories->last()->start_date)->format('d M Y')
-                      : '-' }}
-                    </p>
+                    <p class="text-xs text-gray-500">{{ $tenant->room->room_number ?? '-' }}</p>
                   </div>
                 @endforeach
               </div>

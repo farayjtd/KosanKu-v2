@@ -7,387 +7,203 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/font.css">
   @vite('resources/css/app.css')
-  <style>
-          .sidebar.collapsed {
-      width: 80px;
-    }
-    
-    .sidebar.collapsed .menu-text {
-      display: none;
-    }
-    
-    .sidebar.collapsed .menu-title {
-      display: none;
-    }
-    
-    .sidebar.collapsed .group-title {
-      display: none;
-    }
-    
-    .sidebar.collapsed .logo-text {
-      display: none;
-    }
-    
-    .sidebar.collapsed .menu-item {
-      justify-content: center;
-      padding: 0.45rem;
-    }
-    
-    .sidebar.collapsed .profile-btn,
-    .sidebar.collapsed .logout-btn {
-      padding: 0.45rem;
-      justify-content: center;
-      min-height: 48px;
-    }
-    
-    .sidebar.collapsed .profile-btn .btn-text,
-    .sidebar.collapsed .logout-btn .btn-text {
-      display: none;
-    }
-    
-    .sidebar-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding: 1rem;
-    }
-    
-    .sidebar-footer {
-      margin-top: auto;
-      padding: 1rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .main-content {
-      margin-left: 240px;
-      width: calc(100% - 240px);
-      transition: all 0.3s ease;
-      min-height: 100vh;
-    }
-    
-    .main-content.collapsed {
-      margin-left: 80px;
-      width: calc(100% - 80px);
-    }
-    
-    @media (max-width: 768px) {
-      .sidebar {
-        width: 80px;
-      }
-      
-      .sidebar .menu-text {
-        display: none;
-      }
-      
-      .sidebar .menu-title {
-        display: none;
-      }
-      
-      .sidebar .group-title {
-        display: none;
-      }
-      
-      .sidebar .logo-text {
-        display: none;
-      }
-      
-      .sidebar .menu-item {
-        justify-content: center;
-        padding: 0.75rem;
-      }
-      
-      .sidebar .profile-btn,
-      .sidebar .logout-btn {
-        padding: 0.75rem;
-        justify-content: center;
-        min-height: 48px;
-      }
-      
-      .sidebar .profile-btn .btn-text,
-      .sidebar .logout-btn .btn-text {
-        display: none;
-      }
-      
-      .main-content {
-        margin-left: 80px;
-        width: calc(100% - 80px);
-      }
-      
-      .main-content.collapsed {
-        margin-left: 80px;
-        width: calc(100% - 80px);
-      }
-    }
-    
-    @media (max-width: 640px) {
-      .sidebar {
-        width: 60px;
-      }
-      
-      .sidebar .menu-item {
-        padding: 0.5rem;
-      }
-      
-      .sidebar .profile-btn,
-      .sidebar .logout-btn {
-        padding: 0.5rem;
-        min-height: 40px;
-      }
-      
-      .main-content {
-        margin-left: 60px;
-        width: calc(100% - 60px);
-      }
-      
-      .main-content.collapsed {
-        margin-left: 60px;
-        width: calc(100% - 60px);
-      }
-      
-      @media (max-width: 768px) {
-        .sidebar.mobile-expanded {
-          width: 100vw !important;
-          z-index: 60;
-        }
-        
-        .sidebar.mobile-expanded .menu-text,
-        .sidebar.mobile-expanded .menu-title,
-        .sidebar.mobile-expanded .group-title,
-        .sidebar.mobile-expanded .logo-text,
-        .sidebar.mobile-expanded .btn-text {
-          display: block !important;
-        }
-        
-        .sidebar.mobile-expanded .menu-item {
-          justify-content: flex-start !important;
-          padding: 0.5rem 1rem !important;
-        }
-        
-        .sidebar.mobile-expanded .profile-btn,
-        .sidebar.mobile-expanded .logout-btn {
-          justify-content: center !important;
-          padding: 0.5rem 1rem !important;
-        }
-        
-        .mobile-overlay {
-          display: none;
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100vw;
-          height: 100vh;
-          background: rgba(0, 0, 0, 0.5);
-          z-index: 50;
-        }
-        
-        .mobile-overlay.active {
-          display: block;
-        }
-      }
-    }
-      .photo-carousel {
-      position: relative;
-      overflow: hidden;
-      border-radius: 12px;
-    }
-
-    .carousel-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: none;
-    }
-
-    .carousel-img.active {
-      display: block;
-    }
-
-    .carousel-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0, 0, 0, 0.5);
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      cursor: pointer;
-      border-radius: 4px;
-      transition: background 0.3s ease;
-    }
-
-    .carousel-btn:hover {
-      background: rgba(0, 0, 0, 0.7);
-    }
-
-    .carousel-btn.prev {
-      left: 10px;
-    }
-
-    .carousel-btn.next {
-      right: 10px;
-    }
-
-    .photo-indicators {
-      position: absolute;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 6px;
-    }
-
-    .indicator {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.5);
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .indicator.active {
-      background: white;
-    }
-  </style>
 </head>
+
 <body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
     @include('components.sidebar-landboard')
-    <div id="main-content" class="main-content p-6 md:pt-4 w-full">
-      <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
-        <div class="bg-gradient-to-r from-[#31c594] to-[#2ba882] text-white p-6 text-center">
-          <h2 class="text-xl font-semibold">
-            <i class="bi bi-info-circle mr-2"></i>Detail Kamar
-          </h2>
+
+    <div id="main-content" class="main-content p-6 md:pt-4 flex-1">
+      <!-- Header Section -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div class="flex items-center">
+          
+          <div class="ml-4">
+            <h3 class="text-2xl font-bold text-gray-800 use-poppins">Kamar {{ $room->room_number }}</h3>
+            <p class="text-gray-600 use-poppins-normal">{{ $room->type }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-6 bg-white rounded-xl mt-4">
+        <!-- Room Information -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden p-4">
+          <h4 class="text-lg font-semibold text-gray-800">Informasi Kamar</h4>
+          <div class="mt-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="border-b border-gray-100 pb-2">
+                <span class="text-gray-600 font-medium text-sm">Tipe:</span>
+                <span class="text-gray-800 font-semibold text-sm ml-2">{{ $room->type }}</span>
+              </div>
+
+              <div class="border-b border-gray-100 pb-2">
+                <span class="text-gray-600 font-medium text-sm">Nomor:</span>
+                <span class="text-gray-800 font-semibold text-sm ml-2">{{ $room->room_number }}</span>
+              </div>
+
+              <div class="border-b border-gray-100 pb-2">
+                <span class="text-gray-600 font-medium text-sm">Harga:</span>
+                <span class="text-gray-800 font-semibold text-sm ml-2">Rp{{ number_format($room->price, 0, ',', '.') }}</span>
+              </div>
+
+              <div class="border-b border-gray-100 pb-2">
+                <span class="text-gray-600 font-medium text-sm">Gender:</span>
+                <span class="text-gray-800 font-semibold text-sm ml-2">{{ ucfirst($room->gender_type) }}</span>
+              </div>
+
+              <div class="border-b border-gray-100 pb-2 md:col-span-2">
+                <span class="text-gray-600 font-medium text-sm">Status:</span>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ml-2
+                  {{ $room->status == 'available' ? 'bg-green-100 text-green-800' : 
+                     ($room->status == 'occupied' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800') }}">
+                  {{ ucfirst($room->status) }}
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="p-6 space-y-6">
-          <div>
-            <p><strong>Tipe:</strong> {{ $room->type }}</p>
-            <P><strong>Nomor:</strong> {{ $room->room_number }} </p>
-            <p><strong>Harga:</strong> Rp{{ number_format($room->price, 0, ',', '.') }}</p>
-            <p><strong>Gender:</strong> {{ ucfirst($room->gender_type) }}</p>
-            <p><strong>Status:</strong> {{ ucfirst($room->status) }}</p>
-          </div>
-
-          <div>
-            <h3 class="text-lg font-semibold mb-2">Foto Kamar</h3>
+        <!-- Room Photos -->
+        <div class="mt-6 p-4 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+          <h4 class="text-lg font-semibold text-gray-800">Foto Kamar</h4>
+          <div class="mt-4">
             @if ($room->photos->isEmpty())
-              <p class="text-gray-500">Tidak ada foto tersedia.</p>
+              <p class="text-gray-500 text-sm">Tidak ada foto tersedia.</p>
             @else
-              <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 @foreach ($room->photos as $photo)
-                  <img src="{{ asset('storage/' . $photo->path) }}" alt="Foto Kamar" class="w-full h-40 object-cover rounded-lg">
+                  <div class="aspect-square rounded-lg overflow-hidden border border-gray-200 shadow-sm">
+                    <img 
+                      src="{{ asset('storage/' . $photo->path) }}" 
+                      alt="Foto Kamar" 
+                      class="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
+                    >
+                  </div>
                 @endforeach
               </div>
             @endif
           </div>
+        </div>
 
-          <div>
-            <h3 class="text-lg font-semibold mb-2">Fasilitas</h3>
+        <!-- Room Facilities -->
+        <div class="mt-6 p-4 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+          <h4 class="text-lg font-semibold text-gray-800">Fasilitas</h4>
+          <div class="mt-4">
             @if ($room->facilities->isEmpty())
-              <p class="text-gray-500">Tidak ada fasilitas ditambahkan.</p>
+              <p class="text-gray-500 text-sm">Tidak ada fasilitas ditambahkan.</p>
             @else
-              <ul class="list-disc list-inside text-gray-700">
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                 @foreach ($room->facilities as $facility)
-                  <li>{{ $facility->name }}</li>
+                  <div class="flex items-center text-sm text-gray-700">
+                    <i class="bi bi-check-circle-fill text-green-500 mr-2"></i>
+                    {{ $facility->name }}
+                  </div>
                 @endforeach
-              </ul>
+              </div>
             @endif
           </div>
+        </div>
 
-          <div>
-            <h3 class="text-lg font-semibold mb-2">Aturan</h3>
+        <!-- Room Rules -->
+        <div class="mt-6 p-4 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+          <h4 class="text-lg font-semibold text-gray-800">Aturan</h4>
+          <div class="mt-4">
             @if ($room->rules->isEmpty())
-              <p class="text-gray-500">Tidak ada aturan ditentukan.</p>
+              <p class="text-gray-500 text-sm">Tidak ada aturan ditentukan.</p>
             @else
-              <ul class="list-disc list-inside text-gray-700">
+              <div class="space-y-2">
                 @foreach ($room->rules as $rule)
-                  <li>{{ $rule->name }}</li>
+                  <div class="flex items-center text-sm text-gray-700">
+                    <i class="bi bi-circle-fill text-xs mr-2"></i>
+                    {{ $rule->name }}
+                  </div>
                 @endforeach
-              </ul>
+              </div>
             @endif
           </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="flex justify-start mt-6">
+          <a 
+            href="{{ route('landboard.rooms.index') }}" 
+            class="bg-[#31c594] text-white px-8 py-4 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"
+          >
+            <i class="bi bi-arrow-left mr-2"></i>
+            Kembali
+          </a>
         </div>
       </div>
     </div>
   </div>
+
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('main-content');
-    const toggleBtn = document.getElementById('toggleSidebar');
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('main-content');
+      const toggleBtn = document.getElementById('toggleSidebar');
 
-    const overlay = document.createElement('div');
-    overlay.className = 'mobile-overlay';
-    overlay.id = 'mobile-overlay';
-    document.body.appendChild(overlay);
+      const overlay = document.createElement('div');
+      overlay.className = 'mobile-overlay';
+      overlay.id = 'mobile-overlay';
+      document.body.appendChild(overlay);
 
-    function initializeSidebar() {
-      if (window.innerWidth <= 768) {
-        if (sidebar) {
-          sidebar.classList.add('collapsed');
-          sidebar.classList.remove('mobile-expanded');
-        }
-        if (mainContent) {
-          mainContent.classList.add('collapsed');
-        }
-        overlay.classList.remove('active');
-      } else {
-        if (sidebar) {
-          sidebar.classList.remove('mobile-expanded');
-        }
-        overlay.classList.remove('active');
-      }
-    }
-
-    initializeSidebar();
-
-    if (toggleBtn && sidebar) {
-      toggleBtn.addEventListener('click', function() {
+      function initializeSidebar() {
         if (window.innerWidth <= 768) {
-          if (sidebar.classList.contains('mobile-expanded')) {
-            sidebar.classList.remove('mobile-expanded');
+          if (sidebar) {
             sidebar.classList.add('collapsed');
-            overlay.classList.remove('active');
-          } else {
-            sidebar.classList.remove('collapsed');
-            sidebar.classList.add('mobile-expanded');
-            overlay.classList.add('active');
+            sidebar.classList.remove('mobile-expanded');
           }
-        } else {
-          sidebar.classList.toggle('collapsed');
           if (mainContent) {
-            mainContent.classList.toggle('collapsed');
+            mainContent.classList.add('collapsed');
           }
+          overlay.classList.remove('active');
+        } else {
+          if (sidebar) {
+            sidebar.classList.remove('mobile-expanded');
+          }
+          overlay.classList.remove('active');
+        }
+      }
+
+      initializeSidebar();
+
+      if (toggleBtn && sidebar) {
+        toggleBtn.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            if (sidebar.classList.contains('mobile-expanded')) {
+              sidebar.classList.remove('mobile-expanded');
+              sidebar.classList.add('collapsed');
+              overlay.classList.remove('active');
+            } else {
+              sidebar.classList.remove('collapsed');
+              sidebar.classList.add('mobile-expanded');
+              overlay.classList.add('active');
+            }
+          } else {
+            sidebar.classList.toggle('collapsed');
+            if (mainContent) {
+              mainContent.classList.toggle('collapsed');
+            }
+          }
+        });
+      }
+
+      overlay.addEventListener('click', function() {
+        if (window.innerWidth <= 768) {
+          sidebar.classList.remove('mobile-expanded');
+          sidebar.classList.add('collapsed');
+          overlay.classList.remove('active');
         }
       });
-    }
 
-    overlay.addEventListener('click', function() {
-      if (window.innerWidth <= 768) {
-        sidebar.classList.remove('mobile-expanded');
-        sidebar.classList.add('collapsed');
-        overlay.classList.remove('active');
-      }
+      window.addEventListener('resize', function() {
+        initializeSidebar();
+      });
     });
-
-    window.addEventListener('resize', function() {
-      initializeSidebar();
-    });
-
-    document.addEventListener('click', function(event) {
-        if (!event.target.closest('.search-input-wrapper')) {
-            const filterSortDropdown = document.querySelector('.filter-sort-dropdown');
-            if (filterSortDropdown && !filterSortDropdown.classList.contains('hidden')) {
-                filterSortDropdown.classList.add('hidden');
-            }
-        }
-    });
-  });
   </script>
 </body>
 </html>

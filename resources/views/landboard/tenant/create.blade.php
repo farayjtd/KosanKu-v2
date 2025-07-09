@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Buat Akun Tenant</title>
+  <title>Buat Akun Penghuni Kos</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
   @vite('resources/css/app.css')
 </head>
@@ -17,7 +17,7 @@
     <div class="bg-white rounded-2xl shadow-lg overflow-hidden max-w-xl mx-auto">
         <div class="bg-gradient-to-r from-[#31c594] to-[#2ba882] text-white p-6 text-center rounded-t-2xl">
           <h2 class="text-2xl font-bold">
-            <i class="bi bi-person-plus mr-2"></i> Buat Akun Tenant
+            <i class="bi bi-person-plus mr-2"></i> Buat Akun Penghuni Kos
           </h2>
         </div>
 
@@ -102,7 +102,7 @@
 
             <div class="pt-4">
               <button type="submit" class="w-full bg-[#31c594] text-white px-8 py-3 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30">
-                <i class="bi bi-plus-circle mr-1"></i> Buat Akun
+              <i class="bi bi-save mr-2"></i>Simpan
               </button>
             </div>
           </form>
