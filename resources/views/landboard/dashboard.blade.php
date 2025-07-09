@@ -18,7 +18,7 @@
     @include('components.sidebar-landboard')
     <div id="main-content" class="main-content p-6 md:pt-4">
       <p class="text-xl p-4 rounded-xl text-left text-white bg-[#31c594]">Selamat datang kembali, <strong class="use-poppins">{{ Auth::user()->landboard->name }}</strong></p>
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-6">
         <div class="bg-white p-6 rounded-xl shadow">
           <div class="flex items-center justify-between">
             <div>
@@ -77,45 +77,29 @@
           </div>
         </div>
 
-        <div class="bg-white p-6 rounded-xl shadow mt-4">
-  <div class="flex items-center justify-between">
-    <div>
-      <h3 class="text-lg font-semibold text-gray-700 mb-2">Data Pengeluaran</h3>
-      <div class="space-y-1">
-        <div class="flex justify-between text-sm">
-          <span>Bulan Ini:</span>
-          <span class="font-semibold">Rp{{ number_format($monthlyExpense ?? 0, 0, ',', '.') }}</span>
-        </div>
-        <div class="flex justify-between text-sm">
-          <span>Tahun Ini:</span>
-          <span class="font-semibold">Rp{{ number_format($yearlyExpense ?? 0, 0, ',', '.') }}</span>
-        </div>
-      </div>
-    </div>
-    <div class="text-4xl text-gray-700">
-      <i class="bi bi-wallet2"></i>
-    </div>
-  </div>
-</div>
-    </div>
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
-        <div class="bg-white p-4 rounded-xl shadow">
-          <h3 class="text-lg font-semibold text-gray-700 mb-4">Kalender</h3>
-          <div id="calendar" class="text-sm">
-            <div class="grid grid-cols-7 gap-1 mb-2">
-              <div class="text-center font-semibold text-gray-600 p-1">Min</div>
-              <div class="text-center font-semibold text-gray-600 p-1">Sen</div>
-              <div class="text-center font-semibold text-gray-600 p-1">Sel</div>
-              <div class="text-center font-semibold text-gray-600 p-1">Rab</div>
-              <div class="text-center font-semibold text-gray-600 p-1">Kam</div>
-              <div class="text-center font-semibold text-gray-600 p-1">Jum</div>
-              <div class="text-center font-semibold text-gray-600 p-1">Sab</div>
+        <div class="bg-white p-6 rounded-xl shadow">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-700 mb-2">Data Pengeluaran</h3>
+              <div class="space-y-1">
+                <div class="flex justify-between text-sm">
+                  <span>Bulan Ini:</span>
+                  <span class="font-semibold">Rp{{ number_format($monthlyExpense ?? 0, 0, ',', '.') }}</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                  <span>Tahun Ini:</span>
+                  <span class="font-semibold">Rp{{ number_format($yearlyExpense ?? 0, 0, ',', '.') }}</span>
+                </div>
+              </div>
             </div>
-            <div class="grid grid-cols-7 gap-1" id="calendar-dates">
+            <div class="text-4xl text-gray-700">
+              <i class="bi bi-wallet2"></i>
             </div>
           </div>
         </div>
 
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
         <div class="bg-white p-4 rounded-xl shadow">
           <h3 class="text-lg font-semibold text-gray-700 mb-4">Grafik Pemasukan</h3>
           <div style="height: 200px;">
@@ -123,7 +107,7 @@
           </div>
         </div>
 
-        <div class="bg-white p-4 rounded-xl shadow mt-6">
+        <div class="bg-white p-4 rounded-xl shadow">
           <h3 class="text-lg font-semibold text-gray-700 mb-4">Grafik Pengeluaran</h3>
           <div style="height: 200px;">
             <canvas id="expenseChart"></canvas>
@@ -131,82 +115,52 @@
         </div>
       </div>
 
-      <div class="mt-8">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
-          <div class="bg-white p-6 rounded-xl shadow border-l-4 border-green-500">
-            <div class="flex items-center justify-between mb-4">
-              <h4 class="text-lg font-semibold text-gray-700">Transaksi Terbaru</h4>
-              <i class="bi bi-credit-card text-2xl text-green-600"></i>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+        <div class="bg-white p-4 rounded-xl shadow h-64">
+          <h3 class="text-lg font-semibold text-gray-700 mb-4">Kalender</h3>
+          <div id="calendar" class="text-sm">
+            <div class="grid grid-cols-7 gap-1 mb-2">
+              @foreach(['Min','Sen','Sel','Rab','Kam','Jum','Sab'] as $day)
+                <div class="text-center font-semibold text-gray-600 p-1">{{ $day }}</div>
+              @endforeach
             </div>
-            @if($recentPayments->count() > 0)
-              <p class="text-sm text-gray-600 mb-3">Ada {{ $recentPayments->count() }} transaksi terbaru</p>
-              <div class="space-y-2">
-                @foreach($recentPayments->take(3) as $payment)
-                  <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
-                    <div>
-                      <p class="text-sm font-medium">{{ $payment->tenant->name }}</p>
-                      <p class="text-sm"> telah melakukan transaksi sebesar</p>
-                      <p class="text-xs text-gray-500">{{ $payment->created_at->format('d M Y') }}</p>
-                    </div>
-                    <p class="text-sm font-semibold text-green-600">Rp{{ number_format($payment->amount, 0, ',', '.') }}</p>
-                  </div>
-                @endforeach
-              </div>
-            @else
-              <p class="text-sm text-gray-500">Belum ada transaksi terbaru</p>
-            @endif
+            <div class="grid grid-cols-7 gap-1" id="calendar-dates"></div>
           </div>
-
-          <div class="bg-white p-6 rounded-xl shadow border-l-4 border-blue-500">
-            <div class="flex items-center justify-between mb-4">
-              <h4 class="text-lg font-semibold text-gray-700">Tenant Baru</h4>
-              <i class="bi bi-person-plus text-2xl text-blue-600"></i>
-            </div>
-            @if($newTenants->count() > 0)
-              <p class="text-sm text-gray-600 mb-3">Ada {{ $newTenants->count() }} penghuni baru bergabung</p>
-              <div class="space-y-2">
-                @foreach($newTenants->take(3) as $tenant)
-                  <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
-                    <div>
-                      <p class="text-sm font-medium">{{ $tenant->name }}</p>
-                      <p class="text-sm"> telah menempati kamar</p>
-                      <p class="text-xs text-blue-600">
-                      {{ $tenant->rentalHistories->last()?->start_date
-                        ? Carbon::parse($tenant->rentalHistories->last()->start_date)->format('d M Y')
-                        : '-' }}
-                      </p>
-                    </div>
-                    <p class="text-xs text-gray-500">{{ $tenant->room->room_number ?? '-' }}</p>
-                  </div>
-                @endforeach
-              </div>
-            @else
-              <p class="text-sm text-gray-500">Belum ada penghuni baru</p>
-            @endif
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow h-64 overflow-y-auto">
+          <div class="flex items-center justify-between mb-4">
+            <h4 class="text-lg font-semibold text-gray-700">Notifikasi</h4>
           </div>
-
-          <div class="bg-white p-6 rounded-xl shadow border-l-4 border-red-500">
-            <div class="flex items-center justify-between mb-4">
-              <h4 class="text-lg font-semibold text-gray-700">Tagihan Belum Lunas</h4>
-              <i class="bi bi-exclamation-triangle text-2xl text-red-600"></i>
-            </div>
-            @if($unpaidPayments->count() > 0)
-              <p class="text-sm text-gray-600 mb-3">Ada {{ $unpaidPayments->count() }} tagihan yang belum lunas</p>
-              <div class="space-y-2">
-                @foreach($unpaidPayments->take(3) as $bill)
-                  <div class="flex justify-between items-center p-2 bg-gray-50 rounded">
-                    <div>
-                      <p class="text-sm font-medium">{{ $bill->tenant->name }}</p>
-                      <p class="text-xs text-gray-500">{{ Carbon::parse($bill->due_date)->format('d M Y') }}</p>
-                    </div>
-                    <p class="text-sm font-semibold text-red-600">Rp{{ number_format($bill->amount, 0, ',', '.') }}</p>
-                  </div>
-                @endforeach
+          <div class="space-y-2 text-sm">
+            @foreach($recentPayments->take(2) as $payment)
+              <div class="p-2 bg-green-50 rounded flex justify-between items-start">
+                <div>
+                  <p class="font-medium text-green-600">{{ $payment->tenant->name }}</p>
+                  <p class="text-xs text-gray-600">Transaksi: Rp{{ number_format($payment->amount, 0, ',', '.') }}</p>
+                  <p class="text-xs text-gray-400">{{ $payment->created_at->format('d M Y') }}</p>
+                </div>
+                <i class="bi bi-credit-card text-green-500"></i>
               </div>
-            @else
-              <p class="text-sm text-gray-500">Tidak ada tagihan belum lunas</p>
-            @endif
+            @endforeach
+            @foreach($newTenants->take(1) as $tenant)
+              <div class="p-2 bg-blue-50 rounded flex justify-between items-start">
+                <div>
+                  <p class="font-medium text-blue-600">{{ $tenant->name }}</p>
+                  <p class="text-xs text-gray-600">Tenant baru, kamar {{ $tenant->room->room_number ?? '-' }}</p>
+                </div>
+                <i class="bi bi-person-plus text-blue-500"></i>
+              </div>
+            @endforeach
+            @foreach($unpaidPayments->take(2) as $bill)
+              <div class="p-2 bg-red-50 rounded flex justify-between items-start">
+                <div>
+                  <p class="font-medium text-red-600">{{ $bill->tenant->name }}</p>
+                  <p class="text-xs text-gray-600">Tagihan: Rp{{ number_format($bill->amount, 0, ',', '.') }}</p>
+                  <p class="text-xs text-gray-400">Jatuh tempo: {{ Carbon::parse($bill->due_date)->format('d M Y') }}</p>
+                </div>
+                <i class="bi bi-exclamation-triangle text-red-500"></i>
+              </div>
+            @endforeach
           </div>
         </div>
       </div>
