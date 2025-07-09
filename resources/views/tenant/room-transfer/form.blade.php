@@ -35,7 +35,7 @@
               <p class="text-gray-500">
                 Setelah pindah, masa sewa kamar baru akan dimulai selama 1 bulan. Anda bisa memperpanjang kembali sesuai kebutuhan.
               </p>
-              <p><span class="font-semibold">Kamar Saat Ini:</span> {{ $currentHistory->room->room_number }}</p>
+              <p class="mt-4"><span class="font-semibold">Kamar Saat Ini:</span> {{ $currentHistory->room->room_number }}</p>
               <p><span class="font-semibold">Sisa Hari:</span> {{ $daysLeft }} hari</p>
               <p><span class="font-semibold">Denda Pindah Kamar:</span> Rp{{ number_format($currentHistory->room->landboard->room_change_penalty_amount ?? 0, 0, ',', '.') }}</p>
               <p><span class="font-semibold">Estimasi Refund Manual:</span> Rp{{ number_format($refundAmount, 0, ',', '.') }}</p>
@@ -70,7 +70,7 @@
                   <div>
                     <label for="room_id" class="block font-medium mb-1">Pilih Kamar Baru</label>
                     <select name="room_id" id="room_id" required
-                      class="w-full rounded-md border-gray-300 focus:ring focus:ring-blue-200">
+                      class="w-full rounded-md border border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0">
                       <option value="">-- Pilih Kamar --</option>
                       @foreach ($availableRooms as $room)
                         <option value="{{ $room->id }}">
@@ -81,7 +81,7 @@
                   </div>
 
                   <button type="submit"
-                    class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+                    class="bg-[#31c594] text-white px-6 py-2 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30">
                     Ajukan Permintaan
                   </button>
                 </form>
