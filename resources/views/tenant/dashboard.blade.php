@@ -15,156 +15,335 @@
 <body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
     @include('components.sidebar-tenant')
+    
     <div id="main-content" class="main-content p-6 md:pt-4">
-      <div class="p-4 rounded-xl bg-white flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-        <div>
-          <p class="text-xl text-gray-700 font-semibold">
-            Selamat datang kembali, <strong class="use-poppins">{{ $tenant->name }}</strong>
-          </p>
-          @if (isset($remaining_time) && $activeHistory)
-            <p class="text-[14px] mt-2 text-gray-600">
-              Masa sewa akan habis dalam {{ $activeHistory->end_date }}.<br>Ajukan perpanjangan sekarang!
-            </p>
+      
+      {{-- Welcome Card --}}
+      <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div class="flex-1">
+            <h1 class="text-2xl text-gray-700 font-semibold mb-2">
+              Selamat datang kembali, <strong class="use-poppins text-gray-700">{{ $tenant->name }}</strong>
+            </h1>
+            @if (isset($remaining_time) && $activeHistory)
+              <div class="mt-2 inline-block">
+                <p class="text-sm flex items-center">
+                  <i class="bi bi-exclamation-triangle mr-2"></i>
+                  Masa sewa akan habis pada {{ $activeHistory->end_date }}. Ajukan perpanjangan sekarang!
+                </p>
+              </div>
+            @endif
+          </div>
+
+          @if ($activeHistory)
+            <div class="flex-shrink-0">
+              <a href="{{ route('tenant.renewal.direct', ['id' => $activeHistory->id]) }}"
+                class="inline-flex items-center bg-[#31c594] text-white font-semibold px-6 py-3 rounded-lg hover:bg-[#2aa082] transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
+                <i class="bi bi-arrow-repeat mr-2"></i>
+                Ajukan Perpanjangan
+              </a>
+            </div>
+          @endif
+        </div>
+      </div>
+
+      {{-- Notifications --}}
+      @if (session('success'))
+        <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6">
+          <div class="flex items-center">
+            <i class="bi bi-check-circle-fill mr-2"></i>
+            {{ session('success') }}
+          </div>
+        </div>
+      @endif
+
+      @if (isset($latestPayment) && $latestPayment->status === 'unpaid')
+        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+          <div class="flex items-center">
+            <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+            <strong>Tagihan Belum Dibayar!</strong> Harap segera lakukan pembayaran untuk menghindari denda.
+          </div>
+        </div>
+      @endif
+
+      {{-- Main Content Grid --}}
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        
+        {{-- Informasi Kamar Saat Ini --}}
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <div class="flex items-center mb-4">
+            <i class="bi bi-house-door text-gray-700 text-xl mr-3"></i>
+            <h2 class="text-lg font-semibold text-gray-700">Informasi Kamar Saat Ini</h2>
+          </div>
+
+          @if ($activeHistory)
+            <div class="space-y-4">
+              <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                <div class="flex items-center">
+                  <i class="bi bi-house text-gray-600 mr-2"></i>
+                  <span class="text-sm text-gray-600">Tipe Kamar</span>
+                </div>
+                <span class="font-semibold text-gray-700">{{ $activeHistory->room->type }}</span>
+              </div>
+
+              <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                <div class="flex items-center">
+                  <i class="bi bi-door-closed text-gray-600 mr-2"></i>
+                  <span class="text-sm text-gray-600">Nomor Kamar</span>
+                </div>
+                <span class="font-semibold text-gray-700">{{ $activeHistory->room->room_number }}</span>
+              </div>
+
+              <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                <div class="flex items-center">
+                  <i class="bi bi-currency-dollar text-gray-600 mr-2"></i>
+                  <span class="text-sm text-gray-600">Harga Sewa</span>
+                </div>
+                <span class="font-semibold text-gray-700">Rp{{ number_format($activeHistory->room->price, 0, ',', '.') }}</span>
+              </div>
+
+              <div class="flex items-center justify-between py-2">
+                <div class="flex items-center">
+                  <i class="bi bi-clock-history text-gray-600 mr-2"></i>
+                  <span class="text-sm text-gray-600">Masa Aktif Hingga</span>
+                </div>
+                <span class="font-semibold text-gray-700">{{ $activeHistory->end_date }}</span>
+              </div>
+            </div>
+          @else
+            <div class="text-center py-8">
+              <i class="bi bi-house-x text-gray-400 text-4xl mb-3"></i>
+              <p class="text-gray-500">Belum ada sewa aktif</p>
+            </div>
           @endif
         </div>
 
-        @if ($activeHistory)
-        <div class="self-end md:self-end mt-6">
-          <a href="{{ route('tenant.renewal.direct', ['id' => $activeHistory->id]) }}"
-            class="text-sm md:text-base bg-emerald-100 text-emerald-700 font-semibold px-8 py-2 rounded-md hover:bg-[#31c594]">
-            <i class="bi bi-arrow-repeat mr-2"></i>
-            Ajukan Perpanjangan
-          </a>
-        </div>
-        @endif
-      </div>
-
-
-      {{-- Pesan Sukses --}}
-      @if (session('success'))
-        <div class="alert-success">{{ session('success') }}</div>
-      @endif
-      @if (isset($latestPayment) && $latestPayment->status === 'unpaid')
-        <div class="danger">❗ Tagihan Anda belum dibayar. Harap segera lakukan pembayaran.</div>
-      @endif
-
-      {{-- Informasi Kamar Saat Ini --}}
-      <div class="mt-6 p-6 rounded-2xl bg-white shadow-md">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-xl font-semibold text-gray-700 flex items-center gap-2">
-            <i class="bi bi-info-circle text-gray-700"></i>
-            Informasi Kamar Saat Ini
-          </h2>
-          {{-- Tambahan tombol atau status bisa di sini --}}
-        </div>
-
-        @if ($activeHistory)
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="flex items-start gap-3">
-              <i class="bi bi-house text-gray-700text-xl mt-1"></i>
-              <div>
-                <p class="text-sm text-gray-500">Tipe Kamar</p>
-                <p class="text-base font-semibold text-gray-700">{{ $activeHistory->room->type }}</p>
-              </div>
-            </div>
-
-            <div class="flex items-start gap-3">
-              <i class="bi bi-door-closed text-gray-700text-xl mt-1"></i>
-              <div>
-                <p class="text-sm text-gray-500">Nomor Kamar</p>
-                <p class="text-base font-semibold text-gray-700">{{ $activeHistory->room->room_number }}</p>
-              </div>
-            </div>
-
-            <div class="flex items-start gap-3">
-              <i class="bi bi-currency-dollar text-gray-700text-xl mt-1"></i>
-              <div>
-                <p class="text-sm text-gray-500">Jumlah Tagihan</p>
-                <p class="text-base font-semibold text-gray-700">Rp{{ number_format($activeHistory->room->price, 0, ',', '.') }}</p>
-              </div>
-            </div>
-
-            <div class="flex items-start gap-3">
-              <i class="bi bi-clock-history text-gray-700text-xl mt-1"></i>
-              <div>
-                <p class="text-sm text-gray-500">Masa Aktif Hingga</p>
-                <p class="text-base font-semibold text-gray-700">{{ $activeHistory->end_date }}</p>
-              </div>
-            </div>
+        {{-- Status Tagihan --}}
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <div class="flex items-center mb-4">
+            <i class="bi bi-credit-card text-gray-700 text-xl mr-3"></i>
+            <h3 class="text-lg font-semibold text-gray-700">Status Tagihan</h3>
           </div>
-        @else
-          <p class="text-gray-500 text-sm mt-4">Belum ada sewa aktif.</p>
-        @endif
-      </div>
 
+          @if ($latestPayment)
+            <div class="space-y-4">
+              <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                <span class="text-sm text-gray-600">Jumlah Tagihan</span>
+                <span class="font-semibold text-gray-700">Rp{{ number_format($latestPayment->amount, 0, ',', '.') }}</span>
+              </div>
 
-      {{-- Status Tagihan --}}
-      <div class="mt-6 p-6 rounded-2xl bg-white shadow-md">
-        <h3>Status Tagihan</h3>
-        @if ($latestPayment)
-          <table>
-            <tr><th>Jumlah Tagihan</th><td>Rp{{ number_format($latestPayment->amount, 0, ',', '.') }}</td></tr>
-            <tr><th>Status</th><td>{{ $latestPayment->status === 'paid' ? 'Lunas' : 'Belum Dibayar' }}</td></tr>
-            <tr><th>Jatuh Tempo</th><td>{{ $latestPayment->due_date }}</td></tr>
-          </table>
-        @else
-          <p>Belum ada tagihan.</p>
-        @endif
+              <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                <span class="text-sm text-gray-600">Status</span>
+                @if ($latestPayment->status === 'paid')
+                  <span class="inline-flex items-center bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
+                    <i class="bi bi-check-circle-fill mr-2"></i>
+                    Lunas
+                  </span>
+                @else
+                  <span class="inline-flex items-center bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-medium">
+                    <i class="bi bi-exclamation-circle-fill mr-2"></i>
+                    Belum Dibayar
+                  </span>
+                @endif
+              </div>
+
+              <div class="flex items-center justify-between py-2">
+                <span class="text-sm text-gray-600">Jatuh Tempo</span>
+                <span class="font-semibold text-gray-700">{{ $latestPayment->due_date }}</span>
+              </div>
+            </div>
+          @else
+            <div class="text-center py-8">
+              <i class="bi bi-receipt text-gray-400 text-4xl mb-3"></i>
+              <p class="text-gray-500">Belum ada tagihan</p>
+            </div>
+          @endif
+        </div>
       </div>
 
       {{-- Status Permintaan --}}
-      <section>
-        <h3>Status Permintaan</h3>
+      <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+        <div class="flex items-center mb-4">
+          <i class="bi bi-file-earmark-check text-gray-700 text-xl mr-3"></i>
+          <h3 class="text-lg font-semibold text-gray-700">Status Permintaan</h3>
+        </div>
+
         @if ($latestTransferRequest)
-          <table>
-            <tr><th>Jenis</th><td>Pindah Kamar</td></tr>
-            <tr><th>Status</th><td>{{ ucfirst($latestTransferRequest->status) }}</td></tr>
+          <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-sm font-medium text-blue-700">Permintaan Pindah Kamar</span>
+              <span class="inline-flex items-center bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">
+                {{ ucfirst($latestTransferRequest->status) }}
+              </span>
+            </div>
             @if ($latestTransferRequest->note)
-              <tr><th>Catatan</th><td>{{ $latestTransferRequest->note }}</td></tr>
+              <p class="text-sm text-blue-600">
+                <i class="bi bi-chat-left-text mr-2"></i>
+                Catatan: {{ $latestTransferRequest->note }}
+              </p>
             @endif
-          </table>
+          </div>
         @else
-          <p>Tidak ada permintaan aktif.</p>
+          <div class="text-center py-6">
+            <i class="bi bi-clipboard-check text-gray-400 text-3xl mb-2"></i>
+            <p class="text-gray-500">Tidak ada permintaan aktif</p>
+          </div>
         @endif
-      </section>
+      </div>
 
-      {{-- Estimasi Biaya Perpanjangan --}}
-      @if ($activeHistory)
-        <section>
-          <h3>Estimasi Perpanjangan</h3>
-          <table>
-            <tr><th>Biaya Perpanjangan 1 Bulan</th><td>Rp{{ number_format($activeHistory->room->price, 0, ',', '.') }}</td></tr>
-            <tr><th>Tenggat Pengajuan</th><td>{{ Carbon::parse($activeHistory->end_date)->subDays(3)->toDateString() }}</td></tr>
-          </table>
-        </section>
-      @endif
+      {{-- Bottom Grid --}}
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        {{-- Estimasi Biaya Perpanjangan --}}
+        @if ($activeHistory)
+          <div class="bg-white rounded-xl shadow-lg p-6">
+            <div class="flex items-center mb-4">
+              <i class="bi bi-calendar-plus text-gray-700 text-xl mr-3"></i>
+              <h3 class="text-lg font-semibold text-gray-700">Estimasi Perpanjangan</h3>
+            </div>
 
-      {{-- Aksi Cepat --}}
-      <section>
-        <h3>Aksi Cepat</h3>
-        <div class="quick-actions">
+            <div class="space-y-4">
+              <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                <span class="text-sm text-gray-600">Biaya Perpanjangan 1 Bulan</span>
+                <span class="font-semibold text-gray-700">Rp{{ number_format($activeHistory->room->price, 0, ',', '.') }}</span>
+              </div>
 
-          <a href="{{ route('tenant.room-transfer.form') }}">🔁 Ajukan Pindah Kamar</a>
-          <a href="{{ route('tenant.payment.list') }}">📄 Lihat Tagihan</a>
+              <div class="flex items-center justify-between py-2">
+                <span class="text-sm text-gray-600">Tenggat Pengajuan</span>
+                <span class="font-semibold text-gray-700">{{ Carbon::parse($activeHistory->end_date)->subDays(3)->toDateString() }}</span>
+              </div>
+            </div>
+          </div>
+        @endif
+
+        {{-- Kontak Landboard --}}
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <div class="flex items-center mb-4">
+            <i class="bi bi-person-lines-fill text-gray-700 text-xl mr-3"></i>
+            <h3 class="text-lg font-semibold text-gray-700">Kontak Landboard</h3>
+          </div>
+
           @if ($tenant->room && $tenant->room->landboard)
-            <a href="https://wa.me/{{ $tenant->room->landboard->phone }}" target="_blank">📞 Hubungi Landboard</a>
+            <div class="space-y-4">
+              <div class="flex items-center justify-between py-2 border-b border-gray-100">
+                <span class="text-sm text-gray-600">Nama Landboard</span>
+                <span class="font-semibold text-gray-700">{{ $tenant->room->landboard->name }}</span>
+              </div>
+
+              <div class="flex items-center justify-between py-2">
+                <span class="text-sm text-gray-600">WhatsApp</span>
+                <a href="https://wa.me/{{ $tenant->room->landboard->phone }}" target="_blank"
+                  class="inline-flex items-center bg-green-500 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-green-600 transition-colors">
+                  <i class="bi bi-whatsapp mr-2"></i>
+                  Hubungi Sekarang
+                </a>
+              </div>
+            </div>
+          @else
+            <div class="text-center py-6">
+              <i class="bi bi-person-x text-gray-400 text-3xl mb-2"></i>
+              <p class="text-gray-500">Informasi kontak tidak tersedia</p>
+            </div>
           @endif
         </div>
-      </section>
+      </div>
 
-      {{-- Kontak Landboard --}}
-      <section>
-        <h3>Kontak Landboard</h3>
-        @if ($tenant->room && $tenant->room->landboard)
-          <table>
-            <tr><th>Nama Landboard</th><td>{{ $tenant->room->landboard->name }}</td></tr>
-            <tr><th>WhatsApp</th><td><a href="https://wa.me/{{ $tenant->room->landboard->phone }}" target="_blank">Hubungi Sekarang</a></td></tr>
-          </table>
-        @else
-          <p>Informasi kontak tidak tersedia.</p>
-        @endif
-      </section>
+      {{-- Aksi Cepat --}}
+      <div class="bg-white rounded-xl shadow-lg p-6 mt-6">
+        <div class="flex items-center mb-4">
+          <i class="bi bi-lightning text-gray-700 text-xl mr-3"></i>
+          <h3 class="text-lg font-semibold text-gray-700">Aksi Cepat</h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <a href="{{ route('tenant.room-transfer.form') }}"
+            class="flex items-center justify-center bg-green-50 hover:bg-green-100 text-green-700 p-4 rounded-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+            <i class="bi bi-arrow-left-right text-xl mr-2"></i>
+            <span class="font-medium">Ajukan Pindah Kamar</span>
+          </a>
+
+          <a href="{{ route('tenant.payment.list') }}"
+            class="flex items-center justify-center bg-green-50 hover:bg-green-100 text-green-700 p-4 rounded-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+            <i class="bi bi-receipt text-xl mr-2"></i>
+            <span class="font-medium">Lihat Tagihan</span>
+          </a>
+
+          @if ($tenant->room && $tenant->room->landboard)
+            <a href="https://wa.me/{{ $tenant->room->landboard->phone }}" target="_blank"
+              class="flex items-center justify-center bg-emerald-50 hover:bg-emerald-100 text-emerald-700 p-4 rounded-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+              <i class="bi bi-telephone text-xl mr-2"></i>
+              <span class="font-medium">Hubungi Landboard</span>
+            </a>
+          @endif
+        </div>
+      </div>
     </div>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('main-content');
+      const toggleBtn = document.getElementById('toggleSidebar');
+      
+      const overlay = document.createElement('div');
+      overlay.className = 'mobile-overlay';
+      overlay.id = 'mobile-overlay';
+      document.body.appendChild(overlay);
+
+      function initializeSidebar() {
+        if (window.innerWidth <= 768) {
+          if (sidebar) {
+            sidebar.classList.add('collapsed');
+            sidebar.classList.remove('mobile-expanded');
+          }
+          if (mainContent) {
+            mainContent.classList.add('collapsed');
+          }
+          overlay.classList.remove('active');
+        } else {
+          if (sidebar) {
+            sidebar.classList.remove('mobile-expanded');
+          }
+          overlay.classList.remove('active');
+        }
+      }
+
+      initializeSidebar();
+
+      if (toggleBtn && sidebar) {
+        toggleBtn.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            if (sidebar.classList.contains('mobile-expanded')) {
+              sidebar.classList.remove('mobile-expanded');
+              sidebar.classList.add('collapsed');
+              overlay.classList.remove('active');
+            } else {
+              sidebar.classList.remove('collapsed');
+              sidebar.classList.add('mobile-expanded');
+              overlay.classList.add('active');
+            }
+          } else {
+            sidebar.classList.toggle('collapsed');
+            if (mainContent) {
+              mainContent.classList.toggle('collapsed');
+            }
+          }
+        });
+      }
+      
+      overlay.addEventListener('click', function() {
+        if (window.innerWidth <= 768) {
+          sidebar.classList.remove('mobile-expanded');
+          sidebar.classList.add('collapsed');
+          overlay.classList.remove('active');
+        }
+      });
+
+      window.addEventListener('resize', function() {
+        initializeSidebar();
+      });
+    });
+  </script>
 </body>
 </html>
