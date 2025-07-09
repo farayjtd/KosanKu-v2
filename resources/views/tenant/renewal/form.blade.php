@@ -5,173 +5,92 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Perpanjangan Sewa</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      display: flex;
-      background: #f1f5f9;
-    }
-
-    .main-content {
-      flex: 1;
-      padding: 30px;
-      background: #f8fafc;
-    }
-
-    .card {
-      background: white;
-      padding: 28px;
-      border-radius: 12px;
-      max-width: 700px;
-      margin: auto;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-    }
-
-    h2 {
-      margin-top: 0;
-      color: #1e293b;
-    }
-
-    .back-link {
-      display: inline-block;
-      margin-bottom: 16px;
-      color: #3b82f6;
-      text-decoration: none;
-    }
-
-    .back-link:hover {
-      text-decoration: underline;
-    }
-
-    .info {
-      background: #f1f5f9;
-      padding: 12px 16px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      font-size: 14px;
-      color: #475569;
-    }
-
-    .error-box {
-      background: #fee2e2;
-      padding: 12px 16px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      color: #b91c1c;
-      font-size: 14px;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-    }
-
-    label {
-      margin-bottom: 6px;
-      font-weight: bold;
-      color: #475569;
-    }
-
-    select, button {
-      padding: 10px 14px;
-      font-size: 15px;
-      border-radius: 8px;
-      border: 1px solid #cbd5e1;
-      margin-bottom: 18px;
-    }
-
-    button {
-      background-color: #2563eb;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-
-    button:hover {
-      background-color: #1e40af;
-    }
-  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/font.css">
+  @vite('resources/css/app.css')
 </head>
-<body>
+<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
+  <div id="wrapper" class="flex min-h-screen">
+    @include('components.sidebar-tenant')
 
-  @include('components.sidebar-tenant')
+    <div id="main-content" class="main-content p-6 md:pt-4 w-full">
+      <div class="relative mt-6 max-w-3xl mx-auto">
+        <div class="absolute -top-5 left-0 bg-[#31c594] text-white px-6 py-3 rounded-bl-4xl rounded-tr-4xl z-10">
+          <h2 class="use-poppins text-base md:text-lg font-semibold">Perpanjangan Sewa</h2>
+        </div>
+        <div class="bg-white rounded-xl shadow p-6 space-y-6 pt-16">
+          @php
+            $room = $history->room ?? null;
+            $landboard = $room->landboard ?? null;
+            $startDate = Carbon::parse($history->start_date ?? now());
+            $endDate = Carbon::parse($history->end_date ?? now());
+            $decisionDays = $landboard->decision_days_before_end ?? 5;
+            $limitDate = (clone $endDate)->subDays($decisionDays);
+            $canRenew = $can_renew ?? false;
+            $paymentStatus = $history->payment->status ?? null;
+            $now = now();
+            $remainingTime = $now->lt($endDate)
+              ? $now->diff($endDate)->format('%d hari %h jam')
+              : 'Masa sewa telah berakhir';
+          @endphp
+          <div class="text-sm text-slate-700 space-y-1">
+            <p><span class="font-semibold">Kamar:</span> {{ $room->room_number ?? '-' }}</p>
+            <p><span class="font-semibold">Tanggal Sewa:</span> {{ $startDate->format('d M Y') }} s/d {{ $endDate->format('d M Y') }}</p>
+            <p><span class="font-semibold">Perpanjangan Dibuka:</span> {{ $limitDate->format('d M Y') }} ({{ $decisionDays }} hari sebelum berakhir)</p>
+          </div>
+          @if (session('error'))
+            <div class="bg-red-100 text-red-800 px-4 py-2 rounded-md text-sm">
+              {{ session('error') }}
+            </div>
+          @endif
 
-  <div class="main-content">
-    <div class="card">
-      <h2>Perpanjangan Sewa</h2>
+          @if ($errors->any())
+            <div class="bg-red-100 text-red-800 px-4 py-2 rounded-md text-sm">
+              <strong>Terjadi kesalahan:</strong>
+              <ul class="list-disc list-inside mt-1">
+                @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+              </ul>
+            </div>
+          @endif
+          @if ($paymentStatus !== 'paid')
+            <div class="bg-red-100 text-red-800 px-4 py-2 rounded-md text-sm">
+              Anda harus menyelesaikan pembayaran sewa saat ini terlebih dahulu sebelum mengajukan perpanjangan.
+            </div>
+          @elseif (!$canRenew)
+            <div class="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-md text-sm">
+              Sisa {{ $remainingTime }}, sewa berakhir pada {{ $endDate->format('d M Y') }}.
+            </div>
+          @else
+            <form action="{{ route('tenant.renewal.store', $history->id) }}" method="POST" class="space-y-4">
+              @csrf
 
-      <a href="{{ route('tenant.rental.history') }}" class="back-link">← Kembali ke Riwayat Sewa</a>
+              <div>
+                <label for="duration" class="block font-medium text-slate-700 mb-1">Durasi Perpanjangan</label>
+                <select id="duration" name="duration" required
+                        class="w-full rounded-md border-gray-300 focus:ring focus:ring-blue-200 px-4 py-2 text-sm">
+                  <option value="">-- Pilih Durasi --</option>
+                  <option value="0.1" {{ old('duration') == 0.1 ? 'selected' : '' }}>5 Hari (uji coba)</option>
+                  <option value="1" {{ old('duration') == 1 ? 'selected' : '' }}>1 Bulan</option>
+                  <option value="3" {{ old('duration') == 3 ? 'selected' : '' }}>3 Bulan</option>
+                  <option value="6" {{ old('duration') == 6 ? 'selected' : '' }}>6 Bulan</option>
+                  <option value="12" {{ old('duration') == 12 ? 'selected' : '' }}>12 Bulan</option>
+                </select>
+              </div>
 
-      @php
-        $room = $history->room ?? null;
-        $landboard = $room->landboard ?? null;
-        $startDate = Carbon::parse($history->start_date ?? now());
-        $endDate = Carbon::parse($history->end_date ?? now());
-        $decisionDays = $landboard->decision_days_before_end ?? 5;
-        $limitDate = (clone $endDate)->subDays($decisionDays);
-        $canRenew = $can_renew ?? false;
-        $paymentStatus = $history->payment->status ?? null;
-
-        $now = now();
-        $remainingTime = $now->lt($endDate)
-          ? $now->diff($endDate)->format('%d hari %h jam')
-          : 'Masa sewa telah berakhir';
-      @endphp
-
-      <div class="info">
-        <strong>Kamar:</strong> {{ $room->room_number ?? '-' }}<br>
-        <strong>Tanggal Sewa:</strong> {{ $startDate->format('d M Y') }} s/d {{ $endDate->format('d M Y') }}<br>
-        <strong>Perpanjangan Dibuka:</strong> {{ $limitDate->format('d M Y') }} ({{ $decisionDays }} hari sebelum berakhir)
+              <button type="submit"
+                      class="flex items-center justify-center bg-green-50 hover:bg-green-100 text-green-700 p-4 rounded-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+                Ajukan Perpanjangan
+              </button>
+            </form>
+          @endif
+        </div>
       </div>
-
-      {{-- Flash error --}}
-      @if (session('error'))
-        <div class="error-box">{{ session('error') }}</div>
-      @endif
-
-      {{-- Validation errors --}}
-      @if ($errors->any())
-        <div class="error-box">
-          <strong>Terjadi kesalahan:</strong>
-          <ul style="margin: 8px 0 0 18px;">
-            @foreach ($errors->all() as $error)
-              <li>{{ $error }}</li>
-            @endforeach
-          </ul>
-        </div>
-      @endif
-
-      {{-- Belum lunas --}}
-      @if ($paymentStatus !== 'paid')
-        <div class="error-box">
-          💰 Anda harus menyelesaikan pembayaran sewa saat ini terlebih dahulu sebelum mengajukan perpanjangan.
-        </div>
-      @elseif (!$canRenew)
-        <div class="info">
-          ⏳ Sisa {{ $remainingTime }}, sewa berakhir pada {{ $endDate->format('d M Y') }}.
-        </div>
-      @else
-        {{-- Form perpanjangan --}}
-        <form action="{{ route('tenant.renewal.store', $history->id) }}" method="POST">
-          @csrf
-
-          <label for="duration">Durasi Perpanjangan</label>
-          <select name="duration" id="duration" required>
-            <option value="">-- Pilih Durasi --</option>
-            <option value="0.1" {{ old('duration') == 0.1 ? 'selected' : '' }}>5 Hari (uji coba)</option>
-            <option value="1" {{ old('duration') == 1 ? 'selected' : '' }}>1 Bulan</option>
-            <option value="3" {{ old('duration') == 3 ? 'selected' : '' }}>3 Bulan</option>
-            <option value="6" {{ old('duration') == 6 ? 'selected' : '' }}>6 Bulan</option>
-            <option value="12" {{ old('duration') == 12 ? 'selected' : '' }}>12 Bulan</option>
-          </select>
-
-          <button type="submit">Ajukan Perpanjangan</button>
-        </form>
-      @endif
     </div>
   </div>
-
 </body>
 </html>
