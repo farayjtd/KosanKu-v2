@@ -18,6 +18,7 @@ return new class extends Migration
             $table->bigInteger('amount');
             $table->string('description')->nullable(); 
             $table->string('invoice_id')->nullable();
+            $table->string('tripay_reference')->nullable();
             $table->date('due_date');
             $table->timestamp('paid_at')->nullable();
             $table->enum('status', ['unpaid', 'paid', 'expired', 'cancelled'])->default('unpaid');

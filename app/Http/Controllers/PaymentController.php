@@ -133,7 +133,11 @@ class PaymentController extends Controller
         $responseData = $response->json();
 
         if ($response->successful() && isset($responseData['data']['checkout_url'])) {
-            $payment->update(['external_id' => $responseData['data']['reference']]);
+            $payment->update([
+                'external_id' => $responseData['data']['reference'],
+                'tripay_reference' => $responseData['data']['reference'],
+            ]);
+
             return redirect()->away($responseData['data']['checkout_url']);
         }
 
