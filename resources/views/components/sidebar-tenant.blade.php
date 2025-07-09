@@ -198,7 +198,7 @@
         
         <div>
             <h2 class="group-title text-xs text-slate-500 font-semibold uppercase tracking-wide px-2 mb-2">Management</h2>
-            <ul>
+            <ul class="space-y-2">
                 <li>
                     <a href="{{ route('tenant.room-transfer.form') }}" 
                         class="{{ $navStyle }} {{ $currentRoute === 'tenant.room-transfer.form' ? 'active' : '' }}">

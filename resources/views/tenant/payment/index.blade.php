@@ -4,186 +4,101 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tagihan Pembayaran</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      display: flex;
-      background: #f1f5f9;
-    }
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/font.css">
+  @vite('resources/css/app.css')
+</head>
+<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
+  <div id="wrapper" class="flex min-h-screen">
+    @include('components.sidebar-tenant')
 
-    .main-content {
-      flex: 1;
-      padding: 30px;
-      background: #f8fafc;
-    }
+    <div id="main-content" class="main-content p-6 md:pt-4 w-full">
+      <div class="mt-6 relative max-w-screen mx-auto bg-white rounded-xl shadow p-6 pt-20">
+        <div class="absolute -top-5 left-0 bg-[#31c594] text-white px-6 py-3 rounded-bl-4xl rounded-tr-4xl z-10">
+          <h2 class="font-poppins text-base md:text-lg font-semibold">Tagihan Pembayaran</h2>
+        </div>
 
-    .card {
-      background: white;
-      padding: 28px;
-      border-radius: 12px;
-      max-width: 1000px;
-      margin: auto;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-      margin-bottom: 40px;
-    }
+        @if($payments->isEmpty())
+          <div class="text-center py-16 text-slate-400 text-base">
+            Belum ada tagihan untuk saat ini.
+          </div>
+        @else
+          <div class="overflow-x-auto">
+            <table class="w-full table-auto text-sm text-slate-700">
+              <thead class="bg-slate-100 text-slate-700 uppercase text-xs tracking-wider">
+                <tr>
+                  <th class="px-4 py-3 text-left">Kamar</th>
+                  <th class="px-4 py-3 text-left">Jumlah</th>
+                  <th class="px-4 py-3 text-left">Jatuh Tempo</th>
+                  <th class="px-4 py-3 text-left">Status</th>
+                  <th class="px-4 py-3 text-left">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach($payments as $payment)
+                  @php
+                    $isPaid = $payment->status === 'paid';
+                    $badgeClass = $isPaid ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-700';
+                    $badgeText = $isPaid ? 'Sudah Dibayar' : 'Belum Dibayar';
+                  @endphp
+                  <tr class="hover:bg-slate-50 transition">
+                    <td class="px-4 py-3 border-b">{{ $payment->rentalHistory->room->room_number ?? '-' }}</td>
+                    <td class="px-4 py-3 border-b">Rp{{ number_format($payment->total_amount ?? $payment->amount, 0, ',', '.') }}</td>
+                    <td class="px-4 py-3 border-b">{{ \Carbon\Carbon::parse($payment->due_date)->format('d M Y') }}</td>
+                    <td class="px-4 py-3 border-b">
+                      <span class="inline-block px-2 py-1 text-xs font-medium rounded {{ $badgeClass }}">
+                        {{ $badgeText }}
+                      </span>
+                    </td>
+                    <td class="px-4 py-3 border-b">
+                      @if(!$isPaid)
+                        <button class="bg-slate-600 text-white px-3 py-1 rounded hover:bg-slate-700 text-xs" onclick="toggleMethodForm({{ $payment->id }})">
+                          Bayar
+                        </button>
 
-    h2 {
-      margin-top: 0;
-      color: #1e293b;
-    }
+                        <div class="method-form mt-2 bg-slate-50 p-4 rounded-lg hidden" id="method-form-{{ $payment->id }}">
+                          <form action="{{ route('tenant.payment.createInvoice', ['rentalId' => $payment->rental_history_id]) }}" method="POST" class="space-y-3">
+                            @csrf
+                            <input type="hidden" name="rental_id" value="{{ $payment->rental_history_id }}">
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
+                            <label class="block text-sm font-medium text-slate-700">Pilih Metode Pembayaran:</label>
+                            <div class="space-y-1">
+                              @foreach($channels as $channel)
+                                <label class="flex items-center space-x-2 text-sm text-slate-700">
+                                  <input type="radio" name="payment_method" value="{{ $channel['code'] }}" required>
+                                  <span>{{ $channel['name'] }} ({{ $channel['group'] }})</span>
+                                </label>
+                              @endforeach
+                            </div>
 
-    th, td {
-      padding: 12px 14px;
-      border-bottom: 1px solid #e2e8f0;
-      text-align: left;
-      font-size: 14px;
-    }
-
-    th {
-      background: #f1f5f9;
-      color: #334155;
-    }
-
-    tr:hover {
-      background-color: #f9fafb;
-    }
-
-    .badge {
-      padding: 4px 10px;
-      border-radius: 8px;
-      font-size: 13px;
-      color: white;
-      display: inline-block;
-      min-width: 80px;
-      text-align: center;
-    }
-
-    .paid { background-color: #16a34a; }
-    .unpaid { background-color: #dc2626; }
-
-    .pay-button, .submit-button {
-      background: #475569;
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 13px;
-      transition: background 0.2s ease;
-    }
-
-    .pay-button:hover, .submit-button:hover {
-      background: #334155;
-    }
-
-    .method-form {
-      margin-top: 10px;
-      background: #f9fafb;
-      padding: 12px;
-      border-radius: 8px;
-    }
-
-    .method-form label {
-      display: block;
-      margin-bottom: 6px;
-      font-size: 14px;
-      color: #334155;
-    }
-
-    .empty {
-      text-align: center;
-      padding: 40px;
-      color: #94a3b8;
-    }
-
-    .text-muted {
-      font-size: 13px;
-      color: #64748b;
-      font-style: italic;
-    }
-  </style>
+                            <button type="submit" class="bg-slate-600 hover:bg-slate-700 text-white text-sm px-4 py-2 rounded">
+                              Lanjutkan Pembayaran
+                            </button>
+                          </form>
+                        </div>
+                      @else
+                        <span class="text-slate-400 italic text-sm">-</span>
+                      @endif
+                    </td>
+                  </tr>
+                @endforeach
+              </tbody>
+            </table>
+          </div>
+        @endif
+      </div>
+    </div>
+  </div>
 
   <script>
     function toggleMethodForm(id) {
-      const allForms = document.querySelectorAll('.method-form');
-      allForms.forEach(form => form.style.display = 'none');
-
-      const form = document.getElementById('method-form-' + id);
-      if (form) form.style.display = 'block';
+      document.querySelectorAll('.method-form').forEach(form => form.classList.add('hidden'));
+      const target = document.getElementById('method-form-' + id);
+      if (target) target.classList.remove('hidden');
     }
   </script>
-</head>
-<body>
-  {{-- Sidebar --}}
-  @include('components.sidebar-tenant')
-
-  {{-- Konten Utama --}}
-  <div class="main-content">
-    <div class="card">
-      <h2>Tagihan Pembayaran</h2>
-
-      @if($payments->isEmpty())
-        <div class="empty">Belum ada tagihan untuk saat ini.</div>
-      @else
-        <table>
-          <thead>
-            <tr>
-              <th>Kamar</th>
-              <th>Jumlah</th>
-              <th>Jatuh Tempo</th>
-              <th>Status</th>
-              <th>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            @foreach($payments as $payment)
-              <tr>
-                <td>{{ $payment->rentalHistory->room->room_number ?? '-' }}</td>
-                <td>Rp{{ number_format($payment->total_amount ?? $payment->amount, 0, ',', '.') }}</td>
-                <td>{{ \Carbon\Carbon::parse($payment->due_date)->format('d M Y') }}</td>
-                <td>
-                  <span class="badge {{ $payment->status === 'paid' ? 'paid' : 'unpaid' }}">
-                    {{ $payment->status === 'paid' ? 'Sudah Dibayar' : 'Belum Dibayar' }}
-                  </span>
-                </td>
-                <td>
-                  @if($payment->status === 'unpaid')
-                    <button class="pay-button" onclick="toggleMethodForm({{ $payment->id }})">Bayar</button>
-
-                    <div class="method-form" id="method-form-{{ $payment->id }}" style="display: none;">
-                      <form action="{{ route('tenant.payment.createInvoice', ['rentalId' => $payment->rental_history_id]) }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="rental_id" value="{{ $payment->rental_history_id }}">
-
-                        <label>Pilih Metode Pembayaran:</label>
-                        @foreach($channels as $channel)
-                          <label>
-                            <input type="radio" name="payment_method" value="{{ $channel['code'] }}" required>
-                            {{ $channel['name'] }} ({{ $channel['group'] }})
-                          </label>
-                        @endforeach
-
-                        <br>
-                        <button type="submit" class="submit-button">Lanjutkan Pembayaran</button>
-                      </form>
-                    </div>
-                  @else
-                    <span class="text-muted">-</span>
-                  @endif
-                </td>
-              </tr>
-            @endforeach
-          </tbody>
-        </table>
-      @endif
-    </div>
-  </div>
 </body>
 </html>
