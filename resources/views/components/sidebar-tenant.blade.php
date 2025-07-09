@@ -59,10 +59,6 @@
         color: #059669 !important; /* text-emerald-600 */
         font-weight: 600;
     }
-        .menu-item.active:hover {
-        background-color: #059669 !important;
-        color: white !important;
-    }
     
     .main-content {
         margin-left: 230px;
