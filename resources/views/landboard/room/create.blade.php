@@ -43,13 +43,16 @@
           </ul>
         </div>
       @endif
-
-      <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
-        <div class="bg-gradient-to-r from-[#31c594] to-[#2ba882] text-white p-6 text-center">
+      <div class="text-xl p-4 rounded-xl text-left text-white bg-gradient-to-r from-[#31c594] to-[#2ba882]">
+        <p><strong class="use-poppins">Buat Kamar </strong></p>
+        <p class="text-[14px]">Disini, anda dapat membuat beberapa kamar dengan tipe yang sama sekaligus.</p>
+      </div>
+      <div class="max-w-full mt-6 bg-white rounded-2xl shadow-lg overflow-hidden">
+        <!-- <div class="bg-gradient-to-r from-[#31c594] to-[#2ba882] text-white p-6 text-center">
           <h2 class="text-xl font-semibold">
             <i class="bi bi-plus-circle mr-2"></i>Tambah Kamar Baru
           </h2>
-        </div>
+        </div> -->
 
         <div class="p-8">
           <form action="{{ route('landboard.rooms.store') }}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
@@ -60,7 +63,7 @@
                 <label class="block text-sm font-semibold text-gray-700">Tipe Kamar
                 </label>
                 <input type="text" name="type" 
-                       class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
+                       class="text-gray-600 w-full px-3 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
                        value="{{ old('type') }}" 
                        placeholder="Contoh: Kamar Standard, Kamar Premium" 
                        required>
@@ -70,7 +73,7 @@
                 <label class="block text-sm font-semibold text-gray-700">Jumlah Kamar
                 </label>
                 <input type="number" name="room_quantity" 
-                       class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
+                       class="text-gray-600 w-full px-3 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
                        min="1" 
                        value="{{ old('room_quantity', 1) }}" 
                        placeholder="Masukkan jumlah kamar" 
@@ -83,7 +86,7 @@
                 <label class="block text-sm font-semibold text-gray-700">Harga per Bulan
                 </label>
                 <input type="number" name="price" 
-                       class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
+                       class="text-gray-600 w-full px-3 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
                        value="{{ old('price') }}" 
                        placeholder="Contoh: 500000" 
                        required>
@@ -93,7 +96,7 @@
                 <label class="block text-sm font-semibold text-gray-700">Jenis Kelamin yang Diizinkan
                 </label>
                 <select name="gender_type" 
-                        class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
+                        class="text-gray-600 w-full px-3 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
                         required>
                   <option value="">Pilih jenis kelamin</option>
                   <option value="mixed" {{ old('gender_type') == 'mixed' ? 'selected' : '' }}>Campuran</option>
@@ -110,7 +113,7 @@
               <div class="rounded-lg bg-gray-50" id="facility-container">
                 <div class="group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
                   <input type="text" name="facilities[]" 
-                         class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
+                         class="text-gray-600 flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
                          placeholder="Contoh: AC, WiFi, Lemari" 
                          required>
                   <button type="button" 
@@ -140,7 +143,7 @@
               <div class="rounded-lg bg-gray-50" id="rule-container">
                 <div class="group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
                   <input type="text" name="rules[]" 
-                         class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
+                         class="text-gray-600 flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
                          placeholder="Contoh: Tidak boleh merokok, Jam malam 22:00" 
                          required>
                   <button type="button" 
@@ -164,7 +167,7 @@
               <div class="rounded-lg bg-gray-50" id="photo-container">
                 <div class="group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
                   <input type="file" name="photos[]" 
-                         class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20 file:mr-4 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-[#31c594] file:text-white hover:file:bg-[#2ba882]" 
+                         class="text-gray-600 flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20 file:mr-4 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-[#31c594] file:text-white hover:file:bg-[#2ba882]" 
                          accept="image/*" 
                          required>
                   <button type="button" 

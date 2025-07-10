@@ -13,12 +13,16 @@
   @vite('resources/css/app.css')
 </head>
 
-<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
+<body class="use-poppins-normal bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
     @include('components.sidebar-landboard')
 
     <div id="main-content" class="main-content p-6 md:pt-4 flex-1 ">
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+      <div class="text-xl p-4 rounded-xl text-left text-white bg-gradient-to-r from-[#31c594] to-[#2ba882]">
+        <p><strong class="use-poppins">Detail Akun</strong></p>
+        <p class="text-[14px]">Berikut merupakan detail dari akun dengan username <strong>{{ $tenant->account->username }}</strong></p>
+      </div>
+      <div class="mt-6 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <div class="flex items-center">
           <img 
             class="w-20 h-20 object-cover rounded-full shadow-md" 

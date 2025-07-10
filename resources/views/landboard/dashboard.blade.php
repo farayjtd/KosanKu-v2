@@ -18,13 +18,13 @@
   <div id="wrapper" class="flex min-h-screen">
     @include('components.sidebar-landboard')
     <div id="main-content" class="main-content p-6 md:pt-4">
-      <p class="text-xl p-4 rounded-xl text-left text-white bg-[#31c594]">Selamat datang kembali, <strong class="use-poppins">{{ Auth::user()->landboard->name }}</strong></p>
+      <p class="text-xl p-4 rounded-xl text-left text-white bg-gradient-to-r from-[#31c594] to-[#2ba882]">Selamat datang kembali, <strong class="use-poppins">{{ Auth::user()->landboard->name }}</strong></p>
       <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mt-6">
         <div class="bg-white p-6 rounded-xl shadow">
           <div class="flex items-center justify-between">
             <div>
               <h3 class="text-lg font-semibold text-gray-700 mb-2">Total Penghuni</h3>
-              <p class="text-3xl font-bold text-gray-700">{{ $totalTenants }}</p>
+              <p class="text-3xl font-normal text-gray-700">{{ $totalTenants }}</p>
             </div>
             <div class="text-4xl text-gray-700">
               <i class="bi bi-people"></i>
@@ -39,15 +39,15 @@
               <div class="space-y-1">
                 <div class="flex justify-between text-sm">
                   <span>Total:</span>
-                  <span class="font-semibold">{{ $totalRooms }}</span>
+                  <span class="font-normal">{{ $totalRooms }}</span>
                 </div>
                 <div class="flex justify-between text-sm">
                   <span>Terisi:</span>
-                  <span class="font-semibold text-green-600">{{ $occupiedRooms }}</span>
+                  <span class="font-normal text-green-600">{{ $occupiedRooms }}</span>
                 </div>
                 <div class="flex justify-between text-sm">
                   <span>Kosong:</span>
-                  <span class="font-semibold text-red-600">{{ $totalRooms - $occupiedRooms }}</span>
+                  <span class="font-normal text-red-600">{{ $totalRooms - $occupiedRooms }}</span>
                 </div>
               </div>
             </div>
@@ -64,11 +64,11 @@
               <div class="space-y-1">
                 <div class="flex justify-between text-sm">
                   <span>Bulan Ini:</span>
-                  <span class="font-semibold">Rp{{ number_format($monthlyIncome, 0, ',', '.') }}</span>
+                  <span class="font-normal">Rp{{ number_format($monthlyIncome, 0, ',', '.') }}</span>
                 </div>
                 <div class="flex justify-between text-sm">
                   <span>Tahun Ini:</span>
-                  <span class="font-semibold">Rp{{ number_format($yearlyIncome, 0, ',', '.') }}</span>
+                  <span class="font-normal">Rp{{ number_format($yearlyIncome, 0, ',', '.') }}</span>
                 </div>
               </div>
             </div>
@@ -85,11 +85,11 @@
               <div class="space-y-1">
                 <div class="flex justify-between text-sm">
                   <span>Bulan Ini:</span>
-                  <span class="font-semibold">Rp{{ number_format($monthlyExpense ?? 0, 0, ',', '.') }}</span>
+                  <span class="font-normal">Rp{{ number_format($monthlyExpense ?? 0, 0, ',', '.') }}</span>
                 </div>
                 <div class="flex justify-between text-sm">
                   <span>Tahun Ini:</span>
-                  <span class="font-semibold">Rp{{ number_format($yearlyExpense ?? 0, 0, ',', '.') }}</span>
+                  <span class="font-normal">Rp{{ number_format($yearlyExpense ?? 0, 0, ',', '.') }}</span>
                 </div>
               </div>
             </div>

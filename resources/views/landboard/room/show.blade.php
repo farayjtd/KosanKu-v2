@@ -8,50 +8,46 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;500&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/font.css">
   @vite('resources/css/app.css')
 </head>
 
-<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
+<body class="use-poppins-normal bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
     @include('components.sidebar-landboard')
 
     <div id="main-content" class="main-content p-6 md:pt-4 flex-1">
       <!-- Header Section -->
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <div class="flex items-center">
-          
-          <div class="ml-4">
-            <h3 class="text-2xl font-bold text-gray-800 use-poppins">Kamar {{ $room->room_number }}</h3>
-            <p class="text-gray-600 use-poppins-normal">{{ $room->type }}</p>
-          </div>
-        </div>
+      <div class="text-xl p-4 rounded-xl text-left text-white bg-gradient-to-r from-[#31c594] to-[#2ba882]">
+        <p><strong class="use-poppins">Detail Kamar</strong></p>
+        <p class="text-[14px]">Berikut merupakan detail dari kamar <strong>{{ $room->room_number }}</strong>.</p>
       </div>
 
       <div class="p-6 bg-white rounded-xl mt-4">
         <!-- Room Information -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden p-4">
-          <h4 class="text-lg font-semibold text-gray-800">Informasi Kamar</h4>
+          <h4 class="text-lg font-semibold text-gray-700">Informasi Kamar</h4>
           <div class="mt-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="border-b border-gray-100 pb-2">
                 <span class="text-gray-600 font-medium text-sm">Tipe:</span>
-                <span class="text-gray-800 font-semibold text-sm ml-2">{{ $room->type }}</span>
+                <span class="text-gray-700 font-semibold text-sm ml-2">{{ $room->type }}</span>
               </div>
 
               <div class="border-b border-gray-100 pb-2">
                 <span class="text-gray-600 font-medium text-sm">Nomor:</span>
-                <span class="text-gray-800 font-semibold text-sm ml-2">{{ $room->room_number }}</span>
+                <span class="text-gray-700 font-semibold text-sm ml-2">{{ $room->room_number }}</span>
               </div>
 
               <div class="border-b border-gray-100 pb-2">
                 <span class="text-gray-600 font-medium text-sm">Harga:</span>
-                <span class="text-gray-800 font-semibold text-sm ml-2">Rp{{ number_format($room->price, 0, ',', '.') }}</span>
+                <span class="text-gray-700 font-semibold text-sm ml-2">Rp{{ number_format($room->price, 0, ',', '.') }}</span>
               </div>
 
               <div class="border-b border-gray-100 pb-2">
                 <span class="text-gray-600 font-medium text-sm">Gender:</span>
-                <span class="text-gray-800 font-semibold text-sm ml-2">{{ ucfirst($room->gender_type) }}</span>
+                <span class="text-gray-700 font-semibold text-sm ml-2">{{ ucfirst($room->gender_type) }}</span>
               </div>
 
               <div class="border-b border-gray-100 pb-2 md:col-span-2">
@@ -68,7 +64,7 @@
 
         <!-- Room Photos -->
         <div class="mt-6 p-4 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <h4 class="text-lg font-semibold text-gray-800">Foto Kamar</h4>
+          <h4 class="text-lg font-semibold text-gray-700">Foto Kamar</h4>
           <div class="mt-4">
             @if ($room->photos->isEmpty())
               <p class="text-gray-500 text-sm">Tidak ada foto tersedia.</p>
@@ -90,7 +86,7 @@
 
         <!-- Room Facilities -->
         <div class="mt-6 p-4 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <h4 class="text-lg font-semibold text-gray-800">Fasilitas</h4>
+          <h4 class="text-lg font-semibold text-gray-700">Fasilitas</h4>
           <div class="mt-4">
             @if ($room->facilities->isEmpty())
               <p class="text-gray-500 text-sm">Tidak ada fasilitas ditambahkan.</p>
@@ -109,7 +105,7 @@
 
         <!-- Room Rules -->
         <div class="mt-6 p-4 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <h4 class="text-lg font-semibold text-gray-800">Aturan</h4>
+          <h4 class="text-lg font-semibold text-gray-700">Aturan</h4>
           <div class="mt-4">
             @if ($room->rules->isEmpty())
               <p class="text-gray-500 text-sm">Tidak ada aturan ditentukan.</p>

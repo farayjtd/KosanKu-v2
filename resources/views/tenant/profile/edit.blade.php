@@ -195,7 +195,7 @@
                 </select>
                 @error('gender') <div class="error-message">{{ $message }}</div> @enderror
 
-                <label>Jenis Aktivitas</label>
+                <label>Pekerjaan</label>
                 <input type="text" name="activity_type" value="{{ old('activity_type', $tenant->activity_type) }}">
                 @error('activity_type') <div class="error-message">{{ $message }}</div> @enderror
 

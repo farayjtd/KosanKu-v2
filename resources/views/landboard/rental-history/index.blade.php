@@ -153,12 +153,16 @@
     @include('components.sidebar-landboard')
 
     <div id="main-content" class="main-content p-4 md:p-6 w-full">
+      <div class="text-xl p-4 rounded-xl text-left text-white bg-gradient-to-r from-[#31c594] to-[#2ba882]">
+        <p><strong class="use-poppins">Cari Penghuni </strong></p>
+        <p class="text-[14px]">Cari data penghuni untuk memudahkan anda dalam pencarian riwayat.</p>
+      </div>
       <!-- Search Bar -->
-      <div class="search-input-wrapper mb-10 bg-white rounded-xl shadow-md p-3 flex items-center">
+      <div class="mt-6 text-gray-600 search-input-wrapper bg-white rounded-xl shadow-md p-3 flex items-center">
         <i class="bi bi-search search-icon text-gray-500 mr-4"></i>
         <form id="tenant-search-form" method="GET" class="flex-grow flex items-center relative">
-          <input type="text" name="search" placeholder="Cari nama tenant atau kamar" value="{{ request('search') }}"
-                class="pl-6 w-full rounded-4xl border-none outline-none bg-transparent">
+          <input type="text" name="search" placeholder="Cari nama penghuni" value="{{ request('search') }}"
+                class="pl-8 w-full rounded-4xl border-none outline-none bg-transparent">
           <button type="button" class="filter-sort-toggle-btn text-black text-2xl cursor-pointer p-1 rounded-full transition duration-200 ease-in-out hover:bg-gray-100" onclick="toggleFilterSortDropdown(this)">
             <i class="bi bi-sliders"></i>
           </button>
@@ -180,17 +184,15 @@
       </div>
 
       {{-- Riwayat Sewa --}}
-      <div class="relative mb-8">
-        <div class="absolute -top-5 left-0 bg-[#31c594] text-white px-6 py-3 rounded-bl-4xl rounded-tr-4xl z-10">
-          <h2 class="use-poppins text-base md:text-lg font-semibold">Riwayat Sewa Penghuni</h2>
-        </div>
-        <div class="w-full bg-white rounded-2xl shadow-md pt-8">
+      <div class="relative mt-6">
+        <div class="w-full bg-white rounded-xl shadow-md p-6">
           <div class="p-4">
             <div class="overflow-x-auto">
               <table class="financial-table">
                 <thead class="hidden md:table-header-group uppercase text-gray-700 text-xs tracking-wider">
                   <tr>
-                    <th>Nama Tenant</th>
+                    <th>Nama Penghuni</th>
+                    <th>Username</th>
                     <th>Nama Kamar</th>
                     <th>Mulai</th>
                     <th>Berakhir</th>
@@ -200,7 +202,8 @@
                 <tbody>
                   @forelse ($histories as $history)
                     <tr>
-                      <td data-label="Nama Tenant">{{ $history->tenant?->name ?? '[Tenant dihapus]' }}</td>
+                      <td data-label="Nama">{{ $history->tenant?->name ?? '[Tenant dihapus]' }}</td>
+                      <td data-label="Username">{{ $history->tenant?->account->username ?? '[ Username dihapus]' }}</td>
                       <td data-label="Nama Kamar">{{ $history->room?->room_number ?? '[Kamar dihapus]' }}</td>
                       <td data-label="Mulai">{{ Carbon::parse($history->start_date)->format('d M Y') }}</td>
                       <td data-label="Berakhir">{{ $history->end_date ? Carbon::parse($history->end_date)->format('d M Y') : '—' }}</td>

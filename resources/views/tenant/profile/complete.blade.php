@@ -108,7 +108,7 @@
             <div>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Aktivitas</label>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Pekerjaan</label>
                   <input type="text" name="activity_type" value="{{ old('activity_type') }}" 
                         placeholder="Contoh: Mahasiswa, Pegawai"
                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#31c594] focus:border-transparent">

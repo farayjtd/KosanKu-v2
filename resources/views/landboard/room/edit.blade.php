@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/font.css">
   @vite('resources/css/app.css')
   <style>
@@ -42,16 +43,17 @@
     }
   </style>
 </head>
-<body class="bg-cover bg-no-repeat bg-center min-h-screen font-sans" style="background-image: url('/assets/auth.png')">
+<body class="use-poppins-normal bg-cover bg-no-repeat bg-center min-h-screen font-sans" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
     @include('components.sidebar-landboard')
 
     <div id="main-content" class="main-content p-6 md:pt-4 w-full">
-      <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg">
-        <div class="bg-gradient-to-r from-[#31c594] to-[#2ba882] rounded-t-2xl text-white p-6 text-center">
-          <h2 class="text-xl font-bold font-poppins mb-2"><i class="bi bi-pencil-square mr-2"></i>Edit Kamar</h2>
-        </div>
-        <div class="bg-white rounded-b-2xl shadow-xl p-8">
+    <div class="text-xl p-4 rounded-xl text-left text-white bg-gradient-to-r from-[#31c594] to-[#2ba882]">
+        <p><strong class="use-poppins">Edit Kamar</strong></p>
+        <p class="text-[14px]">Berikut merupakan data dari kamar <strong>{{ $room->room_number }}</strong>. Anda dapat melakukan pengeditan.</p>
+      </div>
+      <div class="mt-6 max-w-full bg-white shadow-lg rounded-lg">
+        <div class="bg-white rounded-xl shadow-xl p-8">
           @if ($errors->any())
             <ul class="mb-4 list-disc text-red-600 pl-5">
               @foreach ($errors->all() as $error)
@@ -65,18 +67,18 @@
             @method('PUT')
 
             <div class="mb-4">
-              <label class="block font-medium">Tipe Kamar</label>
-              <input type="text" name="type" value="{{ old('type', $room->type) }}" required class="w-full mt-1 p-2 border-1 border-gray-200 rounded-lg">
+              <label class="block text-sm font-medium text-gray-600 mb-1">Tipe Kamar</label>
+              <input type="text" name="type" value="{{ old('type', $room->type) }}" required class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-md text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0">
             </div>
 
             <div class="mb-4">
-              <label class="block font-medium">Harga per Bulan</label>
-              <input type="number" name="price" value="{{ old('price', $room->price) }}" required class="w-full mt-1 p-2 border-1 border-gray-200 rounded-lg">
+              <label class="block text-sm font-medium text-gray-600 mb-1">Harga per Bulan</label>
+              <input type="number" name="price" value="{{ old('price', $room->price) }}" required class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-md text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0">
             </div>
 
             <div class="mb-4">
-              <label class="block font-medium">Jenis Kelamin yang Diizinkan</label>
-              <select name="gender_type" required class="w-full mt-1 p-2 border-1 border-gray-200 rounded-lg">
+              <label class="block text-sm font-medium text-gray-600 mb-1">Jenis Kelamin yang Diizinkan</label>
+              <select name="gender_type" required class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-md text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0">
                 <option value="male" {{ old('gender_type', $room->gender_type) === 'male' ? 'selected' : '' }}>Laki-laki</option>
                 <option value="female" {{ old('gender_type', $room->gender_type) === 'female' ? 'selected' : '' }}>Perempuan</option>
                 <option value="mixed" {{ old('gender_type', $room->gender_type) === 'mixed' ? 'selected' : '' }}>Campuran</option>
@@ -84,7 +86,7 @@
             </div>
 
             <div class="mb-4">
-              <label class="block font-medium">Foto Lama</label>
+              <label class="block text-sm font-medium text-gray-600 mb-1">Foto Lama</label>
               <div id="existing-photos" class="flex flex-wrap gap-4 mt-2">
                 @foreach ($room->photos as $photo)
                   <div class="photo-wrapper">
@@ -97,11 +99,11 @@
             </div>
 
             <div class="mb-4">
-              <label class="block font-medium text-gray-800">Tambah Foto Baru</label>
+              <label class="block text-sm font-medium text-gray-600 mb-1">Tambah Foto Baru</label>
               <div class="rounded-lg bg-gray-50" id="photo-container">
                 <div class="group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
                   <input type="file" name="photos[]" 
-                         class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20 file:mr-4 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-[#31c594] file:text-white hover:file:bg-[#2ba882]" 
+                         class="text-gray-600 flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20 file:mr-4 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-[#31c594] file:text-white hover:file:bg-[#2ba882]" 
                          accept="image/*">
                   <button type="button" 
                           class="remove-button-photo bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1" 
@@ -119,12 +121,12 @@
             </div>
 
             <div class="mb-4">
-              <label class="block font-medium">Fasilitas</label>
+              <label class="block text-sm font-medium text-gray-600 mb-1">Fasilitas</label>
               <div class="rounded-lg bg-gray-50" id="facility-container">
                 @forelse ($room->facilities as $facility)
                   <div class="group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
                     <input type="text" name="facilities[]" value="{{$facility->name}}" 
-                           class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
+                           class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-md text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0" 
                            placeholder="Contoh: AC, WiFi, Lemari" 
                            required>
                     <button type="button" 
@@ -136,7 +138,7 @@
                 @empty
                   <div class="group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
                     <input type="text" name="facilities[]" 
-                           class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
+                           class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-md text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0" 
                            placeholder="Contoh: AC, WiFi, Lemari" 
                            required>
                     <button type="button" 
@@ -156,12 +158,12 @@
             </div>
 
             <div class="mb-4">
-              <label class="block font-medium">Aturan</label>
+              <label class="block text-sm font-medium text-gray-600 mb-1">Aturan</label>
               <div class="rounded-lg bg-gray-50" id="rule-container">
                 @forelse ($room->rules as $rule)
                   <div class="group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
                     <input type="text" name="rules[]" value="{{ $rule->name }}"
-                           class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
+                           class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-md text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0" 
                            placeholder="Contoh: Tidak boleh merokok, Jam malam 22:00" 
                            required>
                     <button type="button" 
@@ -173,7 +175,7 @@
                 @empty
                   <div class="group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
                     <input type="text" name="rules[]" 
-                           class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
+                           class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-md text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0" 
                            placeholder="Contoh: Tidak boleh merokok, Jam malam 22:00" 
                            required>
                     <button type="button" 
@@ -193,15 +195,15 @@
             </div>
 
             <div class="mb-6">
-              <label class="block font-medium mb-2">Perbarui Untuk</label>
+              <label class="block text-sm font-medium text-gray-600 mb-1">Perbarui Untuk</label>
               <div class="space-y-2">
                 <label class="inline-flex items-center">
                   <input type="radio" name="apply_all" value="0" checked class="text-green-600">
-                  <span class="ml-2">Hanya kamar ini</span>
+                  <span class="ml-2 text-sm text-gray-600">Hanya kamar ini</span>
                 </label><br>
                 <label class="inline-flex items-center">
                   <input type="radio" name="apply_all" value="1" class="text-green-600">
-                  <span class="ml-2">Semua kamar tipe ini ({{ $room->type }})</span>
+                  <span class="ml-2 text-sm text-gray-600">Semua kamar tipe ini ({{ $room->type }})</span>
                 </label>
               </div>
             </div>

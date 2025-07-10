@@ -99,12 +99,16 @@
 
     {{-- Main Content --}}
     <div id="main-content" class="main-content transition-all duration-300 ease-in-out flex-1 md:ml-[240px] p-4 md:p-6">
-      <div class="relative mt-4">
-        <div class="absolute -top-5 left-0 bg-[#31c594] text-white px-6 py-3 rounded-bl-4xl rounded-tr-4xl z-10">
+      <div class="text-xl p-4 rounded-xl text-left text-white bg-gradient-to-r from-[#31c594] to-[#2ba882]">
+        <p><strong class="use-poppins">Pengajuan Pindah Kamar</strong></p>
+        <p class="text-[14px]">Pantau pengajuan pindah kamar dari penghuni kos.</p>
+      </div>
+      <div class="relative mt-6">
+        <!-- <div class="absolute -top-5 left-0 bg-[#31c594] text-white px-6 py-3 rounded-bl-4xl rounded-tr-4xl z-10">
           <h2 class="use-poppins text-base md:text-lg font-semibold">Riwayat Sewa Penghuni</h2>
-        </div>
+        </div> -->
           <div class="bg-white rounded-xl shadow-md ">
-            <div class="w-full bg-white rounded-xl shadow-md pt-8">
+            <div class="w-full bg-white rounded-xl shadow-md">
               <div class="p-4">
                 @if ($requests->isNotEmpty())
                 <div class="overflow-x-auto mb-4">
