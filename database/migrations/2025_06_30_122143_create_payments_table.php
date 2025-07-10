@@ -12,19 +12,31 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('payments', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('tenant_id')->constrained()->onDelete('cascade');
-            $table->foreignId('rental_history_id')->nullable()->constrained()->onDelete('cascade');
+            $table->bigIncrements('id');
+
+            $table->foreignId('tenant_id')
+                ->constrained('tenants')
+                ->onDelete('cascade');
+
+            $table->foreignId('rental_history_id')
+                ->nullable()
+                ->constrained('rental_histories')
+                ->onDelete('cascade');
+
             $table->bigInteger('amount');
-            $table->string('description')->nullable(); 
+            $table->string('description')->nullable();
             $table->string('invoice_id')->nullable();
             $table->string('tripay_reference')->nullable();
             $table->date('due_date');
             $table->timestamp('paid_at')->nullable();
-            $table->enum('status', ['unpaid', 'paid', 'expired', 'cancelled'])->default('unpaid');
+
+            $table->enum('status', ['unpaid', 'paid', 'expired', 'cancelled'])
+                ->default('unpaid');
+
             $table->string('type')->default('income');
             $table->string('payment_method')->nullable();
             $table->boolean('is_penalty')->default(false);
+
             $table->timestamps();
         });
     }

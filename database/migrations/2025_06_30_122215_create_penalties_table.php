@@ -12,14 +12,24 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('penalties', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('tenant_id')->constrained()->onDelete('cascade');
-            $table->foreignId('rental_history_id')->nullable()->constrained()->onDelete('cascade');
+            $table->bigIncrements('id');
+
+            $table->foreignId('tenant_id')
+                ->constrained('tenants')
+                ->onDelete('cascade');
+
+            $table->foreignId('rental_history_id')
+                ->nullable()
+                ->constrained('rental_histories')
+                ->onDelete('cascade');
+
             $table->enum('type', ['late_fee', 'moveout', 'room_change']);
             $table->bigInteger('amount');
-            $table->string('reason')->nullable(); 
+            $table->string('reason')->nullable();
+            
             $table->timestamp('issued_at')->useCurrent();
-            $table->boolean('resolved')->default(false); 
+            $table->boolean('resolved')->default(false);
+
             $table->timestamps();
         });
     }

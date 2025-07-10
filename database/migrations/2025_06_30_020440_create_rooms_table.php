@@ -12,15 +12,25 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rooms', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('landboard_id')->constrained('landboards')->onDelete('cascade');
+            $table->bigIncrements('id');
+
+            $table->foreignId('landboard_id')
+                ->constrained('landboards')
+                ->onDelete('cascade');
+
             $table->string('type');
-            $table->enum('gender_type', ['male', 'female', 'mixed']);
+
+           $table->enum('gender_type', ['male', 'female', 'mixed']);
+
             $table->decimal('price', 12, 2);
+
             $table->string('room_number')->unique();
+
             $table->enum('status', ['available', 'booked', 'occupied'])->default('available');
+
             $table->timestamps();
         });
+
     }
 
     /**
