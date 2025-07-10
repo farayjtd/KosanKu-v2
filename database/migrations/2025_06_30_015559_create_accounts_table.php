@@ -12,23 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('accounts', function (Blueprint $table) {
-        $table->bigIncrements('id'); 
-
-        $table->string('username')->unique();
-        $table->string('password');
-        $table->rememberToken(); 
-        $table->string('email')->nullable();
-
-        $table->enum('role', ['landboard', 'tenant']);
-
-        $table->boolean('is_first_login')->default(true);
-        $table->string('avatar')->nullable();
-        $table->string('bank_name')->nullable();
-        $table->string('bank_account')->nullable();
-
-        $table->timestamps();
-    });
-
+            $table->id();
+            $table->string('username')->unique();
+            $table->string('password');
+            $table->string('remember_token')->nullable();
+            $table->string('email')->nullable();
+            $table->enum('role', ['landboard', 'tenant']);
+            $table->boolean('is_first_login')->default(true);
+            $table->string('avatar')->nullable();
+            $table->string('bank_name')->nullable();
+            $table->string('bank_account')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**

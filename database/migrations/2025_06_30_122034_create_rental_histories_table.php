@@ -12,24 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rental_histories', function (Blueprint $table) {
-            $table->bigIncrements('id');
-
-            $table->foreignId('tenant_id')
-                ->constrained('tenants')
-                ->onDelete('cascade');
-
-            $table->foreignId('room_id')
-                ->constrained('rooms')
-                ->onDelete('cascade');
-
+            $table->id();
+            $table->foreignId('tenant_id')->constrained()->onDelete('cascade');
+            $table->foreignId('room_id')->constrained()->onDelete('cascade');
             $table->date('start_date');
             $table->date('end_date')->nullable();
-
-            $table->decimal('duration_months', 5, 2); 
-
-            $table->enum('status', ['upcoming', 'active', 'ended', 'transferred'])
-                ->default('upcoming');
-
+            $table->decimal('duration_months');
+            $table->enum('status', ['upcoming', 'active', 'ended', 'transferred'])->default('upcoming');
             $table->timestamps();
         });
     }
