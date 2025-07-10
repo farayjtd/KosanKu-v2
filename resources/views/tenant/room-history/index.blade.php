@@ -5,12 +5,13 @@
   <meta charset="UTF-8" />
   <title>Riwayat Sewa Saya</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  @vite('resources/css/app.css')
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/font.css">
+  @vite('resources/css/app.css')
   <style>
     @media (max-width: 768px) {
       .table-responsive td {
@@ -47,19 +48,16 @@
     }
   </style>
 </head>
-<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
+<body class="use-poppins-normal bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
     @include('components.sidebar-tenant')
-
     <div id="main-content" class="main-content p-6 w-full">
-      <div class="relative max-w-6xl mx-auto mt-6">
-        <!-- Header Hijau -->
-        <div class="absolute -top-5 left-0 bg-[#31c594] text-white px-6 py-3 rounded-bl-4xl rounded-tr-4xl z-10">
-          <h2 class="use-poppins text-base md:text-lg font-semibold">Riwayat Sewa Saya</h2>
-        </div>
-
-        <!-- Card Konten -->
-        <div class="bg-white rounded-xl shadow-md p-6 pt-16">
+      <div class="text-xl p-4 rounded-xl text-left text-white bg-gradient-to-r from-[#31c594] to-[#2ba882]">
+        <p><strong class="use-poppins">Riwayat Sewa</strong></p>
+        <p class="text-[14px]">Berikut merupakan riwayat sewa anda.</p>
+      </div>
+      <div class="relative max-w-full mx-auto mt-6">
+        <div class="bg-white rounded-xl shadow-md p-6">
           @if ($histories->isEmpty())
             <div class="text-center py-16 text-slate-400 text-base">
               Belum ada data sewa yang tercatat.

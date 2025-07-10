@@ -9,18 +9,20 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/font.css">
   @vite('resources/css/app.css')
 </head>
-<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
+<body class="use-poppins-normal bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
     @include('components.sidebar-tenant')
     <div id="main-content" class="main-content p-6 md:pt-4">
-      <div class="relative mt-6">
-          <div class="bg-white rounded-xl shadow p-6 max-w-2xl mx-auto space-y-6 relative">
-            <div class="absolute -top-4 left-0 bg-[#31c594] text-white px-6 py-2 rounded-bl-3xl rounded-tr-3xl shadow">
-              <h2 class="use-poppins text-sm md:text-base font-semibold">Pindah Kamar</h2>
-            </div>
+      <div class="text-xl p-4 rounded-xl text-left text-white bg-gradient-to-r from-[#31c594] to-[#2ba882]">
+        <p><strong class="use-poppins">Pindah Kamar</strong></p>
+        <p class="text-[14px]">Anda dapat mengajukan pindah kamar ketika tidak ada tagihan.</p>
+      </div>
+      <div class="relative">
+          <div class="mt-6 bg-white rounded-xl shadow p-6 max-w-full mx-auto space-y-6 relative">
 
             {{-- Flash Messages --}}
             @if (session('success'))
@@ -31,12 +33,12 @@
             @endif
 
             {{-- Informasi Kamar Saat Ini --}}
-            <div class="text-sm space-y-2 mt-6">
+            <div class="text-sm space-y-2">
               <p class="text-gray-500">
                 Setelah pindah, masa sewa kamar baru akan dimulai selama 1 bulan. Anda bisa memperpanjang kembali sesuai kebutuhan.
               </p>
               <p class="mt-4"><span class="font-semibold">Kamar Saat Ini:</span> {{ $currentHistory->room->room_number }}</p>
-              <p><span class="font-semibold">Sisa Hari:</span> {{ $daysLeft }} hari</p>
+              <p><span class="font-semibold">Sisa Hari:</span> {{ $daysLeft }}</p>
               <p><span class="font-semibold">Denda Pindah Kamar:</span> Rp{{ number_format($currentHistory->room->landboard->room_change_penalty_amount ?? 0, 0, ',', '.') }}</p>
               <p><span class="font-semibold">Estimasi Refund Manual:</span> Rp{{ number_format($refundAmount, 0, ',', '.') }}</p>
             </div>
@@ -70,7 +72,7 @@
                   <div>
                     <label for="room_id" class="block font-medium mb-1">Pilih Kamar Baru</label>
                     <select name="room_id" id="room_id" required
-                      class="w-full rounded-md border border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0">
+                      class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-md text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0">
                       <option value="">-- Pilih Kamar --</option>
                       @foreach ($availableRooms as $room)
                         <option value="{{ $room->id }}">
