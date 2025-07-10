@@ -114,7 +114,7 @@
                 <div class="md:col-span-2">
                   <label class="block text-sm font-medium text-gray-700 mb-1">Foto Profil</label>
                   <input type="file" name="avatar" accept="image/*" 
-                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#31c594] focus:border-transparent">
+                         class="flex-1 px-3 w-full py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20 file:mr-4 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-[#31c594] file:text-white hover:file:bg-[#2ba882]">
                   @if($account->avatar)
                     <div class="mt-2">
                       <img src="{{ asset('storage/' . $account->avatar) }}" alt="Avatar" 

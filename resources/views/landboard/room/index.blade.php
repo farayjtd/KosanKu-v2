@@ -297,8 +297,8 @@
       <div class="search-input-wrapper mb-6 bg-white rounded-xl shadow-md p-3 flex items-center">
         <i class="bi bi-search search-icon text-gray-500"></i>
         <form id="room-search-form" method="GET" class="flex-grow flex items-center relative">
-            <input type="search" name="search" placeholder="Cari nomor kamar atau tipe..." value="{{ request('search') }}"
-                   class="w-full border-none outline-none bg-transparent">
+            <input type="text" name="search" placeholder="Cari nomor kamar atau tipe..." value="{{ request('search') }}"
+                   class="w-full border-none outline-none bg-transparent pl-8">
             <button type="button" class="filter-sort-toggle-btn text-black text-2xl cursor-pointer p-1 rounded-full transition duration-200 ease-in-out hover:bg-gray-100" onclick="toggleFilterSortDropdown(this)">
                 <i class="bi bi-sliders"></i>
             </button>

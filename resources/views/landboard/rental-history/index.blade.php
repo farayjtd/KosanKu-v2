@@ -156,8 +156,8 @@
       <div class="search-input-wrapper mb-10 bg-white rounded-xl shadow-md p-3 flex items-center">
         <i class="bi bi-search search-icon text-gray-500 mr-4"></i>
         <form id="tenant-search-form" method="GET" class="flex-grow flex items-center relative">
-          <input type="search" name="search" placeholder="Cari nama tenant atau kamar" value="{{ request('search') }}"
-                class="w-full rounded-4xl border-none outline-none bg-transparent">
+          <input type="text" name="search" placeholder="Cari nama tenant atau kamar" value="{{ request('search') }}"
+                class="pl-6 w-full rounded-4xl border-none outline-none bg-transparent">
           <button type="button" class="filter-sort-toggle-btn text-black text-2xl cursor-pointer p-1 rounded-full transition duration-200 ease-in-out hover:bg-gray-100" onclick="toggleFilterSortDropdown(this)">
             <i class="bi bi-sliders"></i>
           </button>
