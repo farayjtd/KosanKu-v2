@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/font.css">
   @vite('resources/css/app.css')
   <style>
@@ -17,7 +18,7 @@
   </style>
 
 </head>
-<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
+<body class="bg-cover bg-no-repeat bg-center use-poppins-normal" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
     {{-- Sidebar --}}
     @include('components.sidebar-landboard')
@@ -56,8 +57,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div class="space-y-2">
-                <label class="block text-sm font-semibold text-gray-700">
-                  <i class="bi bi-house mr-2"></i>Tipe Kamar
+                <label class="block text-sm font-semibold text-gray-700">Tipe Kamar
                 </label>
                 <input type="text" name="type" 
                        class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
@@ -67,8 +67,7 @@
               </div>
 
               <div class="space-y-2">
-                <label class="block text-sm font-semibold text-gray-700">
-                  <i class="bi bi-hash mr-2"></i>Jumlah Kamar
+                <label class="block text-sm font-semibold text-gray-700">Jumlah Kamar
                 </label>
                 <input type="number" name="room_quantity" 
                        class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
@@ -81,8 +80,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div class="space-y-2">
-                <label class="block text-sm font-semibold text-gray-700">
-                  <i class="bi bi-currency-dollar mr-2"></i>Harga per Bulan
+                <label class="block text-sm font-semibold text-gray-700">Harga per Bulan
                 </label>
                 <input type="number" name="price" 
                        class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
@@ -92,8 +90,7 @@
               </div>
 
               <div class="space-y-2">
-                <label class="block text-sm font-semibold text-gray-700">
-                  <i class="bi bi-people mr-2"></i>Jenis Kelamin yang Diizinkan
+                <label class="block text-sm font-semibold text-gray-700">Jenis Kelamin yang Diizinkan
                 </label>
                 <select name="gender_type" 
                         class="w-full px-3 py-3 border-2 border-gray-200 rounded-lg text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20" 
@@ -108,8 +105,7 @@
 
             {{-- Fasilitas --}}
             <div class="mb-6">
-              <label class="block text-sm font-semibold text-gray-700 mb-2">
-                <i class="bi bi-gear mr-2"></i>Fasilitas Kamar
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Fasilitas Kamar
               </label>
               <div class="rounded-lg bg-gray-50" id="facility-container">
                 <div class="group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
@@ -133,15 +129,13 @@
               <button type="button" 
                       id="add-facility-button"
                       class="mt-2 bg-[#31c594] hover:bg-[#2ba882] text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2" 
-                      onclick="addField('facility-container', 'facilities[]')">
-                <i class="bi bi-plus"></i>Tambah Fasilitas
+                      onclick="addField('facility-container', 'facilities[]')">Tambah Fasilitas
               </button>
             </div>
 
             {{-- Aturan --}}
             <div class="mb-6">
-              <label class="block text-sm font-semibold text-gray-700 mb-2">
-                <i class="bi bi-list-ul mr-2"></i>Aturan Kamar
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Aturan Kamar
               </label>
               <div class="rounded-lg bg-gray-50" id="rule-container">
                 <div class="group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
@@ -159,15 +153,13 @@
               <button type="button" 
                       id="add-rule-button"
                       class="mt-2 bg-[#31c594] hover:bg-[#2ba882] text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2" 
-                      onclick="addField('rule-container', 'rules[]')">
-                <i class="bi bi-plus"></i>Tambah Aturan
+                      onclick="addField('rule-container', 'rules[]')">Tambah Aturan
               </button>
             </div>
 
             {{-- Foto Kamar --}}
             <div class="mb-8">
-              <label class="block text-sm font-semibold text-gray-700 mb-2">
-                <i class="bi bi-camera mr-2"></i>Foto Kamar
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Foto Kamar
               </label>
               <div class="rounded-lg bg-gray-50" id="photo-container">
                 <div class="group flex flex-col md:flex-row gap-3 mb-3 items-start md:items-center">
@@ -185,8 +177,7 @@
               <button type="button" 
                       id="add-photo-button"
                       class="mt-2 bg-[#31c594] hover:bg-[#2ba882] text-white px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-2" 
-                      onclick="addField('photo-container', 'photos[]', 'file')">
-                <i class="bi bi-plus"></i>Tambah Foto
+                      onclick="addField('photo-container', 'photos[]', 'file')">Tambah Foto
               </button>
             </div>
 

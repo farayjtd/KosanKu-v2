@@ -5,10 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pengaturan Penalti</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;500&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="/style/font.css">
   @vite('resources/css/app.css')
   
 </head>
-<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
+<body class="use-poppins-normal bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
     {{-- Sidebar --}}
     @include('components.sidebar-landboard')
@@ -17,7 +21,7 @@
       <div class="mx-auto max-w-xl overflow-hidden rounded-2xl shadow-lg bg-white">
         {{-- Header --}}
         <div class="rounded-t-2xl bg-gradient-to-r from-[#31c594] to-[#2ba882] p-6 text-center text-white">
-          <h2 class="text-2xl font-bold"><i class="bi bi-sliders mr-2"></i>Pengaturan Penalti</h2>
+          <h2 class="use-poppins text-2xl font-bold"><i class="bi bi-sliders mr-2"></i>Pengaturan Penalti</h2>
         </div>
 
         <div class="p-6 bg-white">
@@ -50,40 +54,40 @@
 
             {{-- Denda telat --}}
             <div>
-              <label class="mb-1 block text-sm font-semibold text-gray-700">Jumlah Denda Telat Bayar (Rp)</label>
+              <label class="mb-1 block text-sm text-gray-700">Jumlah Denda Telat Bayar (Rp)</label>
               <input type="number" name="late_fee_amount" value="{{ old('late_fee_amount', $landboard->late_fee_amount) }}" class="penalty-field w-full rounded-lg border border-[#cfc4b5] bg-[#fdfdfb] px-3 py-2 text-sm focus:border-[#31c594] focus:outline-none focus:ring-2 focus:ring-[#31c594]/20">
             </div>
 
             <div>
-              <label class="mb-1 block text-sm font-semibold text-gray-700">Jumlah Hari Setelah Jatuh Tempo Sebelum Denda (hari)</label>
+              <label class="mb-1 block text-sm text-gray-700">Jumlah Hari Setelah Jatuh Tempo Sebelum Denda (hari)</label>
               <input type="number" name="late_fee_days" value="{{ old('late_fee_days', $landboard->late_fee_days) }}" class="penalty-field w-full rounded-lg border border-[#cfc4b5] bg-[#fdfdfb] px-3 py-2 text-sm focus:border-[#31c594] focus:outline-none focus:ring-2 focus:ring-[#31c594]/20">
             </div>
 
             {{-- Penalti keluar --}}
-            <label class="flex items-center gap-3 font-semibold text-gray-700">
+            <label class="flex items-center gap-3 text-gray-700 font-semibold">
               <input type="checkbox" id="moveoutEnabled" name="is_penalty_on_moveout" {{ $landboard->is_penalty_on_moveout ? 'checked' : '' }} class="h-5 w-5 rounded accent-[#8d735b]">
               Penalti Jika Keluar Sebelum Masa Sewa Habis
             </label>
 
             <div>
-              <label class="mb-1 block text-sm font-semibold text-gray-700">Nominal Penalti Keluar Sebelum Waktu (Rp)</label>
+              <label class="mb-1 block text-sm  text-gray-700">Nominal Penalti Keluar Sebelum Waktu (Rp)</label>
               <input type="number" name="moveout_penalty_amount" value="{{ old('moveout_penalty_amount', $landboard->moveout_penalty_amount) }}" class="moveout-field w-full rounded-lg border border-[#cfc4b5] bg-[#fdfdfb] px-3 py-2 text-sm focus:border-[#31c594] focus:outline-none focus:ring-2 focus:ring-[#31c594]/20">
             </div>
 
             {{-- Penalti pindah kamar --}}
-            <label class="flex items-center gap-3 font-semibold text-gray-700">
+            <label class="flex items-center gap-3 text-gray-700 font-semibold">
               <input type="checkbox" id="roomChangeEnabled" name="is_penalty_on_room_change" {{ $landboard->is_penalty_on_room_change ? 'checked' : '' }} class="h-5 w-5 rounded accent-[#8d735b]">
               Penalti Jika Pindah Kamar
             </label>
 
             <div>
-              <label class="mb-1 block text-sm font-semibold text-gray-700">Nominal Penalti Pindah Kamar (Rp)</label>
+              <label class="mb-1 block text-sm text-gray-700">Nominal Penalti Pindah Kamar (Rp)</label>
               <input type="number" name="room_change_penalty_amount" value="{{ old('room_change_penalty_amount', $landboard->room_change_penalty_amount) }}" class="roomchange-field w-full rounded-lg border border-[#cfc4b5] bg-[#fdfdfb] px-3 py-2 text-sm focus:border-[#31c594] focus:outline-none focus:ring-2 focus:ring-[#31c594]/20">
             </div>
 
             {{-- Perpanjangan Sewa --}}
             <div>
-            <label for="decision_days_before_end" class="mb-1 block text-sm font-semibold text-gray-700">
+            <label for="decision_days_before_end" class="mb-1 block text-sm text-gray-700">
                 Tampilkan Tombol Perpanjangan Sewa <span id="days-preview">{{ old('decision_days_before_end', $landboard->decision_days_before_end) }}</span> Hari Sebelum Habis
               </label>
               <input type="number" name="decision_days_before_end" id="decision_days_before_end" value="{{ old('decision_days_before_end', $landboard->decision_days_before_end) }}" class=" w-full rounded-lg border border-[#cfc4b5] bg-[#fdfdfb] px-3 py-2 text-sm focus:border-[#31c594] focus:outline-none focus:ring-2 focus:ring-[#31c594]/20" oninput="document.getElementById('days-preview').innerText = this.value">

@@ -5,9 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Buat Akun Penghuni Kos</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/font.css">
   @vite('resources/css/app.css')
 </head>
-<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
+<body class="use-poppins-normal bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen w-full">
     {{-- Sidebar --}}
     @include('components.sidebar-landboard')
@@ -44,29 +48,25 @@
             @csrf
 
             <div>
-              <label class="block font-medium text-sm text-gray-700">
-                <i class="bi bi-person mr-1"></i> Username
+              <label class="block font-medium text-sm text-gray-700">Username
               </label>
               <input type="text" name="username" value="{{ old('username') }}" required class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20">
             </div>
 
             <div>
-              <label class="block font-medium text-sm text-gray-700">
-                <i class="bi bi-lock mr-1"></i> Password
+              <label class="block font-medium text-sm text-gray-700">Password
               </label>
               <input type="password" name="password" required class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20">
             </div>
 
             <div>
-              <label class="block font-medium text-sm text-gray-700">
-                <i class="bi bi-lock mr-1"></i> Konfirmasi Password
+              <label class="block font-medium text-sm text-gray-700">Konfirmasi Password
               </label>
               <input type="password" name="password_confirmation" required class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20">
             </div>
 
             <div>
-              <label class="block font-medium text-sm text-gray-700">
-                <i class="bi bi-house-door mr-1"></i> Pilih Kamar
+              <label class="block font-medium text-sm text-gray-700">Pilih Kamar
               </label>
               <select name="room_id" required class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20">
                 <option value="">-- Pilih Kamar --</option>
@@ -79,8 +79,7 @@
             </div>
 
             <div>
-              <label class="block font-medium text-sm text-gray-700">
-                <i class="bi bi-clock-history mr-1"></i> Durasi Sewa
+              <label class="block font-medium text-sm text-gray-700">Durasi Sewa
               </label>
               <select name="duration_months" required class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20">
                 <option value="">-- Pilih Durasi --</option>
@@ -94,8 +93,7 @@
             </div>
 
             <div>
-              <label class="block font-medium text-sm text-gray-700">
-                <i class="bi bi-calendar-event mr-1"></i> Tanggal Masuk
+              <label class="block font-medium text-sm text-gray-700">Tanggal Masuk
               </label>
               <input type="date" name="start_date" value="{{ old('start_date') }}" required class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20">
             </div>

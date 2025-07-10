@@ -6,9 +6,9 @@
   <title>Riwayat Keuangan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;500&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/font.css">
   @vite('resources/css/app.css')
   <style>
@@ -76,16 +76,16 @@
     }
   </style>
 </head>
-<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
+<body class="use-poppins-normal bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
     @include('components.sidebar-landboard')
 
     <div id="main-content" class="main-content p-4 md:p-6 w-full">
-    <div class="search-input-wrapper mb-10 bg-white rounded-xl shadow-md p-3 flex items-center">
+     <div class="search-input-wrapper mb-10 bg-white rounded-xl shadow-md p-3 flex items-center">
           <i class="bi bi-search search-icon text-gray-500 mr-4"></i>
           <form id="room-search-form" method="GET" class="flex-grow flex items-center relative">
               <input type="text" name="search" placeholder="Cari username"  value="{{ old('search', request('search')) }}"
-                    class="pl-6 w-full rounded-4xl border-none outline-none bg-transparent">
+                    class="pl-8 w-full rounded-4xl border-none outline-none bg-transparent">
               <button type="button" class="filter-sort-toggle-btn text-black text-2xl cursor-pointer p-1 rounded-full transition duration-200 ease-in-out hover:bg-gray-100" onclick="toggleFilterSortDropdown(this)">
                   <i class="bi bi-sliders"></i>
               </button>
@@ -99,7 +99,7 @@
                           <option value="amount_asc" {{ request('sort') == 'amount_asc' ? 'selected' : '' }}>Jumlah Bayar Terkecil</option>
                           <option value="date_desc" {{ request('sort') == 'date_desc' ? 'selected' : '' }}>Pembayaran Terbaru</option>
                           <option value="date_asc" {{ request('sort') == 'date_asc' ? 'selected' : '' }}>Pembayaran Terlama</option>
-                      </select>  y
+                      </select> 
                   </div>
               </div>
           </form>

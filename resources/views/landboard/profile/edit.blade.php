@@ -5,19 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit Profil Landboard</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;500&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/font.css">
   @vite('resources/css/app.css')
 </head>
-<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
+<body class="use-poppins-normal bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
     @include('components.sidebar-landboard')
     
     <div id="main-content" class="main-content p-6 md:pt-4">
-
-      {{-- Main Card --}}
       <div class="bg-white rounded-xl shadow-lg p-6 max-w-4xl mx-auto">
         {{-- Notifications --}}
         @if(session('success'))
@@ -44,7 +42,7 @@
           {{-- Account Section --}}
           <div class="mb-8">
             <div class="flex items-center mb-4">
-              <i class="bi bi-person-circle gray-800text-xl mr-2"></i>
+              <i class="bi bi-person-circle gray-800 text-xl mr-2"></i>
               <h3 class="text-lg font-semibold text-gray-800">Informasi Akun</h3>
             </div>
             <div>
@@ -67,19 +65,25 @@
                   @enderror
                 </div>
 
-                <div>
+                <div class="relative">
                   <label class="block text-sm font-medium text-gray-700 mb-1">Password Baru</label>
-                  <input type="password" name="password" placeholder="Kosongkan jika tidak diganti" 
-                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#31c594] focus:border-transparent">
+                  <input id="password" type="password" name="password" placeholder="Kosongkan jika tidak diganti" 
+                         class="w-full mt-1 px-4 py-2 pr-10 rounded-xl text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0">
                   @error('password') 
                     <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> 
                   @enderror
+                  <button type="button" id="togglePassword" class="absolute right-3 top-11.5 -translate-y-1/2 text-gray-500 hover:text-[#31c594]">
+                    <i class="bi bi-eye-slash" id="eyeIcon"></i>
+                  </button>
                 </div>
 
-                <div>
+                <div class="relative">
                   <label class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi Password</label>
-                  <input type="password" name="password_confirmation" 
-                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#31c594] focus:border-transparent">
+                  <input id="confirmpassword" type="password" name="password_confirmation" 
+                         class="w-full mt-1 px-4 py-2 pr-10 rounded-xl text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0">
+                         <button type="button" id="toggleConfirmPassword" class="absolute right-3 top-11.5 -translate-y-1/2 text-gray-500 hover:text-[#31c594]">
+                           <i class="bi bi-eye-slash" id="eyeIcon-conf"></i>
+                         </button>
                 </div>
               </div>
             </div>
@@ -290,6 +294,28 @@
       window.addEventListener('resize', function() {
         initializeSidebar();
       });
+    });
+    const togglePassword = document.getElementById("togglePassword");
+    const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
+
+    const passwordInput = document.getElementById("password");
+    const confirmpasswordInput = document.getElementById("confirmpassword");
+
+    const eyeIcon = document.getElementById("eyeIcon");
+    const eyeIconConf = document.getElementById("eyeIcon-conf");
+
+    togglePassword.addEventListener("click", function () {
+      const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+      passwordInput.setAttribute("type", type);
+      eyeIcon.classList.toggle("bi-eye");
+      eyeIcon.classList.toggle("bi-eye-slash");
+    });
+
+    toggleConfirmPassword.addEventListener("click", function () {
+      const type = confirmpasswordInput.getAttribute("type") === "password" ? "text" : "password";
+      confirmpasswordInput.setAttribute("type", type);
+      eyeIconConf.classList.toggle("bi-eye");
+      eyeIconConf.classList.toggle("bi-eye-slash");
     });
   </script>
 </body>
