@@ -189,6 +189,83 @@ class LandboardController extends Controller
         }
     }
 
+    public function showCreateTenantForm()
+    {
+        $rooms = Room::where('status', 'available')->get();
+        return view('landboard.tenant.create', compact('rooms'));
+    }
+
+    public function storeNewTenant(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string|min:6|max:20|unique:accounts,username',
+            'password' => ['required', 'confirmed', Password::min(6)->letters()->mixedCase()->numbers()],
+            'room_id' => 'required|exists:rooms,id',
+            'start_date' => 'required|date',
+            'duration_months' => 'required|numeric|min:0.1',
+
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $account = Account::create([
+                'username' => $request->username,
+                'password' => $request->password,
+                'role' => 'tenant',
+                'is_first_login' => true,
+            ]);
+
+            $room = Room::findOrFail($request->room_id);
+
+            $tenant = Tenant::create([
+                'account_id' => $account->id,
+                'room_id' => $room->id,
+                'status' => 'aktif',
+            ]);
+
+            $startDate = Carbon::parse($request->start_date);
+            $duration = floatval($request->duration_months);
+
+            $endDate = $duration === 0.1 ? $startDate->copy()->addDays(5) : $startDate->copy()->addMonths($duration);
+            $chargeMonths = $duration === 0.1 ? 1 : $duration;
+
+            $room->status = $startDate->greaterThan(Carbon::today()) ? 'booked' : 'occupied';
+            $room->save();
+
+            $rental = RentalHistory::create([
+                'tenant_id' => $tenant->id,
+                'room_id' => $room->id,
+                'start_date' => $startDate,
+                'end_date' => $endDate,
+                'duration_months' => $duration,
+                'status' => 'active',
+            ]);
+
+            Payment::create([
+                'tenant_id' => $tenant->id,
+                'rental_history_id' => $rental->id,
+                'amount' => $room->price * $chargeMonths,
+                'description' => 'Tagihan awal sewa kamar',
+                'due_date' => $startDate,
+                'status' => 'unpaid',
+                'is_penalty' => false,
+            ]);
+
+            DB::commit();
+            return redirect()->back()->with('success', 'Akun tenant dan data sewa berhasil dibuat.');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['error' => 'Gagal membuat tenant: ' . $e->getMessage()]);
+        }
+    }
+
+    public function show($id)
+    {
+        $tenant = Tenant::with(['account', 'room.landboard'])->findOrFail($id);
+
+        return view('landboard.tenant.show', compact('tenant'));
+    }
+
     public function showEditTenantForm($id)
     {
         $tenant = Tenant::with('account')->findOrFail($id);
@@ -393,82 +470,5 @@ class LandboardController extends Controller
 
         return redirect()->route('landboard.tenants.index')
             ->with('success', 'Tenant berhasil dinonaktifkan. Denda keluar kos dan refund telah dihitung otomatis.');
-    }
-
-    public function showCreateTenantForm()
-    {
-        $rooms = Room::where('status', 'available')->get();
-        return view('landboard.tenant.create', compact('rooms'));
-    }
-
-    public function storeNewTenant(Request $request)
-    {
-        $request->validate([
-            'username' => 'required|string|min:6|max:20|unique:accounts,username',
-            'password' => ['required', 'confirmed', Password::min(6)->letters()->mixedCase()->numbers()],
-            'room_id' => 'required|exists:rooms,id',
-            'start_date' => 'required|date',
-            'duration_months' => 'required|numeric|min:0.1',
-
-        ]);
-
-        DB::beginTransaction();
-        try {
-            $account = Account::create([
-                'username' => $request->username,
-                'password' => $request->password,
-                'role' => 'tenant',
-                'is_first_login' => true,
-            ]);
-
-            $room = Room::findOrFail($request->room_id);
-
-            $tenant = Tenant::create([
-                'account_id' => $account->id,
-                'room_id' => $room->id,
-                'status' => 'aktif',
-            ]);
-
-            $startDate = Carbon::parse($request->start_date);
-            $duration = floatval($request->duration_months);
-
-            $endDate = $duration === 0.1 ? $startDate->copy()->addDays(5) : $startDate->copy()->addMonths($duration);
-            $chargeMonths = $duration === 0.1 ? 1 : $duration;
-
-            $room->status = $startDate->greaterThan(Carbon::today()) ? 'booked' : 'occupied';
-            $room->save();
-
-            $rental = RentalHistory::create([
-                'tenant_id' => $tenant->id,
-                'room_id' => $room->id,
-                'start_date' => $startDate,
-                'end_date' => $endDate,
-                'duration_months' => $duration,
-                'status' => 'active',
-            ]);
-
-            Payment::create([
-                'tenant_id' => $tenant->id,
-                'rental_history_id' => $rental->id,
-                'amount' => $room->price * $chargeMonths,
-                'description' => 'Tagihan awal sewa kamar',
-                'due_date' => $startDate,
-                'status' => 'unpaid',
-                'is_penalty' => false,
-            ]);
-
-            DB::commit();
-            return redirect()->back()->with('success', 'Akun tenant dan data sewa berhasil dibuat.');
-        } catch (\Throwable $e) {
-            DB::rollBack();
-            return redirect()->back()->withErrors(['error' => 'Gagal membuat tenant: ' . $e->getMessage()]);
-        }
-    }
-
-    public function show($id)
-    {
-        $tenant = Tenant::with(['account', 'room.landboard'])->findOrFail($id);
-
-        return view('landboard.tenant.show', compact('tenant'));
     }
 }

@@ -20,8 +20,8 @@ class Payment extends Model
         'type',
         'payment_method',
         'is_penalty',
-        'invoice_id',        
-        'payment_url'      
+        'invoice_id',      
+        'tripay_reference',  
     ];
 
     protected $casts = [

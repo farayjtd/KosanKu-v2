@@ -13,6 +13,20 @@ use Illuminate\Support\Facades\DB;
 
 class RoomTransferController extends Controller
 {
+    public function index()
+    {
+        $landboard = Auth::user()->landboard;
+
+        $requests = RoomTransferRequest::with(['tenant', 'currentRoom', 'newRoom'])
+            ->whereHas('currentRoom', function ($query) use ($landboard) {
+                $query->where('landboard_id', $landboard->id);
+            })
+            ->latest('created_at')
+            ->get();
+
+        return view('landboard.room-transfer.index', compact('requests'));
+    }
+
     public function showForm()
     {
         $tenant = Auth::user()->tenant;
@@ -137,20 +151,6 @@ class RoomTransferController extends Controller
         ]);
 
         return back()->with('success', 'Permintaan pindah kamar berhasil diajukan.');
-    }
-
-    public function index()
-    {
-        $landboard = Auth::user()->landboard;
-
-        $requests = RoomTransferRequest::with(['tenant', 'currentRoom', 'newRoom'])
-            ->whereHas('currentRoom', function ($query) use ($landboard) {
-                $query->where('landboard_id', $landboard->id);
-            })
-            ->latest('created_at')
-            ->get();
-
-        return view('landboard.room-transfer.index', compact('requests'));
     }
 
     public function handleAction(Request $request, $id)

@@ -325,7 +325,7 @@ class RoomController extends Controller
             RoomTransferRequest::where('current_room_id', $room->id)->delete();
 
             foreach ($room->photos as $photo) {
-                $isUsedByOthers = \App\Models\RoomPhoto::where('path', $photo->path)
+                $isUsedByOthers = RoomPhoto::where('path', $photo->path)
                     ->where('room_id', '!=', $room->id)
                     ->exists();
 
