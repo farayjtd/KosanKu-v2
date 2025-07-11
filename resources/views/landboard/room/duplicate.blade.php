@@ -17,47 +17,39 @@
     @include('components.sidebar-landboard')
 
     <div id="main-content" class="main-content p-6 md:pt-4 flex-1">
-      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <div class="flex items-center">
-          <div class="ml-4">
-            <h3 class="text-2xl font-bold text-gray-800 use-poppins">Duplikat Kamar</h3>
-            <p class="text-gray-600 use-poppins-normal">Tipe: {{ $room->type }}</p>
-          </div>
-        </div>
+      <div class="text-xl p-4 rounded-xl text-left text-white bg-gradient-to-r from-[#31c594] to-[#2ba882]">
+        <p><strong class="use-poppins">Duplikat Kamar</strong></p>
+        <p class="text-[14px]">Anda dapat melakukan duplikasi dari kamar <strong>{{ $room->room_number }}</strong>.</p>
       </div>
 
-      <div class="p-6 bg-white rounded-xl mt-4">
+      <div class="max-w-full p-6 bg-white rounded-xl mt-4">
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden p-6">
           <div class="flex items-center mb-4">
-            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-              <i class="bi bi-info-circle"></i>
-            </div>
             <h4 class="text-lg font-semibold text-gray-800 ml-3">Informasi Duplikasi</h4>
           </div>
           
           <div class="rounded-lg p-4 mb-6 border-gray-200 border-1 bg-gray-50">
-            <p class="text-sm text-blue-800 mb-2">
-              <i class="bi bi-lightbulb mr-2"></i>
+            <p class="text-sm text-gray-700 mb-2">
               Duplikasi akan menyalin semua data kamar seperti:
             </p>
             <div class="grid grid-cols-2 md:grid-cols-3 gap-2 mt-3">
-              <div class="flex items-center text-sm text-blue-700">
+              <div class="flex items-center text-sm text-gray-700">
                 <i class="bi bi-check-circle-fill text-blue-500 mr-2"></i>
                 Fasilitas
               </div>
-              <div class="flex items-center text-sm text-blue-700">
+              <div class="flex items-center text-sm text-gray-700">
                 <i class="bi bi-check-circle-fill text-blue-500 mr-2"></i>
                 Aturan
               </div>
-              <div class="flex items-center text-sm text-blue-700">
+              <div class="flex items-center text-sm text-gray-700">
                 <i class="bi bi-check-circle-fill text-blue-500 mr-2"></i>
                 Harga
               </div>
-              <div class="flex items-center text-sm text-blue-700">
+              <div class="flex items-center text-sm text-gray-700">
                 <i class="bi bi-check-circle-fill text-blue-500 mr-2"></i>
                 Gender
               </div>
-              <div class="flex items-center text-sm text-blue-700">
+              <div class="flex items-center text-sm text-gray-700">
                 <i class="bi bi-check-circle-fill text-blue-500 mr-2"></i>
                 Foto
               </div>
@@ -80,10 +72,7 @@
 
         <div class="mt-6 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden p-6">
           <div class="flex items-center mb-4">
-            <div class="w-10 h-10 bg-opacity-10 rounded-full flex items-center justify-center">
-              <i class="bi bi-files"></i>
-            </div>
-            <h4 class="text-lg font-semibold text-gray-800 ml-3">Buat Duplikat</h4>
+            <h4 class="text-lg font-semibold text-gray-800">Buat Duplikat</h4>
           </div>
 
           <form method="POST" action="{{ route('landboard.rooms.duplicate', $room->id) }}" class="space-y-6">
@@ -102,33 +91,19 @@
                   min="1" 
                   max="50"
                   required
-                  class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#31c594] focus:border-[#31c594] transition duration-150 text-sm"
+                  class="text-gray-600 w-full mt-1 px-4 py-3 pr-10 rounded-md text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0"
                   placeholder="Masukkan jumlah kamar (1-50)"
                 />
               </div>
-              <p class="text-xs text-gray-500 mt-1">
-                <i class="bi bi-info-circle mr-1"></i>
-                Maksimal 50 kamar dapat dibuat sekaligus
-              </p>
             </div>
-
-            <div class="flex items-center justify-between pt-4 border-t border-gray-200">
-              <a 
-                href="{{ route('landboard.rooms.index') }}" 
-                class="bg-gray-500 text-white px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-200 hover:bg-gray-600 hover:shadow-md"
-              >
-                <i class="bi bi-arrow-left mr-2"></i>
-                Batal
-              </a>
 
               <button 
                 type="submit"
-                class="bg-[#31c594] text-white px-8 py-3 rounded-lg text-sm font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"
+                class="w-full bg-[#31c594] text-white px-8 py-3 rounded-lg text-sm font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"
               >
                 <i class="bi bi-files mr-2"></i>
                 Duplikat Sekarang
               </button>
-            </div>
           </form>
         </div>
       </div>

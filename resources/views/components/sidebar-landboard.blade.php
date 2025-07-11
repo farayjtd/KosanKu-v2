@@ -180,7 +180,7 @@
     }
 </style>
 
-<div id="sidebar" class="sidebar bg-white w-[240px] h-screen fixed flex flex-col overflow-y-hidden top-0 left-0 z-50 shadow-xl px-4 py-6 transition-all duration-300">
+<div id="sidebar" class="font-sans sidebar bg-white w-[240px] h-screen fixed flex flex-col overflow-y-hidden top-0 left-0 z-50 shadow-xl px-4 py-6 transition-all duration-300">
   @php
     use Illuminate\Support\Str;
     $user = auth()->user();

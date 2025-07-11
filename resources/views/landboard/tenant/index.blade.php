@@ -3,32 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daftar Tenant</title>
+  <title>Daftar Penghuni</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;500&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="/style/font.css">
   @vite('resources/css/app.css')
 </head>
-<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
+<body class="use-poppins-normal bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen w-full">
     {{-- Sidebar --}}
     @include('components.sidebar-landboard')
 
     <div id="main-content" class="main-content p-6 md:pt-4 w-full">
+      <div class="text-xl p-4 rounded-xl text-left text-white bg-gradient-to-r from-[#31c594] to-[#2ba882]">
+        <p><strong class="use-poppins">Cari Penghuni</strong></p>
+        <p class="text-[14px]">Temukan penghuni hanya dengan mengetikan identitas mereka.</p>
+      </div>
       @if(session('success'))
         <div class="mb-4 px-4 py-2 rounded-lg bg-emerald-100 text-emerald-700 border border-emerald-300">
           <i class="bi bi-check-circle-fill mr-2"></i> {{ session('success') }}
         </div>
       @endif
 
-      <div class="search-input-wrapper mb-6 bg-white rounded-xl shadow-md px-3 py-1 flex items-center">
-        <i class="bi bi-search search-icon text-gray-500 mr-2"></i>
+      <div class="text-gray-600 mt-6 search-input-wrapper mb-6 bg-white rounded-xl shadow-md px-3 py-1 flex items-center">
+        <i class="bi bi-search search-icon text-gray-500 ml-2"></i>
         <form id="room-search-form" method="GET" class="flex-grow flex items-center relative">
-          <input type="search" name="search" placeholder="Cari nama atau username"
+          <input type="text" name="search" placeholder="Cari nama atau username"
                  value="{{ request('search') }}" 
-                 class="w-full border-none outline-none bg-transparent">
+                 class="w-full border-none outline-none bg-transparent pl-4">
           <button type="submit" class="filter-sort-toggle-btn text-black text-2xl cursor-pointer p-1 rounded-full transition duration-200 ease-in-out hover:bg-gray-100" onclick="toggleFilterSortDropdown(this)">
             <i class="bi bi-sliders"></i>
           </button>

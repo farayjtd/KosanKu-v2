@@ -8,19 +8,20 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/font.css">
   @vite('resources/css/app.css')
 </head>
-<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
+<body class="use-poppins-normal bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
     @include('components.sidebar-tenant')
 
     <div id="main-content" class="main-content p-6 md:pt-4 w-full">
-      <div class="mt-6 relative max-w-screen mx-auto bg-white rounded-xl shadow p-6 pt-20">
-        <div class="absolute -top-5 left-0 bg-[#31c594] text-white px-6 py-3 rounded-bl-4xl rounded-tr-4xl z-10">
-          <h2 class="font-poppins text-base md:text-lg font-semibold">Tagihan Pembayaran</h2>
-        </div>
-
+      <div class="text-xl p-4 rounded-xl text-left text-white bg-gradient-to-r from-[#31c594] to-[#2ba882]">
+        <p><strong class="use-poppins">Tagihan Pembayaran</strong></p>
+        <p class="text-[14px]">Berikut merupakan tagihan pembayaran anda.</p>
+      </div>
+      <div class="mt-6 relative max-w-screen mx-auto bg-white rounded-xl shadow p-6">
         @if($payments->isEmpty())
           <div class="text-center py-16 text-slate-400 text-base">
             Belum ada tagihan untuk saat ini.
@@ -99,6 +100,68 @@
       const target = document.getElementById('method-form-' + id);
       if (target) target.classList.remove('hidden');
     }
+    document.addEventListener('DOMContentLoaded', function() {
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('main-content');
+      const toggleBtn = document.getElementById('toggleSidebar');
+      
+      const overlay = document.createElement('div');
+      overlay.className = 'mobile-overlay';
+      overlay.id = 'mobile-overlay';
+      document.body.appendChild(overlay);
+
+      function initializeSidebar() {
+        if (window.innerWidth <= 768) {
+          if (sidebar) {
+            sidebar.classList.add('collapsed');
+            sidebar.classList.remove('mobile-expanded');
+          }
+          if (mainContent) {
+            mainContent.classList.add('collapsed');
+          }
+          overlay.classList.remove('active');
+        } else {
+          if (sidebar) {
+            sidebar.classList.remove('mobile-expanded');
+          }
+          overlay.classList.remove('active');
+        }
+      }
+
+      initializeSidebar();
+
+      if (toggleBtn && sidebar) {
+        toggleBtn.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            if (sidebar.classList.contains('mobile-expanded')) {
+              sidebar.classList.remove('mobile-expanded');
+              sidebar.classList.add('collapsed');
+              overlay.classList.remove('active');
+            } else {
+              sidebar.classList.remove('collapsed');
+              sidebar.classList.add('mobile-expanded');
+              overlay.classList.add('active');
+            }
+          } else {
+            sidebar.classList.toggle('collapsed');
+            if (mainContent) {
+              mainContent.classList.toggle('collapsed');
+            }
+          }
+        });
+      }
+      overlay.addEventListener('click', function() {
+        if (window.innerWidth <= 768) {
+          sidebar.classList.remove('mobile-expanded');
+          sidebar.classList.add('collapsed');
+          overlay.classList.remove('active');
+        }
+      });
+
+      window.addEventListener('resize', function() {
+        initializeSidebar();
+      });
+    });
   </script>
 </body>
 </html>

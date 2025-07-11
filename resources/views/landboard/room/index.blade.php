@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/font.css">
   @vite('resources/css/app.css')
   <style>
@@ -286,7 +287,7 @@
     }
   </style>
 </head>
-<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
+<body class="bg-cover bg-no-repeat bg-center use-poppins-normal" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
 
     {{-- Sidebar --}}
@@ -294,11 +295,15 @@
 
     {{-- Konten utama --}}
     <div id="main-content" class="main-content p-6 md:pt-4 w-full">
-      <div class="search-input-wrapper mb-6 bg-white rounded-xl shadow-md p-3 flex items-center">
-        <i class="bi bi-search search-icon text-gray-500"></i>
+      <div class="text-xl p-4 rounded-xl text-left text-white bg-gradient-to-r from-[#31c594] to-[#2ba882]">
+        <p><strong class="use-poppins">Cari Kamar </strong></p>
+        <p class="text-[14px]">Cari kamar untuk memudahkan anda dalam management kamar.</p>
+      </div>
+      <div class="text-gray-600 mt-6 search-input-wrapper mb-6 bg-white rounded-xl shadow-md p-3 flex items-center">
+        <i class="bi bi-search search-icon text-gray-600"></i>
         <form id="room-search-form" method="GET" class="flex-grow flex items-center relative">
-            <input type="search" name="search" placeholder="Cari nomor kamar atau tipe..." value="{{ request('search') }}"
-                   class="w-full border-none outline-none bg-transparent">
+            <input type="text" name="search" placeholder="Cari nomor kamar atau tipe..." value="{{ request('search') }}"
+                   class="w-full border-none outline-none bg-transparent pl-8">
             <button type="button" class="filter-sort-toggle-btn text-black text-2xl cursor-pointer p-1 rounded-full transition duration-200 ease-in-out hover:bg-gray-100" onclick="toggleFilterSortDropdown(this)">
                 <i class="bi bi-sliders"></i>
             </button>
@@ -393,14 +398,14 @@
               </span>
             </div>
 
-            <div class="mt-auto grid grid-cols-4 gap-2 text-center text-xs">
-              <a href="{{ route('landboard.rooms.show', $room->id) }}" class="flex items-center justify-center gap-1 bg-[#31c594] text-white py-2 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"><i class="bi bi-info-circle text-base"></i><span class="hidden md:inline">Detail</span></a>
-              <a href="{{ route('landboard.rooms.duplicate-form', $room->id) }}" class="flex items-center justify-center gap-1 bg-[#31c594] text-white py-2 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"><i class="bi bi-files text-base"></i><span class="hidden md:inline">Duplikat</span></a>
-              <a href="{{ route('landboard.rooms.edit-form', $room->id) }}" class="flex items-center justify-center gap-1 bg-[#31c594] text-white py-2 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"><i class="bi bi-pencil-square text-base"></i><span class="hidden md:inline">Edit</span></a>
+            <div class="mt-auto grid grid-cols-4 gap-2 text-center">
+              <a href="{{ route('landboard.rooms.show', $room->id) }}" class="text-sm use-poppins-normal flex items-center justify-center gap-1 bg-[#31c594] text-white py-2 rounded-lg font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"><i class="bi bi-info-circle text-base"></i><span class="hidden md:inline">Detail</span></a>
+              <a href="{{ route('landboard.rooms.duplicate-form', $room->id) }}" class="text-sm use-poppins-normal flex items-center justify-center gap-1 bg-[#31c594] text-white py-2 rounded-lg font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"><i class="bi bi-files text-base"></i><span class="hidden md:inline">Duplikat</span></a>
+              <a href="{{ route('landboard.rooms.edit-form', $room->id) }}" class="text-sm use-poppins-normal flex items-center justify-center gap-1 bg-[#31c594] text-white py-2 rounded-lg font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"><i class="bi bi-pencil-square text-base"></i><span class="hidden md:inline">Edit</span></a>
               <form action="{{ route('landboard.rooms.destroy', $room->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus kamar ini?')" class="contents">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="flex items-center justify-center gap-1 bg-red-400 text-white py-2 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#ff0000]/30"><i class="bi bi-trash text-base"></i><span class="hidden md:inline">Hapus</span></button>
+                <button type="submit" class="text-sm use-poppins-normal flex items-center justify-center gap-1 bg-red-400 text-white py-2 rounded-lg font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#ff0000]/30"><i class="bi bi-trash text-base"></i><span class="hidden md:inline">Hapus</span></button>
               </form>
             </div>
           </div>

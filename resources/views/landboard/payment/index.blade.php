@@ -6,139 +6,12 @@
   <title>Pembayaran</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;500&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/font.css">
   @vite('resources/css/app.css')
   <style>
-    .main-content {
-      margin-left: 240px;
-      width: calc(100% - 240px);
-      transition: all 0.3s ease;
-      min-height: 100vh;
-    }
-    
-    .main-content.collapsed {
-      margin-left: 80px;
-      width: calc(100% - 80px);
-    }
-    
-    @media (max-width: 768px) {
-      .sidebar {
-        width: 80px;
-      }
-      
-      .sidebar .menu-text {
-        display: none;
-      }
-      
-      .sidebar .menu-title {
-        display: none;
-      }
-      
-      .sidebar .group-title {
-        display: none;
-      }
-      
-      .sidebar .logo-text {
-        display: none;
-      }
-      
-      .sidebar .menu-item {
-        justify-content: center;
-        padding: 0.75rem;
-      }
-      
-      .sidebar .profile-btn,
-      .sidebar .logout-btn {
-        padding: 0.75rem;
-        justify-content: center;
-        min-height: 48px;
-      }
-      
-      .sidebar .profile-btn .btn-text,
-      .sidebar .logout-btn .btn-text {
-        display: none;
-      }
-      
-      .main-content {
-        margin-left: 80px;
-        width: calc(100% - 80px);
-      }
-      
-      .main-content.collapsed {
-        margin-left: 80px;
-        width: calc(100% - 80px);
-      }
-    }
-    
-    @media (max-width: 640px) {
-      .sidebar {
-        width: 60px;
-      }
-      
-      .sidebar .menu-item {
-        padding: 0.5rem;
-      }
-      
-      .sidebar .profile-btn,
-      .sidebar .logout-btn {
-        padding: 0.5rem;
-        min-height: 40px;
-      }
-      
-      .main-content {
-        margin-left: 60px;
-        width: calc(100% - 60px);
-      }
-      
-      .main-content.collapsed {
-        margin-left: 60px;
-        width: calc(100% - 60px);
-      }
-      
-      @media (max-width: 768px) {
-        .sidebar.mobile-expanded {
-          width: 100vw !important;
-          z-index: 60;
-        }
-        
-        .sidebar.mobile-expanded .menu-text,
-        .sidebar.mobile-expanded .menu-title,
-        .sidebar.mobile-expanded .group-title,
-        .sidebar.mobile-expanded .logo-text,
-        .sidebar.mobile-expanded .btn-text {
-          display: block !important;
-        }
-        
-        .sidebar.mobile-expanded .menu-item {
-          justify-content: flex-start !important;
-          padding: 0.5rem 1rem !important;
-        }
-        
-        .sidebar.mobile-expanded .profile-btn,
-        .sidebar.mobile-expanded .logout-btn {
-          justify-content: center !important;
-          padding: 0.5rem 1rem !important;
-        }
-        
-        .mobile-overlay {
-          display: none;
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100vw;
-          height: 100vh;
-          background: rgba(0, 0, 0, 0.5);
-          z-index: 50;
-        }
-        
-        .mobile-overlay.active {
-          display: block;
-        }
-      }
-    }
 
     .search-input-wrapper {
       position: relative;
@@ -274,18 +147,22 @@
     }
   </style>
 </head>
-<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
+<body class="use-poppins-normal bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
     {{-- Sidebar --}}
     @include('components.sidebar-landboard')
 
     <div id="main-content" class="main-content p-4 md:p-6 w-full">
+      <div class="text-xl p-4 rounded-xl text-left text-white bg-gradient-to-r from-[#31c594] to-[#2ba882]">
+        <p><strong class="use-poppins">Pembayaran</strong></p>
+        <p class="text-[14px]">Pantau pembayaran dari penghuni anda. Gunakan search untuk mencari penghuni.</p>
+      </div>
       <!-- Search Bar -->
-      <div class="search-input-wrapper mb-10 bg-white rounded-xl shadow-md p-3 flex items-center">
-        <i class="bi bi-search search-icon text-gray-500 mr-4"></i>
+      <div class="mt-6 text-gray-600 search-input-wrapper bg-white rounded-xl shadow-md p-3 flex items-center">
+        <i class="bi bi-search search-icon text-gray-600 mr-4"></i>
         <form id="payment-search-form" method="GET" class="flex-grow flex items-center relative">
-          <input type="search" name="search" placeholder="Cari username, nama tenant, atau kamar" value="{{ request('search') }}"
-                class="w-full rounded-4xl border-none outline-none bg-transparent">
+          <input type="text" name="search" placeholder="Cari username, nama tenant, atau kamar" value="{{ request('search') }}"
+                class="pl-7 w-full rounded-4xl border-none outline-none bg-transparent">
           <button type="button" class="filter-sort-toggle-btn text-black text-2xl cursor-pointer p-1 rounded-full transition duration-200 ease-in-out hover:bg-gray-100" onclick="toggleFilterSortDropdown(this)">
             <i class="bi bi-sliders"></i>
           </button>
@@ -307,11 +184,8 @@
       </div>
 
       {{-- Cash Payments --}}
-      <div class="relative mb-8">
-        <div class="absolute -top-5 left-0 bg-[#31c594] text-white px-6 py-3 rounded-bl-4xl rounded-tr-4xl z-10">
-          <h2 class="use-poppins text-base md:text-lg font-semibold">Pembayaran</h2>
-        </div>
-        <div class="w-full bg-white rounded-2xl shadow-md pt-8">
+      <div class="relative mt-6">
+        <div class="w-full bg-white rounded-xl shadow-md">
           <div class="p-4">
             {{-- Pesan sukses --}}
             @if (session('success'))
@@ -348,7 +222,7 @@
                   @empty
                     <tr>
                       <tr>
-                        <td colspan="6" class="text-center py-6 text-gray-500">
+                        <td colspan="6" class="text-center py-6 text-gray-600">
                           @if (request('search'))
                             {{-- Desain --}}
                             <p class="text-sm">

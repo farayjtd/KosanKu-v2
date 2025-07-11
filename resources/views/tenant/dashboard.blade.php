@@ -9,10 +9,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/font.css">
   @vite('resources/css/app.css')
 </head>
-<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
+<body class="use-poppins-normal bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
     @include('components.sidebar-tenant')
     
@@ -22,9 +23,9 @@
       <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div class="flex-1">
-            <h1 class="text-2xl text-gray-700 font-semibold mb-2">
-              Selamat datang kembali, <strong class="use-poppins text-gray-700">{{ $tenant->name }}</strong>
-            </h1>
+            <p class="text-left text-xl rounded-xl text-gray-700 mb-2">
+              Selamat datang kembali, <strong class="use-poppins text-gray">{{ $tenant->name }}</strong>
+            </p>
             @if (isset($remaining_time) && $activeHistory)
               <div class="mt-2 inline-block">
                 <p class="text-sm flex items-center">
@@ -72,47 +73,41 @@
         {{-- Informasi Kamar Saat Ini --}}
         <div class="bg-white rounded-xl shadow-lg p-6">
           <div class="flex items-center mb-4">
-            <i class="bi bi-house-door text-gray-700 text-xl mr-3"></i>
             <h2 class="text-lg font-semibold text-gray-700">Informasi Kamar Saat Ini</h2>
           </div>
 
           @if ($activeHistory)
-            <div class="space-y-4">
+            <div class="space-y-2">
               <div class="flex items-center justify-between py-2 border-b border-gray-100">
                 <div class="flex items-center">
-                  <i class="bi bi-house text-gray-600 mr-2"></i>
                   <span class="text-sm text-gray-600">Tipe Kamar</span>
                 </div>
-                <span class="font-semibold text-gray-700">{{ $activeHistory->room->type }}</span>
+                <span class="font-semibold text-gray-700 text-sm">{{ $activeHistory->room->type }}</span>
               </div>
 
               <div class="flex items-center justify-between py-2 border-b border-gray-100">
                 <div class="flex items-center">
-                  <i class="bi bi-door-closed text-gray-600 mr-2"></i>
                   <span class="text-sm text-gray-600">Nomor Kamar</span>
                 </div>
-                <span class="font-semibold text-gray-700">{{ $activeHistory->room->room_number }}</span>
+                <span class="font-semibold text-gray-700 text-sm">{{ $activeHistory->room->room_number }}</span>
               </div>
 
               <div class="flex items-center justify-between py-2 border-b border-gray-100">
                 <div class="flex items-center">
-                  <i class="bi bi-currency-dollar text-gray-600 mr-2"></i>
                   <span class="text-sm text-gray-600">Harga Sewa</span>
                 </div>
-                <span class="font-semibold text-gray-700">Rp{{ number_format($activeHistory->room->price, 0, ',', '.') }}</span>
+                <span class="font-semibold text-gray-700 text-sm">Rp{{ number_format($activeHistory->room->price, 0, ',', '.') }}</span>
               </div>
 
               <div class="flex items-center justify-between py-2">
                 <div class="flex items-center">
-                  <i class="bi bi-clock-history text-gray-600 mr-2"></i>
                   <span class="text-sm text-gray-600">Masa Aktif Hingga</span>
                 </div>
-                <span class="font-semibold text-gray-700">{{ $activeHistory->end_date }}</span>
+                <span class="font-semibold text-gray-700 text-sm">{{ $activeHistory->end_date }}</span>
               </div>
             </div>
           @else
             <div class="text-center py-8">
-              <i class="bi bi-house-x text-gray-400 text-4xl mb-3"></i>
               <p class="text-gray-500">Belum ada sewa aktif</p>
             </div>
           @endif
@@ -121,15 +116,14 @@
         {{-- Status Tagihan --}}
         <div class="bg-white rounded-xl shadow-lg p-6">
           <div class="flex items-center mb-4">
-            <i class="bi bi-credit-card text-gray-700 text-xl mr-3"></i>
             <h3 class="text-lg font-semibold text-gray-700">Status Tagihan</h3>
           </div>
 
           @if ($latestPayment)
-            <div class="space-y-4">
+            <div class="space-y-2">
               <div class="flex items-center justify-between py-2 border-b border-gray-100">
                 <span class="text-sm text-gray-600">Jumlah Tagihan</span>
-                <span class="font-semibold text-gray-700">Rp{{ number_format($latestPayment->amount, 0, ',', '.') }}</span>
+                <span class="font-semibold text-gray-700 text-sm">Rp{{ number_format($latestPayment->amount, 0, ',', '.') }}</span>
               </div>
 
               <div class="flex items-center justify-between py-2 border-b border-gray-100">
@@ -149,7 +143,7 @@
 
               <div class="flex items-center justify-between py-2">
                 <span class="text-sm text-gray-600">Jatuh Tempo</span>
-                <span class="font-semibold text-gray-700">{{ $latestPayment->due_date }}</span>
+                <span class="font-semibold text-gray-700 text-sm">{{ $latestPayment->due_date }}</span>
               </div>
             </div>
           @else
@@ -164,7 +158,6 @@
       {{-- Status Permintaan --}}
       <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
         <div class="flex items-center mb-4">
-          <i class="bi bi-file-earmark-check text-gray-700 text-xl mr-3"></i>
           <h3 class="text-lg font-semibold text-gray-700">Status Permintaan</h3>
         </div>
 
@@ -178,14 +171,12 @@
             </div>
             @if ($latestTransferRequest->note)
               <p class="text-sm text-blue-600">
-                <i class="bi bi-chat-left-text mr-2"></i>
                 Catatan: {{ $latestTransferRequest->note }}
               </p>
             @endif
           </div>
         @else
           <div class="text-center py-6">
-            <i class="bi bi-clipboard-check text-gray-400 text-3xl mb-2"></i>
             <p class="text-gray-500">Tidak ada permintaan aktif</p>
           </div>
         @endif
@@ -198,19 +189,18 @@
         @if ($activeHistory)
           <div class="bg-white rounded-xl shadow-lg p-6">
             <div class="flex items-center mb-4">
-              <i class="bi bi-calendar-plus text-gray-700 text-xl mr-3"></i>
               <h3 class="text-lg font-semibold text-gray-700">Estimasi Perpanjangan</h3>
             </div>
 
             <div class="space-y-4">
               <div class="flex items-center justify-between py-2 border-b border-gray-100">
                 <span class="text-sm text-gray-600">Biaya Perpanjangan 1 Bulan</span>
-                <span class="font-semibold text-gray-700">Rp{{ number_format($activeHistory->room->price, 0, ',', '.') }}</span>
+                <span class="font-semibold text-gray-700 text-sm">Rp{{ number_format($activeHistory->room->price, 0, ',', '.') }}</span>
               </div>
 
               <div class="flex items-center justify-between py-2">
                 <span class="text-sm text-gray-600">Tenggat Pengajuan</span>
-                <span class="font-semibold text-gray-700">{{ Carbon::parse($activeHistory->end_date)->subDays(3)->toDateString() }}</span>
+                <span class="font-semibold text-gray-700 text-sm">{{ Carbon::parse($activeHistory->end_date)->subDays(3)->toDateString() }}</span>
               </div>
             </div>
           </div>
@@ -219,7 +209,6 @@
         {{-- Kontak Landboard --}}
         <div class="bg-white rounded-xl shadow-lg p-6">
           <div class="flex items-center mb-4">
-            <i class="bi bi-person-lines-fill text-gray-700 text-xl mr-3"></i>
             <h3 class="text-lg font-semibold text-gray-700">Kontak Landboard</h3>
           </div>
 
@@ -251,28 +240,27 @@
       {{-- Aksi Cepat --}}
       <div class="bg-white rounded-xl shadow-lg p-6 mt-6">
         <div class="flex items-center mb-4">
-          <i class="bi bi-lightning text-gray-700 text-xl mr-3"></i>
           <h3 class="text-lg font-semibold text-gray-700">Aksi Cepat</h3>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <a href="{{ route('tenant.room-transfer.form') }}"
             class="flex items-center justify-center bg-green-50 hover:bg-green-100 text-green-700 p-4 rounded-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
-            <i class="bi bi-arrow-left-right text-xl mr-2"></i>
-            <span class="font-medium">Ajukan Pindah Kamar</span>
+            <i class="bi bi-arrow-left-right text-sm mr-2"></i>
+            <span class="font-medium text-sm">Ajukan Pindah Kamar</span>
           </a>
 
           <a href="{{ route('tenant.payment.list') }}"
             class="flex items-center justify-center bg-green-50 hover:bg-green-100 text-green-700 p-4 rounded-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
-            <i class="bi bi-receipt text-xl mr-2"></i>
-            <span class="font-medium">Lihat Tagihan</span>
+            <i class="bi bi-receipt text-sm mr-2"></i>
+            <span class="font-medium text-sm">Lihat Tagihan</span>
           </a>
 
           @if ($tenant->room && $tenant->room->landboard)
             <a href="https://wa.me/{{ $tenant->room->landboard->phone }}" target="_blank"
               class="flex items-center justify-center bg-emerald-50 hover:bg-emerald-100 text-emerald-700 p-4 rounded-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
-              <i class="bi bi-telephone text-xl mr-2"></i>
-              <span class="font-medium">Hubungi Landboard</span>
+              <i class="bi bi-telephone text-sm mr-2"></i>
+              <span class="font-medium text-sm">Hubungi Landboard</span>
             </a>
           @endif
         </div>

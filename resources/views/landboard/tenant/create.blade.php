@@ -5,21 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Buat Akun Penghuni Kos</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/font.css">
   @vite('resources/css/app.css')
 </head>
-<body class="bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
+<body class="use-poppins-normal bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen w-full">
     {{-- Sidebar --}}
     @include('components.sidebar-landboard')
 
     {{-- Main Content --}}
     <div id="main-content" class="main-content transition-all duration-300 ease-in-out flex-1 md:ml-[240px] p-4 md:p-6">
-    <div class="bg-white rounded-2xl shadow-lg overflow-hidden max-w-xl mx-auto">
-        <div class="bg-gradient-to-r from-[#31c594] to-[#2ba882] text-white p-6 text-center rounded-t-2xl">
+      <div class="text-xl p-4 rounded-xl text-left text-white bg-gradient-to-r from-[#31c594] to-[#2ba882]">
+        <p><strong class="use-poppins">Buat Akun Penghuni</strong></p>
+        <p class="text-[14px]">Buat akun penghuni untuk memudahkan dalam pendataan selanjutnya.</p>
+      </div>
+      <div class="mt-6 bg-white rounded-2xl shadow-lg overflow-hidden max-w-full mx-auto">
+        <!-- <div class="bg-gradient-to-r from-[#31c594] to-[#2ba882] text-white p-6 text-center rounded-t-2xl">
           <h2 class="text-2xl font-bold">
             <i class="bi bi-person-plus mr-2"></i> Buat Akun Penghuni Kos
           </h2>
-        </div>
+        </div> -->
 
         <div class="p-6">
           {{-- Flash Messages --}}
@@ -44,31 +52,35 @@
             @csrf
 
             <div>
-              <label class="block font-medium text-sm text-gray-700">
-                <i class="bi bi-person mr-1"></i> Username
+              <label class="block font-medium text-sm text-gray-700">Username
               </label>
-              <input type="text" name="username" value="{{ old('username') }}" required class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20">
+              <input type="text" name="username" value="{{ old('username') }}" required class="text-gray-600 mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20">
             </div>
 
             <div>
-              <label class="block font-medium text-sm text-gray-700">
-                <i class="bi bi-lock mr-1"></i> Password
-              </label>
-              <input type="password" name="password" required class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20">
+              <label class="block font-medium text-sm text-gray-700">Password</label>
+              <div class="relative">
+                <input id="password" type="password" name="password" required class="text-gray-600 mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 pr-10 text-sm focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20">
+                <button type="button" id="togglePassword" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-[#31c594] transition-colors">
+                  <i class="bi bi-eye-slash" id="eyeIcon"></i>
+                </button>
+              </div>
             </div>
 
             <div>
-              <label class="block font-medium text-sm text-gray-700">
-                <i class="bi bi-lock mr-1"></i> Konfirmasi Password
-              </label>
-              <input type="password" name="password_confirmation" required class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20">
+              <label class="block font-medium text-sm text-gray-700">Konfirmasi Password</label>
+              <div class="relative">
+                <input id="confirmpassword" type="password" name="password_confirmation" required class="text-gray-600 mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 pr-10 text-sm focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20">
+                <button type="button" id="toggleConfirmPassword" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-[#31c594] transition-colors">
+                  <i class="bi bi-eye-slash" id="eyeIcon-conf"></i>
+                </button>
+              </div>
             </div>
 
             <div>
-              <label class="block font-medium text-sm text-gray-700">
-                <i class="bi bi-house-door mr-1"></i> Pilih Kamar
+              <label class="block font-medium text-sm text-gray-700">Pilih Kamar
               </label>
-              <select name="room_id" required class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20">
+              <select name="room_id" required class="text-gray-600 mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20">
                 <option value="">-- Pilih Kamar --</option>
                 @foreach ($rooms as $room)
                   <option value="{{ $room->id }}">
@@ -79,10 +91,9 @@
             </div>
 
             <div>
-              <label class="block font-medium text-sm text-gray-700">
-                <i class="bi bi-clock-history mr-1"></i> Durasi Sewa
+              <label class="block font-medium text-sm text-gray-700">Durasi Sewa
               </label>
-              <select name="duration_months" required class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20">
+              <select name="duration_months" required class="text-gray-600 mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20">
                 <option value="">-- Pilih Durasi --</option>
                 <option value="0.1" {{ old('duration_months') == 0.1 ? 'selected' : '' }}>5 hari (uji coba)</option>
                 @foreach ([1, 3, 6, 12] as $bulan)
@@ -94,10 +105,9 @@
             </div>
 
             <div>
-              <label class="block font-medium text-sm text-gray-700">
-                <i class="bi bi-calendar-event mr-1"></i> Tanggal Masuk
+              <label class="block font-medium text-sm text-gray-700">Tanggal Masuk
               </label>
-              <input type="date" name="start_date" value="{{ old('start_date') }}" required class="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20">
+              <input type="date" name="start_date" value="{{ old('start_date') }}" required class="text-gray-600 mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20">
             </div>
 
             <div class="pt-4">
@@ -182,6 +192,28 @@
         }
     });
   });
+  const togglePassword = document.getElementById("togglePassword");
+    const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
+
+    const passwordInput = document.getElementById("password");
+    const confirmpasswordInput = document.getElementById("confirmpassword");
+
+    const eyeIcon = document.getElementById("eyeIcon");
+    const eyeIconConf = document.getElementById("eyeIcon-conf");
+
+    togglePassword.addEventListener("click", function () {
+      const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+      passwordInput.setAttribute("type", type);
+      eyeIcon.classList.toggle("bi-eye");
+      eyeIcon.classList.toggle("bi-eye-slash");
+    });
+
+    toggleConfirmPassword.addEventListener("click", function () {
+      const type = confirmpasswordInput.getAttribute("type") === "password" ? "text" : "password";
+      confirmpasswordInput.setAttribute("type", type);
+      eyeIconConf.classList.toggle("bi-eye");
+      eyeIconConf.classList.toggle("bi-eye-slash");
+    });
   </script>
 </body>
 </html>
