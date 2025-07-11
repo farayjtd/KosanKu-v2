@@ -326,7 +326,7 @@
 
       div.innerHTML = `
         <input type="${type}" name="${inputName}" 
-              class="${type === 'file' ? fileInputClass : inputClass}" 
+              class="text-gray-600 ${type === 'file' ? fileInputClass : inputClass}" 
               ${type === 'file' ? 'accept="image/*"' : `placeholder="${placeholder}"`} required>
         <button type="button" 
                 class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1" 
