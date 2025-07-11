@@ -20,7 +20,7 @@
     <main id="main-content" class="main-content flex-1 p-4 md:p-6 md:ml-[240px] transition-all duration-300 ease-in-out">
       <div class="text-xl p-4 rounded-xl text-left text-white bg-gradient-to-r from-[#31c594] to-[#2ba882]">
         <p><strong class="use-poppins">Pengaturan Penalti</strong></p>
-        <p class="text-[14px]">Atur penalti</p>
+        <p class="text-[14px]">Atur penalti untuk mempermudah dalam pengelolaan denda.</p>
       </div>
       <div class="mt-6 max-w-full overflow-hidden rounded-2xl shadow-lg bg-white">
         {{-- Header --}}
@@ -91,10 +91,10 @@
 
             {{-- Perpanjangan Sewa --}}
             <div>
-            <label for="decision_days_before_end" class="mb-1 block text-sm text-gray-700">
-                Tampilkan Tombol Perpanjangan Sewa <span id="days-preview">{{ old('decision_days_before_end', $landboard->decision_days_before_end) }}</span> Hari Sebelum Habis
+              <label for="decision_days_before_end" class="mb-1 block text-sm text-gray-700">
+                Tampilkan Tombol Perpanjangan Sewa <span id="days-preview">{{ old('decision_days_before_end', $landboard->decision_days_before_end) }}</span> Hari Sebelum Habis
               </label>
-              <input type="number" name="decision_days_before_end" id="decision_days_before_end" value="{{ old('decision_days_before_end', $landboard->decision_days_before_end) }}" class="late-fee-amount w-full rounded-lg text-gray-600 px-3 py-2 border-gray-400 border-1 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0" oninput="document.getElementById('days-preview').innerText = this.value">
+              <input type="number" name="decision_days_before_end" id="decision_days_before_end" value="{{ old('decision_days_before_end', $landboard->decision_days_before_end) }}" class="extension-field w-full rounded-lg text-gray-600 px-3 py-2 border-gray-400 border-1 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0" oninput="updateDaysPreview(this.value)">
             </div>
 
             <button type="submit" class="w-full rounded-lg bg-[#31c594] px-8 py-3 text-base font-semibold text-white transition duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30">
@@ -168,28 +168,54 @@
   window.addEventListener('resize', function() {
     initializeSidebar();
   });
+  
+  window.updateDaysPreview = function(value) {
+      const previewElement = document.getElementById('days-preview');
+      if (previewElement) {
+        previewElement.innerText = value || '0';
+      }
+    };
 
-      // === enable / disable inputs ===
-      const bindToggle = (checkboxId, fieldSelector) => {
-        const cb = document.getElementById(checkboxId);
-        const fields = document.querySelectorAll(fieldSelector);
-        const setState = () => {
-          fields.forEach(f => {
-            f.disabled = !cb.checked;
-            f.classList.toggle('opacity-50', !cb.checked);
-            f.classList.toggle('cursor-not-allowed', !cb.checked);
-          });
-        };
-        cb.addEventListener('change', setState);
-        setState(); // initial
+    // Function to bind checkbox toggle to specific fields
+    const bindToggle = (checkboxId, fieldSelector) => {
+      const cb = document.getElementById(checkboxId);
+      const fields = document.querySelectorAll(fieldSelector);
+      if (!cb || fields.length === 0) return; // Safety check
+      
+      const setState = () => {
+        fields.forEach(f => {
+          // Instead of disabling, use readonly to ensure values are still sent
+          f.readOnly = !cb.checked;
+          f.classList.toggle('opacity-50', !cb.checked);
+          f.classList.toggle('cursor-not-allowed', !cb.checked);
+          f.classList.toggle('bg-gray-100', !cb.checked);
+          
+          // Set value to 0 if checkbox is unchecked
+          if (!cb.checked) {
+            f.value = '0';
+          }
+        });
       };
+      cb.addEventListener('change', setState);
+      setState();
+    };
 
-      // Master toggle controls all .penalty-field
-      bindToggle('penaltyEnabled', '.penalty-field');
-      // Individual toggles
-      bindToggle('moveoutEnabled', '.moveout-field');
-      bindToggle('roomChangeEnabled', '.roomchange-field');
-    });
+    // Master toggle controls only .penalty-field (late fee fields)
+    bindToggle('penaltyEnabled', '.penalty-field');
+    // Individual toggles
+    bindToggle('moveoutEnabled', '.moveout-field');
+    bindToggle('roomChangeEnabled', '.roomchange-field');
+    
+    // NOTE: .extension-field is NOT bound to any checkbox toggle
+    // This field should always be enabled regardless of penalty settings
+    
+    // Ensure extension field is never disabled
+    const extensionField = document.querySelector('.extension-field');
+    if (extensionField) {
+      extensionField.disabled = false;
+      extensionField.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
+  });
   </script>
 </body>
 </html>
