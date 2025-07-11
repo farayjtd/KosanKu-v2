@@ -4,83 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Reset Password - KosanKu</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f4f1ee;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    .container {
-      width: 100%;
-      max-width: 460px;
-      padding: 20px;
-    }
-    form {
-      background: #fff;
-      padding: 28px 32px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-      border: 1px solid #ddd;
-    }
-    h2 {
-      color: #4b3b2f;
-      margin-bottom: 20px;
-      font-size: 1.6em;
-      text-align: center;
-    }
-    label {
-      display: block;
-      margin-top: 16px;
-      margin-bottom: 6px;
-      font-weight: 600;
-      color: #4a4a4a;
-    }
-    input {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 14px;
-      background-color: #fdfaf8;
-    }
-    button {
-      margin-top: 24px;
-      padding: 10px;
-      width: 100%;
-      background-color: #8b5e3c;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    button:hover {
-      background-color: #6b4f3b;
-    }
-    .alert {
-      background: #fcebea;
-      color: #b91c1c;
-      padding: 12px;
-      margin-bottom: 20px;
-      border-radius: 6px;
-      font-size: 14px;
-      border: 1px solid #f5c6cb;
-      text-align: center;
-    }
-  </style>
-</head>
-<body>
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <div class="container">
-    <form method="POST" action="{{ route('password.update') }}">
-      <h2>Reset Password</h2>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style/font.css">
+  @vite('resources/css/app.css')
+</head>
+<body class="use-poppins-normal min-h-screen bg-cover bg-no-repeat bg-center flex items-center justify-center px-4 md:px-0" style="background-image: url('/assets/auth.png')">
+
+  <div class="w-full max-w-md">
+    <form 
+      action="{{ route('password.update') }}" 
+      method="POST" 
+      class="bg-white px-6 py-8 md:px-10 md:py-10 rounded-3xl shadow-gray-100 shadow-xs w-full"
+    >
+      <h2 class="text-2xl font-semibold text-[#31c594] text-left mb-2 use-poppins">
+        Reset Password<br>KosanKu
+      </h2>
+      <p class="text-xs font-medium text-gray-500 text-left mb-6 use-poppins">
+        Silahkan masukkan password baru untuk akun anda.
+      </p>
 
       @csrf
 
@@ -88,18 +35,76 @@
       <input type="hidden" name="email" value="{{ $email }}">
 
       @if ($errors->any())
-        <div class="alert">{{ $errors->first() }}</div>
+        <div class="bg-red-100 border border-red-300 text-red-700 text-sm px-4 py-3 rounded-xl mb-4 break-words">
+          {{ $errors->first() }}
+        </div>
       @endif
 
-      <label for="password">Password Baru</label>
-      <input type="password" id="password" name="password" required>
+      <label for="password" class="block text-sm font-medium text-gray-700 mt-2">
+        <i class="bi bi-lock mr-2"></i>Password Baru
+      </label>
+      <div class="relative">
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          required 
+          class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-xl text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0"
+        >
+        <button type="button" id="togglePassword" class="absolute right-3 top-5.5 -translate-y-1/2 text-gray-500 hover:text-[#31c594]">
+          <i class="bi bi-eye-slash" id="eyeIcon"></i>
+        </button>
+      </div>
 
-      <label for="password_confirmation">Konfirmasi Password</label>
-      <input type="password" id="password_confirmation" name="password_confirmation" required>
+      <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mt-4">
+        <i class="bi bi-lock mr-2"></i>Konfirmasi Password
+      </label>
+      <div class="relative">
+        <input 
+          type="password" 
+          id="password_confirmation" 
+          name="password_confirmation" 
+          required 
+          class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-xl text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0"
+        >
+        <button type="button" id="togglePasswordConfirmation" class="absolute right-3 top-5.5 -translate-y-1/2 text-gray-500 hover:text-[#31c594]">
+          <i class="bi bi-eye-slash" id="eyeIconConfirmation"></i>
+        </button>
+      </div>
 
-      <button type="submit">Simpan Password Baru</button>
+      <button 
+        type="submit" 
+        class="w-full mt-6 py-2 bg-[#31c594] text-white px-8 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30"
+      >
+        Simpan Password Baru
+      </button>
     </form>
   </div>
 
+  <script>
+    // Toggle password visibility for password field
+    const togglePassword = document.getElementById("togglePassword");
+    const passwordInput = document.getElementById("password");
+    const eyeIcon = document.getElementById("eyeIcon");
+
+    togglePassword.addEventListener("click", function () {
+      const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+      passwordInput.setAttribute("type", type);
+      eyeIcon.classList.toggle("bi-eye");
+      eyeIcon.classList.toggle("bi-eye-slash");
+    });
+
+    // Toggle password visibility for password confirmation field
+    const togglePasswordConfirmation = document.getElementById("togglePasswordConfirmation");
+    const passwordConfirmationInput = document.getElementById("password_confirmation");
+    const eyeIconConfirmation = document.getElementById("eyeIconConfirmation");
+
+    togglePasswordConfirmation.addEventListener("click", function () {
+      const type = passwordConfirmationInput.getAttribute("type") === "password" ? "text" : "password";
+      passwordConfirmationInput.setAttribute("type", type);
+      eyeIconConfirmation.classList.toggle("bi-eye");
+      eyeIconConfirmation.classList.toggle("bi-eye-slash");
+    });
+  </script>
 </body>
 </html>
