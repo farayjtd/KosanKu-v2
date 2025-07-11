@@ -5,9 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tagihan Pembayaran</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/style/font.css">
   @vite('resources/css/app.css')
@@ -21,6 +18,7 @@
         <p><strong class="use-poppins">Tagihan Pembayaran</strong></p>
         <p class="text-[14px]">Berikut merupakan tagihan pembayaran anda.</p>
       </div>
+
       <div class="mt-6 relative max-w-screen mx-auto bg-white rounded-xl shadow p-6">
         @if($payments->isEmpty())
           <div class="text-center py-16 text-slate-400 text-base">
@@ -56,30 +54,10 @@
                     </td>
                     <td class="px-4 py-3 border-b">
                       @if(!$isPaid)
-                        <button class="bg-slate-600 text-white px-3 py-1 rounded hover:bg-slate-700 text-xs" onclick="toggleMethodForm({{ $payment->id }})">
+                        <button class="bg-[#31c594] text-white px-3 py-1 rounded hover:bg-[#2ab88d] text-xs"
+                          onclick="openModal({{ $payment->rental_history_id }})">
                           Bayar
                         </button>
-
-                        <div class="method-form mt-2 bg-slate-50 p-4 rounded-lg hidden" id="method-form-{{ $payment->id }}">
-                          <form action="{{ route('tenant.payment.createInvoice', ['rentalId' => $payment->rental_history_id]) }}" method="POST" class="space-y-3">
-                            @csrf
-                            <input type="hidden" name="rental_id" value="{{ $payment->rental_history_id }}">
-
-                            <label class="block text-sm font-medium text-slate-700">Pilih Metode Pembayaran:</label>
-                            <div class="space-y-1">
-                              @foreach($channels as $channel)
-                                <label class="flex items-center space-x-2 text-sm text-slate-700">
-                                  <input type="radio" name="payment_method" value="{{ $channel['code'] }}" required>
-                                  <span>{{ $channel['name'] }} ({{ $channel['group'] }})</span>
-                                </label>
-                              @endforeach
-                            </div>
-
-                            <button type="submit" class="bg-slate-600 hover:bg-slate-700 text-white text-sm px-4 py-2 rounded">
-                              Lanjutkan Pembayaran
-                            </button>
-                          </form>
-                        </div>
                       @else
                         <span class="text-slate-400 italic text-sm">-</span>
                       @endif
@@ -91,6 +69,31 @@
           </div>
         @endif
       </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="payment-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center flex">
+    <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+      <button onclick="closeModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-600 text-lg">
+        <i class="bi bi-x-lg"></i>
+      </button>
+      <form id="modal-form" method="POST" action="#" class="space-y-4">
+        @csrf
+        <input type="hidden" name="rental_id" id="modal-rental-id">
+        <h2 class="text-lg font-semibold text-gray-600">Pilih Metode Pembayaran</h2>
+        <div class="space-y-2 max-h-64 overflow-y-auto pr-2">
+          @foreach($channels as $channel)
+            <label class="flex items-center space-x-2 text-sm text-gray-600">
+              <input type="radio" name="payment_method" value="{{ $channel['code'] }}" required>
+              <span>{{ $channel['name'] }} ({{ $channel['group'] }})</span>
+            </label>
+          @endforeach
+        </div>
+        <button type="submit" class="px-4 py-1 bg-[#31c594] text-white text-md font-semibold rounded-xl mx-auto block hover:bg-[#2ab88d] duration-300 cursor-pointer">
+          Lanjutkan Pembayaran
+        </button>
+      </form>
     </div>
   </div>
 
@@ -162,6 +165,38 @@
         initializeSidebar();
       });
     });
+    function toggleMethodForm(id) {
+  // Sembunyikan semua form
+  document.querySelectorAll('.method-form').forEach(form => {
+    if (!form.classList.contains('hidden')) {
+      form.classList.add('hidden');
+    }
+  });
+
+  // Tampilkan form yang sesuai
+  const target = document.getElementById('method-form-' + id);
+  if (target) {
+    target.classList.toggle('hidden');
+  }
+}
+function openModal(rentalId) {
+  const modal = document.getElementById('payment-modal');
+  modal.classList.remove('hidden');
+
+  const form = document.getElementById('modal-form');
+  const hiddenInput = document.getElementById('modal-rental-id');
+
+  // Isi form data
+  hiddenInput.value = rentalId;
+
+  // Update action
+  form.action = `{{ url('tenant/payment') }}/${rentalId}/create-invoice`;
+}
+
+  function closeModal() {
+    document.getElementById('payment-modal').classList.add('hidden');
+  }
+
   </script>
 </body>
 </html>
