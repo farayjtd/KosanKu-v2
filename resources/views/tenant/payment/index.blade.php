@@ -150,7 +150,6 @@
           }
         });
       }
-      
       overlay.addEventListener('click', function() {
         if (window.innerWidth <= 768) {
           sidebar.classList.remove('mobile-expanded');
