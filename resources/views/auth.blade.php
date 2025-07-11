@@ -58,7 +58,7 @@
           id="password" 
           name="password" 
           required 
-          class="w-full mt-1 px-4 py-2 pr-10 rounded-xl text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0"
+          class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-xl text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0"
         >
         <button type="button" id="togglePassword" class="absolute right-3 top-5.5 -translate-y-1/2 text-gray-500 hover:text-[#31c594]">
           <i class="bi bi-eye-slash" id="eyeIcon"></i>
