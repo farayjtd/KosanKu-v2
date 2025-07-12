@@ -35,7 +35,7 @@
           <input type="text" name="search" placeholder="Cari nama atau username"
                  value="{{ request('search') }}" 
                  class="w-full border-none outline-none bg-transparent pl-4">
-          <button type="submit" class="filter-sort-toggle-btn text-black text-2xl cursor-pointer p-1 rounded-full transition duration-200 ease-in-out hover:bg-gray-100" onclick="toggleFilterSortDropdown(this)">
+          <button type="button" class="filter-sort-toggle-btn text-black text-2xl cursor-pointer p-1 rounded-full transition duration-200 ease-in-out hover:bg-gray-100" onclick="toggleFilterSortDropdown(this)">
             <i class="bi bi-sliders"></i>
           </button>
           <div class="filter-sort-dropdown hidden absolute right-0 top-full z-10 bg-white rounded-lg shadow-lg mt-2 p-4 w-64">
@@ -109,111 +109,130 @@
       </div>
     </div>
   </div>
-  <script>
+    <script>
     document.addEventListener('DOMContentLoaded', function() {
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('main-content');
-    const toggleBtn = document.getElementById('toggleSidebar');
+      const sidebar = document.getElementById('sidebar');
+      const mainContent = document.getElementById('main-content');
+      const toggleBtn = document.getElementById('toggleSidebar');
+      const filterToggleBtn = document.querySelector('.filter-sort-toggle-btn');
+      const filterDropdown = document.querySelector('.filter-sort-dropdown');
+      const statusSelect = document.getElementById('status-filter');
+      const sortSelect = document.getElementById('sort-filter');
+      const searchForm = document.getElementById('room-search-form');
 
-    const overlay = document.createElement('div');
-    overlay.className = 'mobile-overlay';
-    overlay.id = 'mobile-overlay';
-    document.body.appendChild(overlay);
+      // Create overlay for mobile
+      const overlay = document.createElement('div');
+      overlay.className = 'mobile-overlay';
+      overlay.id = 'mobile-overlay';
+      document.body.appendChild(overlay);
 
-    function initializeSidebar() {
-      if (window.innerWidth <= 768) {
-        if (sidebar) {
-          sidebar.classList.add('collapsed');
-          sidebar.classList.remove('mobile-expanded');
-        }
-        if (mainContent) {
-          mainContent.classList.add('collapsed');
-        }
-        overlay.classList.remove('active');
-      } else {
-        if (sidebar) {
-          sidebar.classList.remove('mobile-expanded');
-        }
-        overlay.classList.remove('active');
-      }
-    }
-
-    initializeSidebar();
-
-    if (toggleBtn && sidebar) {
-      toggleBtn.addEventListener('click', function() {
+      // Sidebar functions
+      function initializeSidebar() {
         if (window.innerWidth <= 768) {
-          if (sidebar.classList.contains('mobile-expanded')) {
-            sidebar.classList.remove('mobile-expanded');
+          if (sidebar) {
             sidebar.classList.add('collapsed');
-            overlay.classList.remove('active');
-          } else {
-            sidebar.classList.remove('collapsed');
-            sidebar.classList.add('mobile-expanded');
-            overlay.classList.add('active');
+            sidebar.classList.remove('mobile-expanded');
           }
-        } else {
-          sidebar.classList.toggle('collapsed');
           if (mainContent) {
-            mainContent.classList.toggle('collapsed');
+            mainContent.classList.add('collapsed');
           }
+          overlay.classList.remove('active');
+        } else {
+          if (sidebar) {
+            sidebar.classList.remove('mobile-expanded');
+          }
+          overlay.classList.remove('active');
+        }
+      }
+
+      initializeSidebar();
+
+      if (filterToggleBtn) {
+        filterToggleBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          filterDropdown.classList.toggle('hidden');
+        });
+      }
+
+      if (statusSelect) {
+        statusSelect.addEventListener('change', function() {
+          setTimeout(() => {
+            searchForm.submit();
+          }, 100);
+        });
+      }
+
+      if (sortSelect) {
+        sortSelect.addEventListener('change', function() {
+          setTimeout(() => {
+            searchForm.submit();
+          }, 100);
+        });
+      }
+
+      document.addEventListener('click', function(event) {
+        if (filterDropdown && !filterDropdown.contains(event.target) && !filterToggleBtn.contains(event.target)) {
+          filterDropdown.classList.add('hidden');
+        }
+
+        document.querySelectorAll('[onclick^="toggleDropdown"]').forEach(btn => {
+          const menu = btn.nextElementSibling;
+          if (menu && !btn.contains(event.target) && !menu.contains(event.target)) {
+            menu.classList.add('hidden');
+          }
+        });
+      });
+
+      if (filterDropdown) {
+        filterDropdown.addEventListener('click', function(e) {
+          e.stopPropagation();
+        });
+      }
+
+      if (toggleBtn && sidebar) {
+        toggleBtn.addEventListener('click', function() {
+          if (window.innerWidth <= 768) {
+            if (sidebar.classList.contains('mobile-expanded')) {
+              sidebar.classList.remove('mobile-expanded');
+              sidebar.classList.add('collapsed');
+              overlay.classList.remove('active');
+            } else {
+              sidebar.classList.remove('collapsed');
+              sidebar.classList.add('mobile-expanded');
+              overlay.classList.add('active');
+            }
+          } else {
+            sidebar.classList.toggle('collapsed');
+            if (mainContent) {
+              mainContent.classList.toggle('collapsed');
+            }
+          }
+        });
+      }
+
+      overlay.addEventListener('click', function() {
+        if (window.innerWidth <= 768) {
+          sidebar.classList.remove('mobile-expanded');
+          sidebar.classList.add('collapsed');
+          overlay.classList.remove('active');
         }
       });
-    }
 
-    overlay.addEventListener('click', function() {
-      if (window.innerWidth <= 768) {
-        sidebar.classList.remove('mobile-expanded');
-        sidebar.classList.add('collapsed');
-        overlay.classList.remove('active');
-      }
-    });
-
-    window.addEventListener('resize', function() {
-      initializeSidebar();
-    });
-
-    document.addEventListener('click', function(event) {
-        if (!event.target.closest('.search-input-wrapper')) {
-            const filterSortDropdown = document.querySelector('.filter-sort-dropdown');
-            if (filterSortDropdown && !filterSortDropdown.classList.contains('hidden')) {
-                filterSortDropdown.classList.add('hidden');
-            }
-        }
-    });
-  });
-  function toggleFilterSortDropdown(button) {
-        const dropdown = button.nextElementSibling;
-        document.querySelectorAll('.filter-sort-dropdown').forEach(d => {
-            if (d !== dropdown) {
-                d.classList.add('hidden');
-            }
-        });
-        dropdown.classList.toggle('hidden');
-        event.stopPropagation();
-    }
-    function toggleFilterSortDropdown(btn) {
-      const dropdown = btn.nextElementSibling;
-      dropdown.classList.toggle('hidden');
-    }
-
-    document.addEventListener('click', function(event) {
-      const dropdown = document.querySelector('.filter-sort-dropdown');
-      const toggleBtn = document.querySelector('.filter-sort-toggle-btn');
-      if (dropdown && !dropdown.contains(event.target) && !toggleBtn.contains(event.target)) {
-        dropdown.classList.add('hidden');
-      }
-
-      document.querySelectorAll('[onclick^="toggleDropdown"]').forEach(btn => {
-        const menu = btn.nextElementSibling;
-        if (!btn.contains(event.target) && !menu.contains(event.target)) {
-          menu.classList.add('hidden');
-        }
+      window.addEventListener('resize', function() {
+        initializeSidebar();
       });
     });
 
     function toggleDropdown(button) {
       const menu = button.nextElementSibling;
+      document.querySelectorAll('[onclick^="toggleDropdown"]').forEach(btn => {
+        if (btn !== button) {
+          const otherMenu = btn.nextElementSibling;
+          if (otherMenu) {
+            otherMenu.classList.add('hidden');
+          }
+        }
+      });
       menu.classList.toggle('hidden');
     }
   </script>
