@@ -50,7 +50,7 @@ Route::prefix('landboard')->middleware(['auth', 'role:landboard'])->name('landbo
     Route::get('/tenants/{id}', [LandboardController::class, 'show'])->name('tenants.show');
     Route::get('/tenants/{id}/edit', [LandboardController::class, 'showEditTenantForm'])->name('tenants.edit');
     Route::put('/tenants/{id}', [LandboardController::class, 'updateTenantData'])->name('tenants.update');
-    Route::delete('/tenants/{id}', [LandboardController::class, 'deactivateTenant'])->name('tenants.destroy');
+    Route::patch('/tenants/{id}/deactivate', [LandboardController::class, 'deactivateTenant'])->name('tenants.deactivate');
     Route::get('/tenants/{id}/reactivate', [LandboardController::class, 'showReactivateForm'])->name('tenants.reactivate.form');
     Route::post('/tenants/{id}/reactivate', [LandboardController::class, 'reactivateTenant'])->name('tenants.reactivate');
 
@@ -71,6 +71,7 @@ Route::prefix('landboard')->middleware(['auth', 'role:landboard'])->name('landbo
 Route::prefix('tenant')->middleware(['auth', 'role:tenant'])->name('tenant.')->group(function () {
 
     Route::get('/dashboard', [TenantController::class, 'dashboard'])->name('dashboard.index');
+
     Route::get('/profile/complete', [TenantController::class, 'createProfile'])->name('profile.complete-form');
     Route::post('/profile/complete', [TenantController::class, 'storeProfile'])->name('profile.complete.store');
     Route::get('/profile/edit', [TenantController::class, 'editProfile'])->name('profile.edit');
@@ -81,8 +82,7 @@ Route::prefix('tenant')->middleware(['auth', 'role:tenant'])->name('tenant.')->g
     Route::get('/pembayaran/list', [PaymentController::class, 'showPaymentList'])->name('payment.list');
     Route::get('/pembayaran/riwayat', [PaymentController::class, 'history'])->name('payment.history');
     Route::get('/pembayaran/check-status', [PaymentController::class, 'checkStatus'])->name('payment.status');
-    Route::post('/invoice/{rentalId}', [PaymentController::class, 'createInvoice'])->name('payment.createInvoice');
-    Route::post('/invoice/{rentalId}/pay', [PaymentController::class, 'createInvoice'])->name('invoice.pay');
+    Route::post('/payment/{rentalId}/create-invoice', [PaymentController::class, 'createInvoice'])->name('payment.createInvoice');
 
     Route::get('/perpanjang-sewa', [RenewalController::class, 'directForm'])->name('renewal.direct');
     Route::get('/perpanjang/{id}', [RenewalController::class, 'showForm'])->name('renewal.form');
