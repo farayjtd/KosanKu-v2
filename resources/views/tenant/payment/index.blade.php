@@ -44,15 +44,15 @@
                     $badgeText = $isPaid ? 'Sudah Dibayar' : 'Belum Dibayar';
                   @endphp
                   <tr class="hover:bg-slate-50 transition">
-                    <td class="px-4 py-3 border-b">{{ $payment->rentalHistory->room->room_number ?? '-' }}</td>
-                    <td class="px-4 py-3 border-b">Rp{{ number_format($payment->total_amount ?? $payment->amount, 0, ',', '.') }}</td>
-                    <td class="px-4 py-3 border-b">{{ \Carbon\Carbon::parse($payment->due_date)->format('d M Y') }}</td>
-                    <td class="px-4 py-3 border-b">
+                    <td class="px-4 py-3 border-b border-gray-300">{{ $payment->rentalHistory->room->room_number ?? '-' }}</td>
+                    <td class="px-4 py-3 border-b border-gray-300">Rp{{ number_format($payment->total_amount ?? $payment->amount, 0, ',', '.') }}</td>
+                    <td class="px-4 py-3 border-b border-gray-300">{{ \Carbon\Carbon::parse($payment->due_date)->format('d M Y') }}</td>
+                    <td class="px-4 py-3 border-b border-gray-300">
                       <span class="inline-block px-2 py-1 text-xs font-medium rounded {{ $badgeClass }}">
                         {{ $badgeText }}
                       </span>
                     </td>
-                    <td class="px-4 py-3 border-b">
+                    <td class="px-4 py-3 border-b border-gray-300">
                       @if(!$isPaid)
                         <button class="bg-[#31c594] text-white px-3 py-1 rounded hover:bg-[#2ab88d] text-xs"
                           onclick="openModal({{ $payment->rental_history_id }})">

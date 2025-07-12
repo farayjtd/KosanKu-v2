@@ -51,6 +51,7 @@
 <body class="use-poppins-normal bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
     @include('components.sidebar-tenant')
+    
     <div id="main-content" class="main-content p-6 w-full">
       <div class="text-xl p-4 rounded-xl text-left text-white bg-gradient-to-r from-[#31c594] to-[#2ba882]">
         <p><strong class="use-poppins">Riwayat Sewa</strong></p>
@@ -91,31 +92,31 @@
                       };
                     @endphp
                     <tr class="hover:bg-slate-50 transition">
-                      <td data-label="No. Kamar" class="px-4 py-3 border-b">{{ $history->room->room_number }}</td>
-                      <td data-label="Harga / Bulan" class="px-4 py-3 border-b">
+                      <td data-label="No. Kamar" class="px-4 py-3 border-b border-gray-300">{{ $history->room->room_number }}</td>
+                      <td data-label="Harga / Bulan" class="px-4 py-3 border-b border-gray-300">
                         Rp{{ number_format($history->room->price, 0, ',', '.') }}
                       </td>
-                      <td data-label="Denda" class="px-4 py-3 border-b">
+                      <td data-label="Denda" class="px-4 py-3 border-b border-gray-300">
                         @if ($payment && $payment->is_penalty)
                           Rp{{ number_format($payment->amount, 0, ',', '.') }}
                         @else
                           Rp0
                         @endif
                       </td>
-                      <td data-label="Status Pembayaran" class="px-4 py-3 border-b">
+                      <td data-label="Status Pembayaran" class="px-4 py-3 border-b border-gray-300">
                         <span class="inline-block px-2 py-1 text-xs font-medium rounded {{ $paymentClass }}">
                           {{ $paymentStatus }}
                         </span>
                       </td>
-                      <td data-label="Status Sewa" class="px-4 py-3 border-b">
+                      <td data-label="Status Sewa" class="px-4 py-3 border-b border-gray-300">
                         <span class="inline-block px-2 py-1 text-xs font-medium rounded {{ $statusClass }}">
                           {{ $history->computed_status }}
                         </span>
                       </td>
-                      <td data-label="Tanggal Masuk" class="px-4 py-3 border-b">
+                      <td data-label="Tanggal Masuk" class="px-4 py-3 border-b border-gray-300">
                         {{ Carbon::parse($history->start_date)->format('d M Y') }}
                       </td>
-                      <td data-label="Tanggal Keluar" class="px-4 py-3 border-b">
+                      <td data-label="Tanggal Keluar" class="px-4 py-3 border-b border-gray-300">
                         {{ $history->end_date ? Carbon::parse($history->end_date)->format('d M Y') : '—' }}
                       </td>
                     </tr>

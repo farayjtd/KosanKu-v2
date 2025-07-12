@@ -44,7 +44,6 @@
       font-family: 'Poppins', sans-serif;
     }
 
-    /* Responsive table styles */
     .financial-table {
       width: 100%;
       border-collapse: collapse;
@@ -73,7 +72,6 @@
       background-color: #f9fafb;
     }
 
-    /* Status badges */
     .status-badge {
       padding: 4px 8px;
       border-radius: 6px;
@@ -97,54 +95,18 @@
       color: #92400e;
     }
 
-    /* Mobile responsive */
     @media (max-width: 768px) {
-      .financial-table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-      }
-
-      .financial-table thead,
-      .financial-table tbody,
-      .financial-table th,
-      .financial-table td,
-      .financial-table tr {
-        display: block;
-      }
-
-      .financial-table thead tr {
-        position: absolute;
-        top: -9999px;
-        left: -9999px;
-      }
-
-      .financial-table tr {
-        border: 1px solid #e5e7eb;
-        margin-bottom: 10px;
-        padding: 10px;
-        border-radius: 8px;
-        background-color: white;
-      }
-
-      .financial-table td {
-        border: none;
-        position: relative;
-        padding: 6px 6px 6px 50%;
-        text-align: left;
-      }
-
-      .financial-table td:before {
-        content: attr(data-label);
-        position: absolute;
-        left: 6px;
-        width: 45%;
-        padding-right: 10px;
-        white-space: nowrap;
-        font-weight: 600;
-        color: #374151;
-      }
+    .financial-table {
+      display: table;
+      overflow-x: auto;
+      width: 100%;
     }
+
+    .financial-table th,
+    .financial-table td {
+      white-space: nowrap;
+    }
+  }
   </style>
 </head>
 <body class="use-poppins-normal bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
@@ -189,7 +151,7 @@
           <div class="p-4">
             <div class="overflow-x-auto">
               <table class="financial-table">
-                <thead class="hidden md:table-header-group uppercase text-gray-700 text-xs tracking-wider">
+                <thead class="md:table-header-group uppercase text-gray-700 text-xs tracking-wider">
                   <tr>
                     <th>Nama Penghuni</th>
                     <th>Username</th>

@@ -13,12 +13,10 @@
   <link rel="stylesheet" href="/style/font.css">
   @vite('resources/css/app.css')
 </head>
-<body class="use-poppins-normal bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
+<body class="bg-cover bg-no-repeat bg-center use-poppins-normal" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
     @include('components.sidebar-tenant')
-    
-    <div id="main-content" class="main-content p-6 md:pt-4">
-      
+    <div id="main-content" class="main-content p-6 md:pt-4 w-full">
       {{-- Welcome Card --}}
       <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
