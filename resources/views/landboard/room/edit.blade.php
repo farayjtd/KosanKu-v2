@@ -16,30 +16,80 @@
       position: relative;
       display: inline-block;
       cursor: pointer;
+      width: 200px;
+      height: 112.5px; /* 16:9 ratio for 200px width */
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
     }
+    
     .photo-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
       transition: 0.3s ease;
+      border-radius: 0;
     }
+    
     .photo-wrapper:hover .delete-icon {
       opacity: 1;
     }
+    
     .delete-icon {
       position: absolute;
-      top: 2.5rem;
-      right: 4.6rem;
-      padding: 4px;
-      border-radius: 50%;
-      color: #dc2626;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
       font-size: 1.2rem;
       opacity: 0;
       transition: 0.2s ease;
+      backdrop-filter: blur(4px);
+      z-index: 10;
     }
+    
+    .delete-icon:hover {
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+    
     .photo-selected {
       opacity: 0.5;
       filter: grayscale(100%);
     }
+    
+    .photo-selected::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+    }
+    
     .action-button-hidden {
       display: none !important;
+    }
+    
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+    
+    @media (max-width: 640px) {
+      .photo-wrapper {
+        width: 160px;
+        height: 90px; /* 16:9 ratio for 160px width */
+      }
+      
+      .photo-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 0.75rem;
+      }
     }
   </style>
 </head>
@@ -52,45 +102,46 @@
         <p><strong class="use-poppins">Edit Kamar</strong></p>
         <p class="text-[14px]">Berikut merupakan data dari kamar <strong>{{ $room->room_number }}</strong>. Anda dapat melakukan pengeditan.</p>
       </div>
-      <div class="mt-6 max-w-full bg-white shadow-lg rounded-lg">
-        <div class="bg-white rounded-xl shadow-xl p-8">
-          @if ($errors->any())
-            <ul class="mb-4 list-disc text-red-600 pl-5">
-              @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-              @endforeach
-            </ul>
-          @endif
+        <div class="mt-6 bg-white shadow-lg rounded-lg p-8">
+        @if ($errors->any())
+          <ul class="mb-4 list-disc text-red-600 pl-5">
+            @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+            @endforeach
+          </ul>
+        @endif
 
-          <form action="{{ route('landboard.rooms.update', $room->id) }}" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
-            @csrf
-            @method('PUT')
+        <form action="{{ route('landboard.rooms.update', $room->id) }}" method="POST" enctype="multipart/form-data">
+          @csrf
+          @method('PUT')
 
-            <div class="mb-4">
-              <label class="block text-sm font-medium text-gray-600 mb-1">Tipe Kamar</label>
-              <input type="text" name="type" value="{{ old('type', $room->type) }}" required class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-md text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-600">Tipe Kamar</label>
+              <input type="text" name="type" value="{{ old('type', $room->type) }}" required class="mt-1 w-full rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 focus:border-[#31c594] focus:ring-1 focus:ring-[#31c594]">
             </div>
 
-            <div class="mb-4">
-              <label class="block text-sm font-medium text-gray-600 mb-1">Harga per Bulan</label>
-              <input type="number" name="price" value="{{ old('price', $room->price) }}" required class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-md text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0">
+            <div>
+              <label class="block text-sm font-medium text-gray-600">Harga per Bulan</label>
+              <input type="number" name="price" value="{{ old('price', $room->price) }}" required class="mt-1 w-full rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 focus:border-[#31c594] focus:ring-1 focus:ring-[#31c594]">
             </div>
 
-            <div class="mb-4">
-              <label class="block text-sm font-medium text-gray-600 mb-1">Jenis Kelamin yang Diizinkan</label>
-              <select name="gender_type" required class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-md text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0">
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-gray-600">Jenis Kelamin yang Diizinkan</label>
+              <select name="gender_type" required class="mt-1 w-full rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 focus:border-[#31c594] focus:ring-1 focus:ring-[#31c594]">
                 <option value="male" {{ old('gender_type', $room->gender_type) === 'male' ? 'selected' : '' }}>Laki-laki</option>
                 <option value="female" {{ old('gender_type', $room->gender_type) === 'female' ? 'selected' : '' }}>Perempuan</option>
                 <option value="mixed" {{ old('gender_type', $room->gender_type) === 'mixed' ? 'selected' : '' }}>Campuran</option>
               </select>
             </div>
+          </div>
 
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-600 mb-1">Foto Lama</label>
-              <div id="existing-photos" class="flex flex-wrap gap-4 mt-2">
+              <div id="existing-photos" class="photo-grid">
                 @foreach ($room->photos as $photo)
                   <div class="photo-wrapper">
-                    <img src="{{ asset('storage/' . $photo->path) }}" data-id="{{ $photo->id }}" class="ratio-16x9 h-30 object-cover rounded border-1 transition" onclick="toggleSelectPhoto(this)">
+                    <img src="{{ asset('storage/' . $photo->path) }}" data-id="{{ $photo->id }}" class="transition" onclick="toggleSelectPhoto(this)">
                     <i class="bi bi-trash delete-icon"></i>
                     <input type="checkbox" name="delete_photos[]" value="{{ $photo->id }}" class="hidden">
                   </div>
@@ -229,12 +280,7 @@
           selector: 'input[name="rules[]"]',
           addBtnId: 'add-rule-button',
           removeBtnClass: 'remove-button-rule'
-        },
-        // {
-        //   selector: 'input[name="photos[]"]',
-        //   addBtnId: 'add-photo-button',
-        //   removeBtnClass: 'remove-button-photo'
-        // }
+        }
       ];
 
       sections.forEach(({ selector, addBtnId, removeBtnClass }) => {
@@ -362,7 +408,7 @@
 
       div.innerHTML = `
         <input type="${type}" name="${inputName}" 
-              class="${type === 'file' ? fileInputClass : inputClass}" 
+              class="text-gray-600 ${type === 'file' ? fileInputClass : inputClass}" 
               ${type === 'file' ? 'accept="image/*"' : `placeholder="${placeholder}"`} required>
         <button type="button" 
                 class="${removeButtonClass}" 

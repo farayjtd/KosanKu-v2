@@ -73,7 +73,8 @@
   </div>
 
   <!-- Modal -->
-  <div id="payment-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center flex">
+  <div id="payment-modal" class="fixed inset-0 z-50 hidden items-center justify-center flex">
+    <div class="absolute inset-0 bg-gray-300 opacity-70"></div>
     <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
       <button onclick="closeModal()" class="absolute top-2 right-2 text-gray-500 hover:text-red-600 text-lg">
         <i class="bi bi-x-lg"></i>

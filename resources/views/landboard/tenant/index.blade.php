@@ -24,7 +24,7 @@
         <p class="text-[14px]">Temukan penghuni hanya dengan mengetikan identitas mereka.</p>
       </div>
       @if(session('success'))
-        <div class="mb-4 px-4 py-2 rounded-lg bg-emerald-100 text-emerald-700 border border-emerald-300">
+        <div class="mt-6 px-4 py-2 rounded-lg bg-emerald-100 text-emerald-700 border border-emerald-300">
           <i class="bi bi-check-circle-fill mr-2"></i> {{ session('success') }}
         </div>
       @endif

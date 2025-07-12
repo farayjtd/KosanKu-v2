@@ -209,7 +209,7 @@
                 <div>
                   <label class="block text-sm font-medium text-gray-600 mb-1">Nomor Rekening</label>
                   <input type="text" name="bank_account" value="{{ old('bank_account', $account->bank_account) }}" 
-                         class=" ">
+                         class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-md text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0">
                   @error('bank_account') 
                     <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> 
                   @enderror
