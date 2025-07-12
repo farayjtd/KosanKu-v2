@@ -94,9 +94,9 @@
                       <a href="{{ route('landboard.tenants.reactivate.form', $tenant->id) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Aktifkan</a>
                     @else
                       <a href="{{ route('landboard.tenants.edit', $tenant->id) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
-                      <form action="{{ route('landboard.tenants.destroy', $tenant->id) }}" method="POST" onsubmit="return confirm('Yakin nonaktifkan tenant ini?')">
+                      <form action="{{ route('landboard.tenants.deactivate', $tenant->id) }}" method="POST" onsubmit="return confirm('Yakin nonaktifkan tenant ini?')">
                         @csrf
-                        @method('DELETE')
+                        @method('PATCH')
                         <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Nonaktifkan</button>
                       </form>
                     @endif

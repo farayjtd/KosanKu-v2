@@ -34,30 +34,35 @@ class LandboardController extends Controller
         $monthlyIncome = Payment::whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
             ->where('status', 'paid')
+            ->where('type', 'income')
             ->whereHas('tenant.room', function ($query) use ($landboard) {
                 $query->where('landboard_id', $landboard->id);
             })->sum('amount');
 
         $yearlyIncome = Payment::whereYear('created_at', now()->year)
             ->where('status', 'paid')
+            ->where('type', 'income') 
             ->whereHas('tenant.room', function ($query) use ($landboard) {
                 $query->where('landboard_id', $landboard->id);
             })->sum('amount');
 
-        $monthlyExpense = RoomTransferRequest::where('status', 'approved')
-            ->whereMonth('updated_at', now()->month)
-            ->whereYear('updated_at', now()->year)
+        $monthlyExpense = Payment::whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->where('status', 'paid')
+            ->where('type', 'expense')
             ->whereHas('tenant.room', function ($query) use ($landboard) {
                 $query->where('landboard_id', $landboard->id);
-            })->sum('manual_refund');
+            })->sum('amount');
 
-        $yearlyExpense = RoomTransferRequest::where('status', 'approved')
-            ->whereYear('updated_at', now()->year)
+        $yearlyExpense = Payment::whereYear('created_at', now()->year)
+            ->where('status', 'paid')
+            ->where('type', 'expense')
             ->whereHas('tenant.room', function ($query) use ($landboard) {
                 $query->where('landboard_id', $landboard->id);
-            })->sum('manual_refund');
+            })->sum('amount');
 
         $recentPayments = Payment::with('tenant')
+            ->where('status', 'paid')
             ->whereHas('tenant.room', function ($query) use ($landboard) {
                 $query->where('landboard_id', $landboard->id);
             })
@@ -87,6 +92,7 @@ class LandboardController extends Controller
             $monthlyAmounts[] = Payment::whereMonth('created_at', $i)
                 ->whereYear('created_at', now()->year)
                 ->where('status', 'paid')
+                ->where('type', 'income') 
                 ->whereHas('tenant.room', function ($query) use ($landboard) {
                     $query->where('landboard_id', $landboard->id);
                 })->sum('amount');
@@ -94,13 +100,14 @@ class LandboardController extends Controller
 
         $monthlyExpenseAmounts = [];
         for ($i = 1; $i <= 12; $i++) {
-            $monthlyExpenseAmounts[] = RoomTransferRequest::where('status', 'approved')
-                ->whereMonth('updated_at', $i)
-                ->whereYear('updated_at', now()->year)
+            $monthlyExpenseAmounts[] = Payment::whereMonth('created_at', $i)
+                ->whereYear('created_at', now()->year)
+                ->where('status', 'paid')
+                ->where('type', 'expense') 
                 ->whereHas('tenant.room', function ($query) use ($landboard) {
                     $query->where('landboard_id', $landboard->id);
                 })
-                ->sum('manual_refund');
+                ->sum('amount');
         }
 
         $topRooms = Room::withCount('rentalHistories')
@@ -146,7 +153,7 @@ class LandboardController extends Controller
             'password'       => ['nullable', 'string', 'confirmed', Password::min(6)->letters()->mixedCase()->numbers()],
             'avatar'         => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'name'           => 'required|string|max:255',
-            'phone'          => 'required|string|max:20',
+            'phone'          => 'required|string|min:10|max:13',
             'kost_name'      => 'required|string|max:255',
             'province'       => 'required|string|max:100',
             'city'           => 'required|string|max:100',
@@ -279,7 +286,7 @@ class LandboardController extends Controller
 
         $validated = $request->validate([
             'name'             => 'required|string|max:255',
-            'phone'            => 'required|string|max:20',
+            'phone'            => 'required|string|min:10|max:13',
             'address'          => 'required|string|max:255',
             'gender'           => 'nullable|in:male,female',
             'activity_type'    => 'nullable|string|max:255',
@@ -288,7 +295,7 @@ class LandboardController extends Controller
             'bank_account'     => 'required|digits_between:10,16',
             'email'            => 'nullable|email|unique:accounts,email,' . $account->id,
             'username'         => 'required|string|max:100|unique:accounts,username,' . $account->id,
-            'password'         => 'nullable|confirmed|min:8',
+            'password'       => ['nullable', 'string', 'confirmed', Password::min(6)->letters()->mixedCase()->numbers()],
             'avatar'           => 'nullable|image|max:2048',
             'identity_photo'   => 'nullable|image|max:2048',
             'selfie_photo'     => 'nullable|image|max:2048',
@@ -427,40 +434,41 @@ class LandboardController extends Controller
         if ($activeRental) {
             $today = now();
             $endDate = Carbon::parse($activeRental->end_date);
-
             $landboard = $room->landboard;
-            $moveoutPenalty = $landboard->is_penalty_on_moveout ? ($landboard->moveout_penalty_amount ?? 0) : 0;
+
+            // Ambil nominal denda keluar ko
+            $moveoutPenalty = $landboard->is_penalty_on_moveout
+                ? ($landboard->moveout_penalty_amount ?? 0)
+                : 0;
 
             $refundAmount = 0;
             if ($today->lt($endDate)) {
                 $remainingDays = $today->diffInDays($endDate);
 
-                $pricePerMonth = $room->price;
-                $dailyRate = $pricePerMonth / 30;
-                $refundAmount = round($dailyRate * $remainingDays, 0);
+                $durationMonths = $activeRental->duration_months ?? 1;
+                $totalDays = $durationMonths * 30;
+
+                // Hitung tarif harian berdasarkan total harga sewa
+                $totalPrice = $room->price * $durationMonths;
+                $dailyRate = $totalPrice / $totalDays;
+
+                $refundAmount = round($dailyRate * $remainingDays);
             }
 
-            Payment::create([
-                'tenant_id' => $tenant->id,
-                'rental_history_id' => $activeRental->id,
-                'amount' => $refundAmount,
-                'status' => 'paid',
-                'due_date' => now(),
-                'is_penalty' => false,
-                'description' => 'Refund sisa sewa karena keluar kosan',
-                'type' => 'expense',
-            ]);
+            $finalRefund = $refundAmount - $moveoutPenalty;
 
-            if ($moveoutPenalty > 0) {
+            if ($finalRefund > 0) {
                 Payment::create([
-                    'tenant_id' => $tenant->id,
+                    'tenant_id'         => $tenant->id,
                     'rental_history_id' => $activeRental->id,
-                    'amount' => $moveoutPenalty,
-                    'status' => 'unpaid',
-                    'due_date' => now(),
-                    'is_penalty' => true,
-                    'description' => 'Denda keluar sebelum kontrak selesai',
-                    'type' => 'income',
+                    'amount'            => $finalRefund,
+                    'status'            => 'paid',
+                    'due_date'          => now(),
+                    'is_penalty'        => $moveoutPenalty > 0,
+                    'description'       => $moveoutPenalty > 0
+                        ? 'Refund sisa sewa dikurangi denda keluar sebelum kontrak selesai'
+                        : 'Refund sisa sewa karena keluar kosan',
+                    'type'              => 'expense',
                 ]);
             }
 
@@ -469,6 +477,6 @@ class LandboardController extends Controller
         }
 
         return redirect()->route('landboard.tenants.index')
-            ->with('success', 'Tenant berhasil dinonaktifkan. Denda keluar kos dan refund telah dihitung otomatis.');
+            ->with('success', 'Tenant berhasil dinonaktifkan. Refund telah dikurangi otomatis jika ada denda.');
     }
 }

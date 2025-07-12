@@ -31,39 +31,42 @@ class RoomTransferController extends Controller
     {
         $tenant = Auth::user()->tenant;
 
-        $currentHistory = RentalHistory::with('room')
+        $activeRental = RentalHistory::with('room')
             ->where('tenant_id', $tenant->id)
             ->where('status', 'active')
             ->latest()
             ->first();
 
-        if (!$currentHistory) {
+        if (!$activeRental) {
             return back()->with('error', 'Kamu belum memiliki kamar aktif.');
         }
 
-        $room = $currentHistory->room;
-        $now = now();
-        $startDate = Carbon::parse($currentHistory->start_date);
-        $endDate = Carbon::parse($currentHistory->end_date);
+        $room      = $activeRental->room;
+        $startDate = Carbon::parse($activeRental->start_date);
+        $endDate   = Carbon::parse($activeRental->end_date);
+        $today     = now();
 
-        $totalHours = $now->diffInHours($endDate, false);
-        $diffDays = floor($totalHours / 24);
-        $diffHours = $totalHours % 24;
+        $totalHours = $today->diffInHours($endDate, false);
+        $diffDays   = floor($totalHours / 24);
+        $diffHours  = $totalHours % 24;
+
         $daysLeft = $totalHours <= 0
             ? 'Masa sewa telah berakhir'
             : trim(($diffDays > 0 ? $diffDays . ' hari ' : '') . ($diffHours > 0 ? $diffHours . ' jam' : ''));
 
-        $totalDays = $startDate->diffInDays($endDate);
-        $totalPrice = $room->price * $currentHistory->duration_months;
-        $dailyRate = $totalPrice / $totalDays;
+        $durationMonths = $activeRental->duration_months ?? 1;
+        $totalDays      = $durationMonths * 30;
+        $totalPrice     = $room->price * $durationMonths;
+        $dailyRate      = $totalPrice / $totalDays;
 
-        $landboard = $room->landboard;
-        $penalty = $landboard->room_change_penalty_amount ?? 0;
-        $daysPassed = $startDate->diffInDays($now);
-        $refundAmount = max(0, (($totalDays - $daysPassed) * $dailyRate) - $penalty);
+        $landboard     = $room->landboard;
+        $penalty       = $landboard->room_change_penalty_amount ?? 0;
+        $daysPassed    = $startDate->diffInDays($today);
+        $rawRefund     = ($totalDays - $daysPassed) * $dailyRate;
+        $refundAmount  = max(0, $rawRefund - $penalty);
 
         $latestUnpaid = Payment::where('tenant_id', $tenant->id)
-            ->where('rental_history_id', $currentHistory->id)
+            ->where('rental_history_id', $activeRental->id)
             ->where('status', 'unpaid')
             ->first();
 
@@ -78,8 +81,11 @@ class RoomTransferController extends Controller
             ->latest()
             ->first();
 
+        $currentHistory = $activeRental;
+
         return view('tenant.room-transfer.form', compact(
-            'currentHistory',
+            'activeRental',
+            'currentHistory', 
             'daysLeft',
             'refundAmount',
             'availableRooms',
