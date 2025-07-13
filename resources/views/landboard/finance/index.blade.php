@@ -170,7 +170,6 @@
                       <th>Username</th>
                       <th>Kamar</th>
                       <th>Jumlah</th>
-                      <th>Metode</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -181,7 +180,6 @@
                         <td data-label="Username">{{ $payment->rentalHistory->tenant?->account?->username ?? '[Username Tidak Ada]' }}</td>
                         <td data-label="Kamar">{{ $payment->rentalHistory->room?->room_number ?? '[Kamar Terhapus]' }}</td>
                         <td data-label="Jumlah" class="text-red-600 font-semibold">Rp {{ number_format($payment->amount, 0, ',', '.') }}</td>
-                        <td data-label="Metode">{{ ucfirst($payment->payment_method ?? '-') }}</td>
                       </tr>
                     @endforeach
                   </tbody>

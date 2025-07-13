@@ -79,7 +79,7 @@
               <div class="flex items-start gap-4">
                 <img src="{{asset('storage/'. $tenant->selfie_photo) ?? '/assets/default-avatar.png' }}" alt="Foto Tenant" class="w-24 h-24 rounded-full object-cover border border-gray-300">
                 <div>
-                  <h2 class="text-md use-poppins mb-1">{{ $tenant->name ?? 'Belum diisi' }}</h2>
+                  <h2 class="text-md use-poppins mb-1 block truncate max-w-[200px]">{{ $tenant->name ?? 'Belum diisi' }}</h2>
                   <p class="text-sm use-poppins-normal text-gray-500 mb-1"><strong>Username:</strong> {{ $tenant->account->username }}</p>
                   <p class="text-sm use-poppins-normal text-gray-500 mb-1"><strong>No Kamar:</strong> {{ $tenant->room->room_number ?? '-' }}</p>
                   <p class="text-sm use-poppins-normal text-gray-500 sm:text-sm {{ $tenant->status === 'aktif' ? 'text-green-600' : 'text-red-600' }}"><strong class="text-gray-500">Status:</strong> {{ ucfirst($tenant->status ?? 'aktif') }}</p>
@@ -120,13 +120,11 @@
       const sortSelect = document.getElementById('sort-filter');
       const searchForm = document.getElementById('room-search-form');
 
-      // Create overlay for mobile
       const overlay = document.createElement('div');
       overlay.className = 'mobile-overlay';
       overlay.id = 'mobile-overlay';
       document.body.appendChild(overlay);
 
-      // Sidebar functions
       function initializeSidebar() {
         if (window.innerWidth <= 768) {
           if (sidebar) {

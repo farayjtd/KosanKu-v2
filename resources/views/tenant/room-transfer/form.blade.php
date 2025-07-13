@@ -16,7 +16,7 @@
 <body class="use-poppins-normal bg-cover bg-no-repeat bg-center" style="background-image: url('/assets/auth.png')">
   <div id="wrapper" class="flex min-h-screen">
     @include('components.sidebar-tenant')
-    <div id="main-content" class="main-content p-6 md:pt-4">
+    <div id="main-content" class="main-content p-4 md:p-6 mb-4 md:mb-6">
       <div class="text-xl p-4 rounded-xl text-left text-white bg-gradient-to-r from-[#31c594] to-[#2ba882]">
         <p><strong class="use-poppins">Pindah Kamar</strong></p>
         <p class="text-[14px]">Anda dapat mengajukan pindah kamar ketika tidak ada tagihan.</p>
