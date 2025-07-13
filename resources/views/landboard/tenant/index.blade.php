@@ -63,7 +63,7 @@
         </form>
       </div>
 
-      <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div class="flex gap-4 md:flex-col lg:flex-col">
       @if ($tenants->isEmpty())
         <div class="text-center text-gray-500 mt-4">
           {{-- Desain --}}
