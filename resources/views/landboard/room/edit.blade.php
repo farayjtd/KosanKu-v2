@@ -12,12 +12,26 @@
   <link rel="stylesheet" href="/style/font.css">
   @vite('resources/css/app.css')
   <style>
+        .photo-warning {
+      background-color: #fef3c7;
+      border: 1px solid #f59e0b;
+      color: #92400e;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 0.875rem;
+      display: none;
+    }
+
+    .photo-warning.show {
+      display: block;
+    }
     .photo-wrapper {
       position: relative;
       display: inline-block;
       cursor: pointer;
       width: 200px;
-      height: 112.5px;
+      height: 112.5px; /* 16:9 ratio for 200px width */
       border-radius: 8px;
       overflow: hidden;
       border: 1px solid #e5e7eb;
@@ -83,7 +97,7 @@
     @media (max-width: 640px) {
       .photo-wrapper {
         width: 160px;
-        height: 90px; 
+        height: 90px; /* 16:9 ratio for 160px width */
       }
       
       .photo-grid {
@@ -110,6 +124,10 @@
             @endforeach
           </ul>
         @endif
+        <div id="photo-warning" class="photo-warning">
+          <i class="bi bi-exclamation-triangle-fill mr-2"></i>
+          <strong>Peringatan:</strong> Kamar harus memiliki minimal 1 foto. Jika Anda menghapus semua foto lama, pastikan menambahkan foto baru.
+        </div>
 
         <form action="{{ route('landboard.rooms.update', $room->id) }}" method="POST" enctype="multipart/form-data">
           @csrf
@@ -259,7 +277,7 @@
               </div>
             </div>
 
-            <button type="submit" class="w-full bg-[#31c594] text-white px-8 py-4 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30">
+            <button id="save-button" type="submit" class="w-full bg-[#31c594] text-white px-8 py-4 rounded-lg text-base font-semibold transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#31c594]/30 disabled:opacity-50 disabled:cursor-not-allowed">
               <i class="bi bi-save mr-2"></i>Simpan
             </button>
           </form>
@@ -268,7 +286,7 @@
     </div>
   </div>
 
-  <script>
+    <script>
     function updateActionButtonsVisibility() {
       const sections = [
         {
@@ -299,73 +317,36 @@
       });
     }
 
-    
-    document.addEventListener('DOMContentLoaded', function() {
-      const sidebar = document.getElementById('sidebar');
-      const mainContent = document.getElementById('main-content');
-      const toggleBtn = document.getElementById('toggleSidebar');
-      updateActionButtonsVisibility();
-      document.querySelectorAll('input[name="facilities[]"], input[name="rules[]"], input[name="photos[]"]').forEach(input => {
-        input.addEventListener('input', updateActionButtonsVisibility);
-      });
-      const overlay = document.createElement('div');
-      overlay.className = 'mobile-overlay';
-      overlay.id = 'mobile-overlay';
-      document.body.appendChild(overlay);
-
-      function initializeSidebar() {
-        if (window.innerWidth <= 768) {
-          if (sidebar) {
-            sidebar.classList.add('collapsed');
-            sidebar.classList.remove('mobile-expanded');
-          }
-          if (mainContent) {
-            mainContent.classList.add('collapsed');
-          }
-          overlay.classList.remove('active');
-        } else {
-          if (sidebar) {
-            sidebar.classList.remove('mobile-expanded');
-          }
-          overlay.classList.remove('active');
-        }
-      }
-
-      initializeSidebar();
-
-      if (toggleBtn && sidebar) {
-        toggleBtn.addEventListener('click', function() {
-          if (window.innerWidth <= 768) {
-            if (sidebar.classList.contains('mobile-expanded')) {
-              sidebar.classList.remove('mobile-expanded');
-              sidebar.classList.add('collapsed');
-              overlay.classList.remove('active');
-            } else {
-              sidebar.classList.remove('collapsed');
-              sidebar.classList.add('mobile-expanded');
-              overlay.classList.add('active');
-            }
-          } else {
-            sidebar.classList.toggle('collapsed');
-            if (mainContent) {
-              mainContent.classList.toggle('collapsed');
-            }
-          }
-        });
-      }
+    function updatePhotoWarning() {
+      const totalOldPhotos = document.querySelectorAll('#existing-photos .photo-wrapper').length;
+      const checkedOldPhotos = document.querySelectorAll('#existing-photos input[type="checkbox"]:checked').length;
+      const remainingOldPhotos = totalOldPhotos - checkedOldPhotos;
       
-      overlay.addEventListener('click', function() {
-        if (window.innerWidth <= 768) {
-          sidebar.classList.remove('mobile-expanded');
-          sidebar.classList.add('collapsed');
-          overlay.classList.remove('active');
-        }
-      });
-
-      window.addEventListener('resize', function() {
-        initializeSidebar();
-      });
-    });
+      const newPhotoInputs = document.querySelectorAll('#photo-container input[type="file"]');
+      const filledNewPhotos = [...newPhotoInputs].filter(input => input.files && input.files.length > 0).length;
+      
+      const warning = document.getElementById('photo-warning');
+      const saveButton = document.getElementById('save-button');
+      const willHaveNoPhotos = remainingOldPhotos === 0 && filledNewPhotos === 0;
+      
+      console.log('Total old photos:', totalOldPhotos);
+      console.log('Checked old photos:', checkedOldPhotos);
+      console.log('Remaining old photos:', remainingOldPhotos);
+      console.log('Filled new photos:', filledNewPhotos);
+      console.log('Will have no photos:', willHaveNoPhotos);
+      
+      if (willHaveNoPhotos) {
+        warning.classList.add('show');
+        saveButton.disabled = true;
+        saveButton.classList.add('opacity-50', 'cursor-not-allowed', 'hover:translate-y-0', 'hover:shadow-none');
+        saveButton.style.backgroundColor = '#94a3b8';
+      } else {
+        warning.classList.remove('show');
+        saveButton.disabled = false;
+        saveButton.classList.remove('opacity-50', 'cursor-not-allowed');
+        saveButton.style.backgroundColor = '';
+      }
+    }
 
     function removeField(button) {
       const group = button.closest('.group');
@@ -386,21 +367,15 @@
       const container = group.parentElement;
       const allGroups = container.querySelectorAll('.group');
 
-      const totalOldPhotos = document.querySelectorAll('#existing-photos input[type="checkbox"]').length;
-      const checkedOldPhotos = document.querySelectorAll('#existing-photos input[type="checkbox"]:checked').length;
-      const remainingOldPhotos = totalOldPhotos - checkedOldPhotos;
-      
-      const newPhotosAfterRemoval = allGroups.length - 1;
-      const filledNewPhotos = [...document.querySelectorAll('#photo-container input[type="file"]')]
-        .filter(input => input !== group.querySelector('input[type="file"]'))
-        .filter(input => input.value !== '').length;
-
-      if (remainingOldPhotos > 0 || filledNewPhotos > 0 || newPhotosAfterRemoval > 0) {
+      if (allGroups.length > 1) {
         group.remove();
       } else {
-        alert('Minimal harus ada 1 foto.');
+        const input = group.querySelector('input[type="file"]');
+        input.value = '';
       }
+      
       updateActionButtonsVisibility();
+      updatePhotoWarning();
     }
 
     function addField(containerId, inputName, type = 'text') {
@@ -432,7 +407,7 @@
       div.innerHTML = `
         <input type="${type}" name="${inputName}" 
               class="text-gray-600 ${type === 'file' ? fileInputClass : inputClass}" 
-              ${type === 'file' ? 'accept="image/*"' : `placeholder="${placeholder}"`} required>
+              ${type === 'file' ? 'accept="image/*"' : `placeholder="${placeholder}"`} ${type !== 'file' ? 'required' : ''}>
         <button type="button" 
                 class="${removeButtonClass}" 
                 onclick="${removeFunction}">
@@ -440,8 +415,17 @@
         </button>`;
 
       container.appendChild(div);
+      
       const newInput = div.querySelector('input');
-      newInput.addEventListener('input', updateActionButtonsVisibility);
+      newInput.addEventListener('input', function() {
+        updateActionButtonsVisibility();
+      });
+      
+      if (type === 'file') {
+        newInput.addEventListener('change', function() {
+          updatePhotoWarning();
+        });
+      }
       
       updateActionButtonsVisibility();
     }
@@ -459,30 +443,44 @@
       return document.querySelectorAll('#photo-container input[type="file"]').length;
     }
 
-    function validateForm() {
-      const checks = [
-        { selector: 'input[name="facilities[]"]', msg: 'Minimal 1 fasilitas harus diisi.' },
-        { selector: 'input[name="rules[]"]', msg: 'Minimal 1 aturan harus diisi.' }
-      ];
-      for (const { selector, msg } of checks) {
-        if (![...document.querySelectorAll(selector)].some(input => input.value.trim() !== '')) {
-          alert(msg);
-          return false;
-        }
-      }
-      const photoInputs = document.querySelectorAll('input[name="photos[]"]');
-      const existingChecked = document.querySelectorAll('input[name="delete_photos[]"]:checked');
-      const totalOldPhotos = document.querySelectorAll('#existing-photos input[type="checkbox"]').length;
-      const hasOldPhotoRemaining = totalOldPhotos > existingChecked.length;
-      const hasNewPhoto = [...photoInputs].some(input => input.value !== '');
+    function getTotalPhotosAfterEdit() {
+      const totalOldPhotos = document.querySelectorAll('#existing-photos .photo-wrapper').length;
+      const checkedOldPhotos = document.querySelectorAll('#existing-photos input[type="checkbox"]:checked').length;
+      const remainingOldPhotos = totalOldPhotos - checkedOldPhotos;
+      
+      const newPhotoInputs = document.querySelectorAll('#photo-container input[type="file"]');
+      const filledNewPhotos = [...newPhotoInputs].filter(input => input.files && input.files.length > 0).length;
+      
+      return remainingOldPhotos + filledNewPhotos;
+    }
 
-      if (!hasNewPhoto && !hasOldPhotoRemaining) {
-        alert('Minimal harus ada 1 foto (lama atau baru).');
+    function validateForm(event) {
+      const facilities = document.querySelectorAll('input[name="facilities[]"]');
+      const hasFacility = [...facilities].some(input => input.value.trim() !== '');
+      if (!hasFacility) {
+        alert('Minimal 1 fasilitas harus diisi.');
+        event.preventDefault();
         return false;
       }
 
-      if (getPhotoInputCount() > 7) {
-        alert('Anda hanya boleh mengunggah maksimal 7 foto.');
+      const rules = document.querySelectorAll('input[name="rules[]"]');
+      const hasRule = [...rules].some(input => input.value.trim() !== '');
+      if (!hasRule) {
+        alert('Minimal 1 aturan harus diisi.');
+        event.preventDefault();
+        return false;
+      }
+
+      const totalPhotos = getTotalPhotosAfterEdit();
+      if (totalPhotos === 0) {
+        alert('Kamar harus memiliki minimal 1 foto. Pastikan ada foto lama yang tidak dihapus atau tambahkan foto baru.');
+        event.preventDefault();
+        return false;
+      }
+
+      if (totalPhotos > 7) {
+        alert('Maksimal hanya boleh ada 7 foto total.');
+        event.preventDefault();
         return false;
       }
 
@@ -494,7 +492,27 @@
       const checkbox = wrapper.querySelector('input[type="checkbox"]');
       const selected = img.classList.toggle('photo-selected');
       checkbox.checked = selected;
+      updatePhotoWarning();
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      updateActionButtonsVisibility();
+      updatePhotoWarning();
+      
+      // Event listeners untuk input yang sudah ada
+      document.querySelectorAll('input[name="facilities[]"], input[name="rules[]"]').forEach(input => {
+        input.addEventListener('input', updateActionButtonsVisibility);
+      });
+      
+      // Event listeners untuk foto yang sudah ada
+      document.querySelectorAll('input[name="photos[]"]').forEach(input => {
+        input.addEventListener('change', updatePhotoWarning);
+      });
+      
+      document.querySelectorAll('#existing-photos input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', updatePhotoWarning);
+      });
+    });
   </script>
 </body>
 </html>
