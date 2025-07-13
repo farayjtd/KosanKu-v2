@@ -17,7 +17,7 @@
       display: inline-block;
       cursor: pointer;
       width: 200px;
-      height: 112.5px; /* 16:9 ratio for 200px width */
+      height: 112.5px;
       border-radius: 8px;
       overflow: hidden;
       border: 1px solid #e5e7eb;
@@ -83,7 +83,7 @@
     @media (max-width: 640px) {
       .photo-wrapper {
         width: 160px;
-        height: 90px; /* 16:9 ratio for 160px width */
+        height: 90px; 
       }
       
       .photo-grid {
@@ -158,7 +158,7 @@
                          accept="image/*">
                   <button type="button" 
                           class="remove-button-photo bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1" 
-                          onclick="removeField(this)">
+                          onclick="removePhotoField(this)">
                     <i class="bi bi-trash"></i>
                   </button>
                 </div>
@@ -378,7 +378,28 @@
         alert('Minimal 1 input harus ada.');
       }
       
-      // Update visibility after removal
+      updateActionButtonsVisibility();
+    }
+
+    function removePhotoField(button) {
+      const group = button.closest('.group');
+      const container = group.parentElement;
+      const allGroups = container.querySelectorAll('.group');
+
+      const totalOldPhotos = document.querySelectorAll('#existing-photos input[type="checkbox"]').length;
+      const checkedOldPhotos = document.querySelectorAll('#existing-photos input[type="checkbox"]:checked').length;
+      const remainingOldPhotos = totalOldPhotos - checkedOldPhotos;
+      
+      const newPhotosAfterRemoval = allGroups.length - 1;
+      const filledNewPhotos = [...document.querySelectorAll('#photo-container input[type="file"]')]
+        .filter(input => input !== group.querySelector('input[type="file"]'))
+        .filter(input => input.value !== '').length;
+
+      if (remainingOldPhotos > 0 || filledNewPhotos > 0 || newPhotosAfterRemoval > 0) {
+        group.remove();
+      } else {
+        alert('Minimal harus ada 1 foto.');
+      }
       updateActionButtonsVisibility();
     }
 
@@ -396,14 +417,16 @@
       const inputClass = 'flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm transition-all duration-200 focus:outline-none focus:border-[#31c594] focus:ring-2 focus:ring-[#31c594]/20';
       const fileInputClass = inputClass + ' file:mr-4 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-[#31c594] file:text-white hover:file:bg-[#2ba882]';
 
-      // Determine remove button class based on input type
       let removeButtonClass = 'bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 flex items-center gap-1';
+      let removeFunction = 'removeField(this)';
+      
       if (inputName.includes('facilities')) {
         removeButtonClass = 'remove-button-facility ' + removeButtonClass;
       } else if (inputName.includes('rules')) {
         removeButtonClass = 'remove-button-rule ' + removeButtonClass;
       } else if (inputName.includes('photos')) {
         removeButtonClass = 'remove-button-photo ' + removeButtonClass;
+        removeFunction = 'removePhotoField(this)';
       }
 
       div.innerHTML = `
@@ -412,17 +435,14 @@
               ${type === 'file' ? 'accept="image/*"' : `placeholder="${placeholder}"`} required>
         <button type="button" 
                 class="${removeButtonClass}" 
-                onclick="removeField(this)">
+                onclick="${removeFunction}">
           <i class="bi bi-trash"></i>
         </button>`;
 
       container.appendChild(div);
-      
-      // Add event listener to new input
       const newInput = div.querySelector('input');
       newInput.addEventListener('input', updateActionButtonsVisibility);
       
-      // Update visibility after addition
       updateActionButtonsVisibility();
     }
 
@@ -444,16 +464,12 @@
         { selector: 'input[name="facilities[]"]', msg: 'Minimal 1 fasilitas harus diisi.' },
         { selector: 'input[name="rules[]"]', msg: 'Minimal 1 aturan harus diisi.' }
       ];
-
-      // Check facilities and rules
       for (const { selector, msg } of checks) {
         if (![...document.querySelectorAll(selector)].some(input => input.value.trim() !== '')) {
           alert(msg);
           return false;
         }
       }
-
-      // Check photos (new photos or existing photos not deleted)
       const photoInputs = document.querySelectorAll('input[name="photos[]"]');
       const existingChecked = document.querySelectorAll('input[name="delete_photos[]"]:checked');
       const totalOldPhotos = document.querySelectorAll('#existing-photos input[type="checkbox"]').length;
