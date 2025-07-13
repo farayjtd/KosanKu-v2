@@ -48,13 +48,13 @@
                             
                             <div class="">
                                 <label class="block text-sm font-medium text-gray-600 mb-1">Username</label>
-                                <input type="text" name="username" value="{{ old('username', $account->username) }}" class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-md text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0" required>
+                                <input type="text" name="username" value="{{ old('username', $tenant->account->username) }}" class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-md text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0" required>
                                 @error('username') <div class="text-red-600 text-sm mt-1">{{ $message }}</div> @enderror
                             </div>
                             
                             <div class="">
                                 <label class="block text-sm font-medium text-gray-600 mb-1">Email</label>
-                                <input type="email" name="email" value="{{ old('email', $account->email) }}" class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-md text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0">
+                                <input type="email" name="email" value="{{ old('email', $tenant->account->email) }}" class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-md text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0">
                                 @error('email') <div class="text-red-600 text-sm mt-1">{{ $message }}</div> @enderror
                             </div>
 
@@ -121,13 +121,13 @@
 
                             <div class="">
                                 <label class="block text-sm font-medium text-gray-600 mb-1">Nama Bank</label>
-                                <input type="text" name="bank_name" value="{{ old('bank_name', $account->bank_name) }}" class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-md text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0" required>
+                                <input type="text" name="bank_name" value="{{ old('bank_name', $tenant->bank_name) }}" class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-md text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0" required>
                                 @error('bank_name') <div class="text-red-600 text-sm mt-1">{{ $message }}</div> @enderror
                             </div>
 
                             <div class="">
                                 <label class="block text-sm font-medium text-gray-600 mb-1">Nomor Rekening</label>
-                                <input type="text" name="bank_account" value="{{ old('bank_account', $account->bank_account) }}" class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-md text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0" required>
+                                <input type="text" name="bank_account" value="{{ old('bank_account', $tenant->bank_account) }}" class="text-gray-600 w-full mt-1 px-4 py-2 pr-10 rounded-md text-sm bg-white border-1 border-gray-400 focus:outline-none focus:ring-1 focus:ring-[#31c594] focus:border-0" required>
                                 @error('bank_account') <div class="text-red-600 text-sm mt-1">{{ $message }}</div> @enderror
                             </div>
                         </div>
@@ -143,7 +143,7 @@
                                     </div>
                                 </div>
                                 @if ($account->avatar)
-                                    <img src="{{ asset('storage/' . $account->avatar) }}" alt="Foto Avatar" class="ratio-16x9 h-30 object-cover rounded border-1 transition">
+                                    <img src="{{ asset('storage/' . $tenant->account->avatar) }}" alt="Foto Avatar" class="ratio-16x9 h-30 object-cover rounded border-1 transition">
                                 @endif
                                 @error('avatar') <div class="text-red-600 text-sm mt-1">{{ $message }}</div> @enderror
                             </div>
