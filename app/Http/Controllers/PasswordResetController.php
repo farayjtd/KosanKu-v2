@@ -11,24 +11,6 @@ use Illuminate\Validation\Rules\Password as PasswordRule;
 
 class PasswordResetController extends Controller
 {
-    public function showLinkRequestForm()
-    {
-        return view('email');
-    }
-
-    public function sendResetLinkEmail(Request $request)
-    {
-        $request->validate(['email' => 'required|email']);
-
-        $status = Password::broker('accounts')->sendResetLink(
-            $request->only('email')
-        );
-
-        return $status === Password::RESET_LINK_SENT
-            ? back()->with('status', __($status))
-            : back()->withErrors(['email' => __($status)]);
-    }
-
     public function showResetForm(Request $request, $token)
     {
         return view('reset', [
@@ -42,14 +24,7 @@ class PasswordResetController extends Controller
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',
-            'password' => [
-                'required',
-                'confirmed',
-                PasswordRule::min(6)
-                    ->letters()
-                    ->mixedCase()
-                    ->numbers(),
-            ],
+            'password' => ['required', 'confirmed', PasswordRule::min(6)->letters()->mixedCase()->numbers()],
         ]);
 
         $status = Password::broker('accounts')->reset(
