@@ -20,11 +20,13 @@
     <div id="main-content" class="main-content p-6 md:pt-4 w-full">
 
       @if ($tenant->status === 'nonaktif')
-        <div class="p-8 text-center">
+      <div class="flex items-center justify-center min-h-full bg-white rounded-xl shadow-md">
+        <div class="p-8 text-center mx-auto ">
           <i class="bi bi-exclamation-circle text-4xl text-gray-400 mb-4"></i>
           <p class="text-lg text-gray-600 font-semibold">Sewa Anda sedang tidak aktif.</p>
           <p class="text-gray-500 mt-2">Silakan hubungi Landboard untuk informasi lebih lanjut atau lakukan pendaftaran sewa baru.</p>
         </div>
+      </div>
       @else
 
         {{-- Welcome Card --}}
