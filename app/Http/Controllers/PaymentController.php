@@ -105,7 +105,7 @@ class PaymentController extends Controller
             ? 'https://tripay.co.id/api/transaction/create'
             : 'https://tripay.co.id/api-sandbox/transaction/create';
 
-        $callbackUrl = config('services.tripay.callback_url', 'https://example.com/api/tripay/callback');
+        $callbackUrl = config('services.tripay.callback_url');
 
         $requestData = [
             'method'         => $paymentMethod,

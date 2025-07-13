@@ -34,22 +34,7 @@
               <p class="text-left text-xl text-gray-700 mb-2">
                 Selamat datang kembali, <strong class="use-poppins text-gray">{{ $tenant->name }}</strong>
               </p>
-              @if (isset($remaining_time) && $activeHistory)
-                <p class="text-sm flex items-center">
-                  <i class="bi bi-exclamation-triangle mr-2"></i>
-                  Masa sewa akan habis pada {{ $activeHistory->end_date }}. Ajukan perpanjangan sekarang!
-                </p>
-              @endif
             </div>
-            @if ($activeHistory)
-              <div class="flex-shrink-0">
-                <a href="{{ route('tenant.renewal.direct', ['id' => $activeHistory->id]) }}"
-                  class="inline-flex items-center bg-[#31c594] text-white font-semibold px-6 py-3 rounded-lg hover:bg-[#2aa082] transition-all duration-200 hover:-translate-y-1 hover:shadow-lg text-base">
-                  <i class="bi bi-arrow-repeat mr-2"></i>
-                  Ajukan Perpanjangan
-                </a>
-              </div>
-            @endif
           </div>
         </div>
 
