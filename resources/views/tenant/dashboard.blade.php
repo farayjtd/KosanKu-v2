@@ -18,10 +18,10 @@
     @include('components.sidebar-tenant')
     <div id="main-content" class="main-content p-6 md:pt-4 w-full">
       {{-- Welcome Card --}}
-      <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+      <div class="bg-white rounded-xl shadow-lg p-4 md:p-6 mb-4 md:mb-6">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div class="flex-1">
-            <p class="text-left text-xl rounded-xl text-gray-700 mb-2">
+            <p class="text-left text-lg md:text-xl rounded-xl text-gray-700 mb-2">
               Selamat datang kembali, <strong class="use-poppins text-gray">{{ $tenant->name }}</strong>
             </p>
             @if (isset($remaining_time) && $activeHistory)
@@ -37,7 +37,7 @@
           @if ($activeHistory)
             <div class="flex-shrink-0">
               <a href="{{ route('tenant.renewal.direct', ['id' => $activeHistory->id]) }}"
-                class="inline-flex items-center bg-[#31c594] text-white font-semibold px-6 py-3 rounded-lg hover:bg-[#2aa082] transition-all duration-200 hover:-translate-y-1 hover:shadow-lg">
+                class="inline-flex items-center bg-[#31c594] text-white font-semibold px-4 md:px-6 py-2 md:py-3 rounded-lg hover:bg-[#2aa082] transition-all duration-200 hover:-translate-y-1 hover:shadow-lg text-sm md:text-base">
                 <i class="bi bi-arrow-repeat mr-2"></i>
                 Ajukan Perpanjangan
               </a>
@@ -48,30 +48,32 @@
 
       {{-- Notifications --}}
       @if (session('success'))
-        <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6">
+        <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-4 md:mb-6">
           <div class="flex items-center">
             <i class="bi bi-check-circle-fill mr-2"></i>
-            {{ session('success') }}
+            <span class="text-sm md:text-base">{{ session('success') }}</span>
           </div>
         </div>
       @endif
 
       @if (isset($latestPayment) && $latestPayment->status === 'unpaid')
-        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6">
+        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4 md:mb-6">
           <div class="flex items-center">
             <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-            <strong>Tagihan Belum Dibayar!</strong> Harap segera lakukan pembayaran untuk menghindari denda.
+            <span class="text-sm md:text-base">
+              <strong>Tagihan Belum Dibayar!</strong> Harap segera lakukan pembayaran untuk menghindari denda.
+            </span>
           </div>
         </div>
       @endif
 
       {{-- Main Content Grid --}}
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6">
         
         {{-- Informasi Kamar Saat Ini --}}
-        <div class="bg-white rounded-xl shadow-lg p-6">
+        <div class="bg-white rounded-xl shadow-lg p-4 md:p-6">
           <div class="flex items-center mb-4">
-            <h2 class="text-lg font-semibold text-gray-700">Informasi Kamar Saat Ini</h2>
+            <h2 class="text-base md:text-lg font-semibold text-gray-700">Informasi Kamar Saat Ini</h2>
           </div>
 
           @if ($activeHistory)
@@ -112,9 +114,9 @@
         </div>
 
         {{-- Status Tagihan --}}
-        <div class="bg-white rounded-xl shadow-lg p-6">
+        <div class="bg-white rounded-xl shadow-lg p-4 md:p-6">
           <div class="flex items-center mb-4">
-            <h3 class="text-lg font-semibold text-gray-700">Status Tagihan</h3>
+            <h3 class="text-base md:text-lg font-semibold text-gray-700">Status Tagihan</h3>
           </div>
 
           @if ($latestPayment)
@@ -128,12 +130,12 @@
                 <span class="text-sm text-gray-600">Status</span>
                 @if ($latestPayment->status === 'paid')
                   <span class="inline-flex items-center bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
-                    <i class="bi bi-check-circle-fill mr-2"></i>
+                    <i class="bi bi-check-circle-fill mr-1"></i>
                     Lunas
                   </span>
                 @else
                   <span class="inline-flex items-center bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-medium">
-                    <i class="bi bi-exclamation-circle-fill mr-2"></i>
+                    <i class="bi bi-exclamation-circle-fill mr-1"></i>
                     Belum Dibayar
                   </span>
                 @endif
@@ -154,9 +156,9 @@
       </div>
 
       {{-- Status Permintaan --}}
-      <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+      <div class="bg-white rounded-xl shadow-lg p-4 md:p-6 mb-4 md:mb-6">
         <div class="flex items-center mb-4">
-          <h3 class="text-lg font-semibold text-gray-700">Status Permintaan</h3>
+          <h3 class="text-base md:text-lg font-semibold text-gray-700">Status Permintaan</h3>
         </div>
 
         @if ($latestTransferRequest)
@@ -181,13 +183,13 @@
       </div>
 
       {{-- Bottom Grid --}}
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
         
         {{-- Estimasi Biaya Perpanjangan --}}
         @if ($activeHistory)
-          <div class="bg-white rounded-xl shadow-lg p-6">
+          <div class="bg-white rounded-xl shadow-lg p-4 md:p-6">
             <div class="flex items-center mb-4">
-              <h3 class="text-lg font-semibold text-gray-700">Estimasi Perpanjangan</h3>
+              <h3 class="text-base md:text-lg font-semibold text-gray-700">Estimasi Perpanjangan</h3>
             </div>
 
             <div class="space-y-4">
@@ -205,16 +207,16 @@
         @endif
 
         {{-- Kontak Landboard --}}
-        <div class="bg-white rounded-xl shadow-lg p-6">
+        <div class="bg-white rounded-xl shadow-lg p-4 md:p-6">
           <div class="flex items-center mb-4">
-            <h3 class="text-lg font-semibold text-gray-700">Kontak Landboard</h3>
+            <h3 class="text-base md:text-lg font-semibold text-gray-700">Kontak Landboard</h3>
           </div>
 
           @if ($tenant->room && $tenant->room->landboard)
             <div class="space-y-4">
               <div class="flex items-center justify-between py-2 border-b border-gray-100">
                 <span class="text-sm text-gray-600">Nama Landboard</span>
-                <span class="font-semibold text-gray-700">{{ $tenant->room->landboard->name }}</span>
+                <span class="font-semibold text-gray-700 text-sm">{{ $tenant->room->landboard->name }}</span>
               </div>
 
               <div class="flex items-center justify-between py-2">
@@ -236,27 +238,27 @@
       </div>
 
       {{-- Aksi Cepat --}}
-      <div class="bg-white rounded-xl shadow-lg p-6 mt-6">
+      <div class="bg-white rounded-xl shadow-lg p-4 md:p-6 mt-4 md:mt-6">
         <div class="flex items-center mb-4">
-          <h3 class="text-lg font-semibold text-gray-700">Aksi Cepat</h3>
+          <h3 class="text-base md:text-lg font-semibold text-gray-700">Aksi Cepat</h3>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <a href="{{ route('tenant.room-transfer.form') }}"
-            class="flex items-center justify-center bg-green-50 hover:bg-green-100 text-green-700 p-4 rounded-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+            class="flex items-center justify-center bg-green-50 hover:bg-green-100 text-green-700 p-3 md:p-4 rounded-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
             <i class="bi bi-arrow-left-right text-sm mr-2"></i>
             <span class="font-medium text-sm">Ajukan Pindah Kamar</span>
           </a>
 
           <a href="{{ route('tenant.payment.list') }}"
-            class="flex items-center justify-center bg-green-50 hover:bg-green-100 text-green-700 p-4 rounded-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+            class="flex items-center justify-center bg-green-50 hover:bg-green-100 text-green-700 p-3 md:p-4 rounded-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
             <i class="bi bi-receipt text-sm mr-2"></i>
             <span class="font-medium text-sm">Lihat Tagihan</span>
           </a>
 
           @if ($tenant->room && $tenant->room->landboard)
             <a href="https://wa.me/{{ $tenant->room->landboard->phone }}" target="_blank"
-              class="flex items-center justify-center bg-emerald-50 hover:bg-emerald-100 text-emerald-700 p-4 rounded-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+              class="flex items-center justify-center bg-emerald-50 hover:bg-emerald-100 text-emerald-700 p-3 md:p-4 rounded-lg transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
               <i class="bi bi-telephone text-sm mr-2"></i>
               <span class="font-medium text-sm">Hubungi Landboard</span>
             </a>
