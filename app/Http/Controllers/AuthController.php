@@ -33,11 +33,6 @@ class AuthController extends Controller
                     ? redirect()->route('tenant.profile.complete-form')
                     : redirect()->route('tenant.dashboard.index');
             }
-
-            Auth::logout();
-            return redirect()->route('auth')->withErrors([
-                'username' => 'Role tidak dikenali.',
-            ]);
         }
 
         return back()->withErrors([

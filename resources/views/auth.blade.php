@@ -36,6 +36,13 @@
           {{ $errors->first() }}
         </div>
       @endif
+      @if (session('status'))
+          <div class="bg-green-100 border border-green-300 text-green-700 text-sm px-4 py-3 rounded-xl mb-4 break-words">
+              {{ session('status') }}
+          </div>
+      @endif
+
+
 
       <label for="username" class="block text-sm font-medium text-gray-700 mt-2">
         <i class="bi bi-person mr-2"></i>Username

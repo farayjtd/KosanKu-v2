@@ -22,6 +22,13 @@
         {{ session('status') }}
       </div>
     @endif
+    @if ($errors->has('email'))
+      <div class="bg-red-100 border border-red-300 text-red-700 text-sm px-4 py-3 rounded-xl mb-4 break-words">
+        {{ $errors->first('email') }}
+      </div>
+    @endif
+
+
 
     <form method="POST" action="{{ route('password.email') }}">
       @csrf
