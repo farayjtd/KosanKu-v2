@@ -17,17 +17,12 @@ class RoleMiddleware
      * @param  mixed ...$roles  Roles yang diizinkan, bisa banyak
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, ...$roles): Response
+    public function handle(Request $request, Closure $next): Response
     {
-       if (!Auth::check()) {
+        if (!Auth::check()) {
             return redirect()->route('login');
         }
 
-        $user = Auth::user();
-
-        if (!in_array($user->role, $roles)) {
-            abort(403, 'Unauthorized');
-        }
         return $next($request);
     }
 }

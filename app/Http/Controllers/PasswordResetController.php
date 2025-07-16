@@ -31,12 +31,11 @@ class PasswordResetController extends Controller
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
                 $user->password = $password;
-                $user->setRememberToken(Str::random(60));
                 $user->save();
             }
         );
 
-        return $status === Password::PASSWORD_RESET
+        return $status === 'passwords.reset'
             ? redirect()->route('login')->with('status', 'Password berhasil diubah')
             : back()->withErrors(['email' => ['Gagal mengubah password. Silakan periksa kembali email atau token Anda.']]);
     }
