@@ -16,9 +16,9 @@ class ForgotPasswordController extends Controller
     {
         $request->validate(['email' => 'required|email']);
 
-        $status = Password::broker('accounts')->sendResetLink(
-            $request->only('email')
-        );
+          $status = Password::sendResetLink( 
+                $request->only('email')
+            );
 
         return $status === Password::RESET_LINK_SENT
             ? back()->with(['status' => 'Link reset password berhasil dikirim ke email.'])

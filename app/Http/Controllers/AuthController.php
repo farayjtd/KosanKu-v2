@@ -20,8 +20,6 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-
             $account = Auth::user();
             
             if ($account->role === 'landboard') {
@@ -40,12 +38,9 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout(Request $request)
+    public function logout()
     {
         Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
         return redirect()->route('auth');
     }
 }
