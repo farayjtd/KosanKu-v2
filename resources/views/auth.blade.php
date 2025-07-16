@@ -42,8 +42,6 @@
           </div>
       @endif
 
-
-
       <label for="username" class="block text-sm font-medium text-gray-700 mt-2">
         <i class="bi bi-person mr-2"></i>Username
       </label>

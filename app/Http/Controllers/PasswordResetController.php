@@ -30,7 +30,7 @@ class PasswordResetController extends Controller
         $status = Password::broker('accounts')->reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
-                $user->password = Hash::make($password);
+                $user->password = $password;
                 $user->setRememberToken(Str::random(60));
                 $user->save();
             }
