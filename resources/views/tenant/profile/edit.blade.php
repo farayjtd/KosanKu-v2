@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/style/font.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     @vite('resources/css/app.css')
 </head>
 <body class="use-poppins-normal bg-cover bg-no-repeat bg-center min-h-screen" style="background-image: url('/assets/auth.png')">
