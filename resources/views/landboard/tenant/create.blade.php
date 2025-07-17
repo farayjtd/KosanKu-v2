@@ -85,7 +85,7 @@
                 <option value="">-- Pilih Kamar --</option>
                 @foreach ($rooms as $room)
                   <option value="{{ $room->id }}">
-                    Kamar {{ $room->room_number }} (Rp{{ number_format($room->price, 0, ',', '.') }})
+                    Kamar {{ $room->room_number }} (Rp{{ number_format($room->price, 0, ',', '.') }}) - {{ $room->gender_type }}
                   </option>
                 @endforeach
               </select>
