@@ -27,7 +27,7 @@ class PasswordResetController extends Controller
             'password' => ['required', 'confirmed', PasswordRule::min(6)->letters()->mixedCase()->numbers()],
         ]);
 
-        $status = Password::broker('accounts')->reset(
+        $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
                 $user->password = $password;
