@@ -500,12 +500,10 @@
       updateActionButtonsVisibility();
       updatePhotoWarning();
       
-      // Event listeners untuk input yang sudah ada
       document.querySelectorAll('input[name="facilities[]"], input[name="rules[]"]').forEach(input => {
         input.addEventListener('input', updateActionButtonsVisibility);
       });
       
-      // Event listeners untuk foto yang sudah ada
       document.querySelectorAll('input[name="photos[]"]').forEach(input => {
         input.addEventListener('change', updatePhotoWarning);
       });

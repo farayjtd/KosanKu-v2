@@ -105,77 +105,13 @@
       const target = document.getElementById('method-form-' + id);
       if (target) target.classList.remove('hidden');
     }
-    document.addEventListener('DOMContentLoaded', function() {
-      const sidebar = document.getElementById('sidebar');
-      const mainContent = document.getElementById('main-content');
-      const toggleBtn = document.getElementById('toggleSidebar');
-      
-      const overlay = document.createElement('div');
-      overlay.className = 'mobile-overlay';
-      overlay.id = 'mobile-overlay';
-      document.body.appendChild(overlay);
-
-      function initializeSidebar() {
-        if (window.innerWidth <= 768) {
-          if (sidebar) {
-            sidebar.classList.add('collapsed');
-            sidebar.classList.remove('mobile-expanded');
-          }
-          if (mainContent) {
-            mainContent.classList.add('collapsed');
-          }
-          overlay.classList.remove('active');
-        } else {
-          if (sidebar) {
-            sidebar.classList.remove('mobile-expanded');
-          }
-          overlay.classList.remove('active');
-        }
-      }
-
-      initializeSidebar();
-
-      if (toggleBtn && sidebar) {
-        toggleBtn.addEventListener('click', function() {
-          if (window.innerWidth <= 768) {
-            if (sidebar.classList.contains('mobile-expanded')) {
-              sidebar.classList.remove('mobile-expanded');
-              sidebar.classList.add('collapsed');
-              overlay.classList.remove('active');
-            } else {
-              sidebar.classList.remove('collapsed');
-              sidebar.classList.add('mobile-expanded');
-              overlay.classList.add('active');
-            }
-          } else {
-            sidebar.classList.toggle('collapsed');
-            if (mainContent) {
-              mainContent.classList.toggle('collapsed');
-            }
-          }
-        });
-      }
-      overlay.addEventListener('click', function() {
-        if (window.innerWidth <= 768) {
-          sidebar.classList.remove('mobile-expanded');
-          sidebar.classList.add('collapsed');
-          overlay.classList.remove('active');
-        }
-      });
-
-      window.addEventListener('resize', function() {
-        initializeSidebar();
-      });
-    });
-    function toggleMethodForm(id) {
-  // Sembunyikan semua form
+  function toggleMethodForm(id) {
   document.querySelectorAll('.method-form').forEach(form => {
     if (!form.classList.contains('hidden')) {
       form.classList.add('hidden');
     }
   });
 
-  // Tampilkan form yang sesuai
   const target = document.getElementById('method-form-' + id);
   if (target) {
     target.classList.toggle('hidden');
@@ -188,10 +124,8 @@ function openModal(rentalId) {
   const form = document.getElementById('modal-form');
   const hiddenInput = document.getElementById('modal-rental-id');
 
-  // Isi form data
   hiddenInput.value = rentalId;
 
-  // Update action
   form.action = `{{ url('tenant/payment') }}/${rentalId}/create-invoice`;
 }
 

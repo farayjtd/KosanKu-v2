@@ -132,7 +132,7 @@
           <div class="filter-sort-dropdown hidden bg-white rounded-lg shadow-lg mt-2 p-4">
             <div>
               <label for="sort-filter" class="block text-gray-700 font-medium text-sm mb-1">Urutkan:</label>
-              <select id="sort-filter" name="sort" onchange="document.getElementById('tenant-search-form').submit()"
+              <select id="sort-filter" name="sort" onchange="document.getElementById('tenant-search-form').submit()" onclick="event.stopPropagation()"
                       class="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-400">
                 <option value="start_desc" {{ request('sort') == 'start_desc' ? 'selected' : '' }}>Terbaru</option>
                 <option value="start_asc" {{ request('sort') == 'start_asc' ? 'selected' : '' }}>Terlama</option>
@@ -203,90 +203,26 @@
     </div>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const sidebar = document.getElementById('sidebar');
-      const mainContent = document.getElementById('main-content');
-      const toggleBtn = document.getElementById('toggleSidebar');
-
-      const overlay = document.createElement('div');
-      overlay.className = 'mobile-overlay';
-      overlay.id = 'mobile-overlay';
-      document.body.appendChild(overlay);
-
-      function initializeSidebar() {
-        if (window.innerWidth <= 768) {
-          if (sidebar) {
-            sidebar.classList.add('collapsed');
-            sidebar.classList.remove('mobile-expanded');
-          }
-          if (mainContent) {
-            mainContent.classList.add('collapsed');
-          }
-          overlay.classList.remove('active');
-        } else {
-          if (sidebar) {
-            sidebar.classList.remove('mobile-expanded');
-          }
-          overlay.classList.remove('active');
-        }
+<script>
+  document.addEventListener('click', function (event) {
+    if (!event.target.closest('.filter-sort-dropdown') && !event.target.closest('.filter-sort-toggle-btn')) {
+      const filterSortDropdown = document.querySelector('.filter-sort-dropdown');
+      if (filterSortDropdown && !filterSortDropdown.classList.contains('hidden')) {
+        filterSortDropdown.classList.add('hidden');
       }
-
-      initializeSidebar();
-
-      if (toggleBtn && sidebar) {
-        toggleBtn.addEventListener('click', function() {
-          if (window.innerWidth <= 768) {
-            if (sidebar.classList.contains('mobile-expanded')) {
-              sidebar.classList.remove('mobile-expanded');
-              sidebar.classList.add('collapsed');
-              overlay.classList.remove('active');
-            } else {
-              sidebar.classList.remove('collapsed');
-              sidebar.classList.add('mobile-expanded');
-              overlay.classList.add('active');
-            }
-          } else {
-            sidebar.classList.toggle('collapsed');
-            if (mainContent) {
-              mainContent.classList.toggle('collapsed');
-            }
-          }
-        });
-      }
-
-      overlay.addEventListener('click', function() {
-        if (window.innerWidth <= 768) {
-          sidebar.classList.remove('mobile-expanded');
-          sidebar.classList.add('collapsed');
-          overlay.classList.remove('active');
-        }
-      });
-
-      window.addEventListener('resize', function() {
-        initializeSidebar();
-      });
-
-      document.addEventListener('click', function(event) {
-        if (!event.target.closest('.search-input-wrapper')) {
-          const filterSortDropdown = document.querySelector('.filter-sort-dropdown');
-          if (filterSortDropdown && !filterSortDropdown.classList.contains('hidden')) {
-            filterSortDropdown.classList.add('hidden');
-          }
-        }
-      });
-    });
-    
-    function toggleFilterSortDropdown(button) {
-      const dropdown = button.nextElementSibling;
-      document.querySelectorAll('.filter-sort-dropdown').forEach(d => {
-        if (d !== dropdown) {
-          d.classList.add('hidden');
-        }
-      });
-      dropdown.classList.toggle('hidden');
-      event.stopPropagation();
     }
-  </script>
+  });
+
+  function toggleFilterSortDropdown(button) {
+    const dropdown = button.nextElementSibling;
+    document.querySelectorAll('.filter-sort-dropdown').forEach(d => {
+      if (d !== dropdown) {
+        d.classList.add('hidden');
+      }
+    });
+    dropdown.classList.toggle('hidden');
+    event.stopPropagation();
+  }
+</script>
 </body>
 </html>

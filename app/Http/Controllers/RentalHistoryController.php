@@ -45,13 +45,44 @@ class RentalHistoryController extends Controller
         $landboard = Auth::user()->landboard;
         $keyword = $request->search;
 
-        $histories = RentalHistory::with(['room', 'tenant.account'])
+        $query = RentalHistory::with(['room', 'tenant.account'])
             ->whereHas('room', function ($q) use ($landboard) {
                 $q->where('landboard_id', $landboard->id);
-            })
-            ->orderByDesc('start_date')
-            ->get();
+            });
 
+        switch ($request->sort) {
+            case 'start_asc':
+                $query->orderBy('start_date', 'asc');
+                break;
+            case 'start_desc':
+                $query->orderBy('start_date', 'desc');
+                break;
+            case 'tenant_asc':
+                $query->join('tenants', 'rental_histories.tenant_id', '=', 'tenants.id')
+                    ->orderBy('tenants.name', 'asc')
+                    ->select('rental_histories.*');
+                break;
+            case 'tenant_desc':
+                $query->join('tenants', 'rental_histories.tenant_id', '=', 'tenants.id')
+                    ->orderBy('tenants.name', 'desc')
+                    ->select('rental_histories.*');
+                break;
+            case 'room_asc':
+                $query->join('rooms', 'rental_histories.room_id', '=', 'rooms.id')
+                    ->orderBy('rooms.room_number', 'asc')
+                    ->select('rental_histories.*');
+                break;
+            case 'room_desc':
+                $query->join('rooms', 'rental_histories.room_id', '=', 'rooms.id')
+                    ->orderBy('rooms.room_number', 'desc')
+                    ->select('rental_histories.*');
+                break;
+            default:
+                $query->orderBy('start_date', 'desc');
+                break;
+        }
+
+        $histories = $query->get();
         $today = now()->timezone('Asia/Jakarta')->startOfDay();
 
         foreach ($histories as $history) {

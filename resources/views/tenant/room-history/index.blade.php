@@ -127,58 +127,11 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const sidebar = document.getElementById('sidebar');
-      const mainContent = document.getElementById('main-content');
-      const toggleBtn = document.getElementById('toggleSidebar');
-
-      const overlay = document.createElement('div');
-      overlay.className = 'mobile-overlay';
-      overlay.id = 'mobile-overlay';
-      document.body.appendChild(overlay);
-
-      function initializeSidebar() {
-        if (window.innerWidth <= 768) {
-          sidebar?.classList.add('collapsed');
-          sidebar?.classList.remove('mobile-expanded');
-          mainContent?.classList.add('collapsed');
-          overlay.classList.remove('active');
-        } else {
-          sidebar?.classList.remove('mobile-expanded');
-          overlay.classList.remove('active');
-        }
-      }
-
-      initializeSidebar();
-
-      if (toggleBtn && sidebar) {
-        toggleBtn.addEventListener('click', function () {
-          if (window.innerWidth <= 768) {
-            const isOpen = sidebar.classList.contains('mobile-expanded');
-            sidebar.classList.toggle('mobile-expanded', !isOpen);
-            sidebar.classList.toggle('collapsed', isOpen);
-            overlay.classList.toggle('active', !isOpen);
-          } else {
-            sidebar.classList.toggle('collapsed');
-            mainContent?.classList.toggle('collapsed');
-          }
-        });
-      }
-
-      overlay.addEventListener('click', function () {
-        sidebar?.classList.remove('mobile-expanded');
-        sidebar?.classList.add('collapsed');
-        overlay.classList.remove('active');
-      });
-
-      window.addEventListener('resize', initializeSidebar);
-
       document.addEventListener('click', function (event) {
         if (!event.target.closest('.search-input-wrapper')) {
           document.querySelectorAll('.filter-sort-dropdown').forEach(d => d.classList.add('hidden'));
         }
       });
-    });
   </script>
 </body>
 </html>

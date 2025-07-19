@@ -208,69 +208,6 @@
   </div>
   
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    const sidebar = document.getElementById('sidebar');
-    const mainContent = document.getElementById('main-content');
-    const toggleBtn = document.getElementById('toggleSidebar');
-
-    const overlay = document.createElement('div');
-    overlay.className = 'mobile-overlay fixed inset-0 bg-black bg-opacity-50 z-40 hidden';
-    overlay.id = 'mobile-overlay';
-    document.body.appendChild(overlay);
-
-    function initializeSidebar() {
-      if (window.innerWidth <= 768) {
-        if (sidebar) {
-          sidebar.classList.add('collapsed');
-          sidebar.classList.remove('mobile-expanded');
-        }
-        if (mainContent) {
-          mainContent.classList.add('collapsed');
-        }
-        overlay.classList.add('hidden');
-      } else {
-        if (sidebar) {
-          sidebar.classList.remove('mobile-expanded');
-        }
-        overlay.classList.add('hidden');
-      }
-    }
-
-    initializeSidebar();
-
-    if (toggleBtn && sidebar) {
-      toggleBtn.addEventListener('click', function() {
-        if (window.innerWidth <= 768) {
-          if (sidebar.classList.contains('mobile-expanded')) {
-            sidebar.classList.remove('mobile-expanded');
-            sidebar.classList.add('collapsed');
-            overlay.classList.add('hidden');
-          } else {
-            sidebar.classList.remove('collapsed');
-            sidebar.classList.add('mobile-expanded');
-            overlay.classList.remove('hidden');
-          }
-        } else {
-          sidebar.classList.toggle('collapsed');
-          if (mainContent) {
-            mainContent.classList.toggle('collapsed');
-          }
-        }
-      });
-    }
-
-    overlay.addEventListener('click', function() {
-      if (window.innerWidth <= 768) {
-        sidebar.classList.remove('mobile-expanded');
-        sidebar.classList.add('collapsed');
-        overlay.classList.add('hidden');
-      }
-    });
-
-    window.addEventListener('resize', function() {
-      initializeSidebar();
-    });
-
     document.addEventListener('click', function(event) {
         if (!event.target.closest('.relative')) {
             const filterSortDropdown = document.querySelector('.filter-sort-dropdown');
@@ -279,7 +216,6 @@
             }
         }
     });
-  });
 
   // Carousel functions
   function nextPhoto(roomId) {
